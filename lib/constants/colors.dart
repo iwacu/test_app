@@ -13,6 +13,10 @@ class HexColor extends Color {
   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
 }
 
+String capitalize(String text) {
+  return "${text[0].toUpperCase()}${text.substring(1)}";
+}
+
 const primaryColor = Colors.white;
 Color buttonBGColor = HexColor("#4EA7F2");
 Color greyColor = HexColor("#EEEEEE");

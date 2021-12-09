@@ -1,7 +1,9 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:momnotebook/bloc/form_submission/form_sub.dart';
+import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/models/baby.dart';
+import 'package:momnotebook/models/babyTask.dart';
 import 'package:momnotebook/models/user.dart';
 import 'package:momnotebook/services/database/database_helper.dart';
 
@@ -20,6 +22,8 @@ class FormSavingBloc extends Bloc<FormSavingEvent, FormSavingState> {
       yield state.copyWith(babyPremature: event.babyPremature);
     } else if (event is BabyRelationshipChanged) {
       yield state.copyWith(babyRelationship: event.babyRelationship);
+    } else if (event is NoteChanged) {
+      yield state.copyWith(note: event.note);
     } else if (event is SubmitForm) {
       yield state.copyWith(formSubmissionStatus: FormSubmitting());
       //  read user from dbs
@@ -49,6 +53,33 @@ class FormSavingBloc extends Bloc<FormSavingEvent, FormSavingState> {
               SubmissionSuccess(message: 'Baby added successfully'));
       // print(
       //     'relationship ${state.babyRelationship} ::: premature ${state.babyPremature} ::: sex ${event.babySex} ::: name ${state.userName} ::: birthday ${event.babyBirthDay} ');
+    } else if (event is SubmitFormSleeping) {
+      yield state.copyWith(formSubmissionStatus: FormSubmitting());
+      await DatabaseHelper.instance.addBabyTask(BabyTask(
+          babyId: 1,
+          taskName: 'sleeping',
+          timeStamp: DateTime.now().toString(),
+          note: state.note,
+          resumeTime: '',
+          qtyFood: '',
+          qtyLeft: '',
+          qtyRight: '',
+          qtyFeeder: '',
+          leftBreast: 1,
+          rightBreast: 1,
+          groupFood: '',
+          pee: 1,
+          poo: 1,
+          durationH: event.duration.inHours.toString(),
+          durationM: event.duration.inMinutes.toString(),
+          durationS: event.duration.inSeconds.toString(),
+          color: event.color));
+      HomePageCubit().getBabyTasks();
+      yield state.copyWith(
+          formSubmissionStatus:
+              SubmissionSuccess(message: 'added successfully'));
+      // print(
+      //     'notes ==> ${state.note} ::sleeping ==> H ${event.duration.inHours}: M ${event.duration.inMinutes}: S ${event.duration.inSeconds}');
     }
   }
 }

@@ -2,12 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:momnotebook/bloc/bloc/form_saving_bloc.dart';
+import 'package:momnotebook/bloc/form_submission/form_sub.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/customAppBar.dart';
 import 'package:momnotebook/constants/defaultButton.dart';
+import 'package:momnotebook/constants/show_snackBar.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/models/timer.dart';
 import 'package:momnotebook/services/database/database_helper.dart';
 
@@ -22,6 +27,7 @@ class _HomeSleepState extends State<HomeSleep> {
   DateTime _nowDate = DateTime.now();
   Timer? timer;
   Duration duration = Duration();
+  Duration _dtion = Duration();
   @override
   void initState() {
     super.initState();
@@ -41,6 +47,7 @@ class _HomeSleepState extends State<HomeSleep> {
 
   void reset() async {
     await DatabaseHelper.instance.deleteRecord(1);
+    _dtion = duration;
     setState(() {
       duration = Duration();
       timer!.cancel();
@@ -69,6 +76,7 @@ class _HomeSleepState extends State<HomeSleep> {
     timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
   }
 
+  final _text = TextEditingController();
   @override
   Widget build(BuildContext context) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');
@@ -77,365 +85,390 @@ class _HomeSleepState extends State<HomeSleep> {
     final hours = twoDigits(duration.inHours.remainder(60));
     final _isRunning = timer == null ? false : timer!.isActive;
 
-    return Scaffold(
-      backgroundColor: bluewhite,
-      appBar: CustomAppBar(
-          height: SizeConfig.heightMultiplier * 9,
-          child: appBarDashboardW(context, 'Sam', () {}, () {})),
-      body: Container(
-        color: Colors.white,
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-              color: bluewhite,
-              borderRadius: new BorderRadius.only(
-                topLeft: const Radius.circular(30.0),
-                topRight: const Radius.circular(30.0),
-              )),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Container(
-                      height: SizeConfig.heightMultiplier * 18,
-                      width: SizeConfig.widthMultiplier * 28,
-                      decoration: BoxDecoration(
-                          color: greenGray, shape: BoxShape.circle),
-                      child: Center(
-                        child: SvgPicture.asset('assets/icons/sleeping.svg',
-                            height: SizeConfig.heightMultiplier * 8),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 4,
-                ),
-                Center(
-                  child: Text(
-                    'Sleeping',
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 3,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 2,
-                ),
-                Center(
-                  child: Text(
-                    'Last 4h 20min ago',
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w200,
-                        color: Colors.black38),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 3.5,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey[50],
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 12),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              Center(
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '$hours',
-                                      style: TextStyle(
-                                          fontSize: 32,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black38),
-                                    ),
-                                    Text(
-                                      ' :',
-                                      style: TextStyle(
-                                          fontSize: 32,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black38),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  'Hours',
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 1.7,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
-                                      color: greenGray),
-                                ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Center(
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      ' $minutes',
-                                      style: TextStyle(
-                                          fontSize: 32,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black38),
-                                    ),
-                                    Text(
-                                      ' :',
-                                      style: TextStyle(
-                                          fontSize: 32,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black38),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  'Minutes',
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 1.7,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
-                                      color: greenGray),
-                                ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Center(
-                                child: Text(
-                                  ' $seconds',
-                                  style: TextStyle(
-                                      fontSize: 32,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black38),
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  'Seconds',
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 1.7,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
-                                      color: greenGray),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 2,
-                ),
-                Center(
-                  child: _isRunning
-                      ? GestureDetector(
-                          onTap: () => reset(),
-                          child: Container(
-                            height: SizeConfig.heightMultiplier * 8,
-                            width: SizeConfig.widthMultiplier * 36,
-                            decoration: BoxDecoration(
-                                color: greenGray,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.stop_sharp,
-                                  color: primaryColor,
-                                ),
-                                SizedBox(
-                                  width: SizeConfig.widthMultiplier * 1.5,
-                                ),
-                                Text(
-                                  'Stop',
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 2.5,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
-                                      color: primaryColor),
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      : GestureDetector(
-                          onTap: () {
-                            startTime();
-                            saveTimer();
-                          },
-                          child: Container(
-                            height: SizeConfig.heightMultiplier * 8,
-                            width: SizeConfig.widthMultiplier * 36,
-                            decoration: BoxDecoration(
-                                color: primaryColor,
-                                border: Border.all(color: greenGray),
-                                borderRadius: BorderRadius.circular(5)),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.play_arrow,
-                                  color: Colors.black38,
-                                ),
-                                SizedBox(
-                                  width: SizeConfig.widthMultiplier * 1.5,
-                                ),
-                                Text(
-                                  'Start',
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 2.5,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
-                                      color: Colors.black38),
-                                ),
-                              ],
-                            ),
+    return BlocProvider(
+      create: (context) => FormSavingBloc(),
+      child: Scaffold(
+        backgroundColor: bluewhite,
+        appBar: CustomAppBar(
+            height: SizeConfig.heightMultiplier * 9,
+            child: appBarDashboardW(context, 'Sam', () {}, () {})),
+        body: BlocListener<FormSavingBloc, FormSavingState>(
+          listener: (context, state) {
+            final formStatus = state.formSubmissionStatus;
+            if (formStatus is SubmissionSuccess) {
+              showSnackBar(context, formStatus.message);
+              Navigator.pop(context);
+            }
+          },
+          child: Container(
+            color: Colors.white,
+            child: Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: BoxDecoration(
+                  color: bluewhite,
+                  borderRadius: new BorderRadius.only(
+                    topLeft: const Radius.circular(30.0),
+                    topRight: const Radius.circular(30.0),
+                  )),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Container(
+                          height: SizeConfig.heightMultiplier * 18,
+                          width: SizeConfig.widthMultiplier * 28,
+                          decoration: BoxDecoration(
+                              color: greenGray, shape: BoxShape.circle),
+                          child: Center(
+                            child: SvgPicture.asset('assets/icons/sleeping.svg',
+                                height: SizeConfig.heightMultiplier * 8),
                           ),
                         ),
-                ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey[50],
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 12),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset(
-                            'assets/icons/time.svg',
-                            height: SizeConfig.heightMultiplier * 3,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 2,
-                          ),
-                          Text(
-                            'Time',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 2,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                          Spacer(),
-                          GestureDetector(
-                            onTap: () => _showDatePicker(context),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: greyColor)),
-                              child: Text(
-                                Jiffy(_nowDate).MMMEd,
-                                style: TextStyle(
-                                    fontSize: SizeConfig.textMultiplier * 2,
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.black38,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 2,
-                          ),
-                          GestureDetector(
-                            onTap: () => _showTimePicker(context),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: greyColor)),
-                              child: Text(
-                                '10:40 Am',
-                                style: TextStyle(
-                                    fontSize: SizeConfig.textMultiplier * 2,
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.black38,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ),
-                          )
-                        ],
                       ),
                     ),
-                  ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 4,
+                    ),
+                    Center(
+                      child: Text(
+                        'Sleeping',
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 3,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black38),
+                      ),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    Center(
+                      child: Text(
+                        'Last 4h 20min ago',
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w200,
+                            color: Colors.black38),
+                      ),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 3.5,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey[50],
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 12),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Column(
+                                children: [
+                                  Center(
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          '$hours',
+                                          style: TextStyle(
+                                              fontSize: 32,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.black38),
+                                        ),
+                                        Text(
+                                          ' :',
+                                          style: TextStyle(
+                                              fontSize: 32,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.black38),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      'Hours',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 1.7,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w300,
+                                          color: greenGray),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Center(
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          '$minutes',
+                                          style: TextStyle(
+                                              fontSize: 32,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.black38),
+                                        ),
+                                        Text(
+                                          ' :',
+                                          style: TextStyle(
+                                              fontSize: 32,
+                                              fontFamily: 'Montserrat',
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.black38),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      'Minutes',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 1.7,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w300,
+                                          color: greenGray),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      '$seconds',
+                                      style: TextStyle(
+                                          fontSize: 32,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.black38),
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Text(
+                                      'Seconds',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 1.7,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w300,
+                                          color: greenGray),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    Center(
+                      child: _isRunning
+                          ? GestureDetector(
+                              onTap: () => reset(),
+                              child: Container(
+                                height: SizeConfig.heightMultiplier * 8,
+                                width: SizeConfig.widthMultiplier * 36,
+                                decoration: BoxDecoration(
+                                    color: greenGray,
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.stop_sharp,
+                                      color: primaryColor,
+                                    ),
+                                    SizedBox(
+                                      width: SizeConfig.widthMultiplier * 1.5,
+                                    ),
+                                    Text(
+                                      'Stop',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 2.5,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w300,
+                                          color: primaryColor),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : GestureDetector(
+                              onTap: () {
+                                startTime();
+                                saveTimer();
+                              },
+                              child: Container(
+                                height: SizeConfig.heightMultiplier * 8,
+                                width: SizeConfig.widthMultiplier * 36,
+                                decoration: BoxDecoration(
+                                    color: primaryColor,
+                                    border: Border.all(color: greenGray),
+                                    borderRadius: BorderRadius.circular(5)),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.play_arrow,
+                                      color: Colors.black38,
+                                    ),
+                                    SizedBox(
+                                      width: SizeConfig.widthMultiplier * 1.5,
+                                    ),
+                                    Text(
+                                      'Start',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 2.5,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w300,
+                                          color: Colors.black38),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.grey[50],
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 12),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SvgPicture.asset(
+                                'assets/icons/time.svg',
+                                height: SizeConfig.heightMultiplier * 3,
+                              ),
+                              SizedBox(
+                                width: SizeConfig.widthMultiplier * 2,
+                              ),
+                              Text(
+                                'Time',
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 2,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black38),
+                              ),
+                              Spacer(),
+                              GestureDetector(
+                                onTap: () => _showDatePicker(context),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: greyColor)),
+                                  child: Text(
+                                    Jiffy(_nowDate).MMMEd,
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.textMultiplier * 2,
+                                        fontFamily: 'Montserrat',
+                                        color: Colors.black38,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: SizeConfig.widthMultiplier * 2,
+                              ),
+                              GestureDetector(
+                                onTap: () => _showTimePicker(context),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: greyColor)),
+                                  child: Text(
+                                    '10:40 Am',
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.textMultiplier * 2,
+                                        fontFamily: 'Montserrat',
+                                        color: Colors.black38,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    Padding(
+                        padding: const EdgeInsets.only(left: 12, right: 12),
+                        child: TextFormField(
+                            controller: _text,
+                            maxLength: 1000,
+                            decoration: InputDecoration(
+                              labelText: 'Notes',
+                              labelStyle: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                              enabledBorder: new UnderlineInputBorder(
+                                  borderSide: new BorderSide(
+                                      color: almostGrey, width: 0.8)),
+                            ))),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 12,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: SizeConfig.widthMultiplier * 8),
+                        child: DefaultButtonBsz(
+                          text: 'Save',
+                          press: () {
+                            var di = greenGray.toString();
+                            print(di);
+                            const start = "Color(";
+                            const end = ")";
+
+                            final startIndex = di.indexOf(start);
+                            final endIndex =
+                                di.indexOf(end, startIndex + start.length);
+                            var fnl = di.substring(
+                                startIndex + start.length, endIndex);
+                            BlocProvider.of<HomePageCubit>(context).saveTasks(
+                                taskName: 'sleeping',
+                                note: _text.text,
+                                color: fnl,
+                                duration: _dtion);
+                          },
+                        )),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 22),
-                  child: Text(
-                    'Notes',
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 2,
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(left: 12, right: 12),
-                    child: TextFormField(
-                        maxLength: 1000,
-                        decoration: InputDecoration(
-                          enabledBorder: new UnderlineInputBorder(
-                              borderSide: new BorderSide(
-                                  color: almostGrey, width: 0.8)),
-                        ))),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 12,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.widthMultiplier * 8),
-                  child: DefaultButtonBsz(
-                    text: 'Save',
-                    press: () {},
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 2,
-                ),
-              ],
+              ),
             ),
           ),
         ),

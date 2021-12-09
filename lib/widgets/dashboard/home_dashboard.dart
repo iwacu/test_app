@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/customAppBar.dart';
 import 'package:momnotebook/constants/data_obj.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/widgets/dashboard/dashboard_content/home/home_page.dart';
 
 import 'dashboard_content/growth/growth_page.dart';
@@ -38,9 +40,22 @@ class _HomeDashboardState extends State<HomeDashboard> {
           child: _selectedIndex == 3
               ? appBarDashboardAccount(context, 'Account', () {}, () {})
               : appBarDashboard(context, 'Sam', () {}, () {})),
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: widgetList,
+      body: BlocBuilder<HomePageCubit, HomePageState>(
+        builder: (context, state) {
+          if (state is HomePageInitial) {
+            return Center(
+              child: Text('loading'),
+            );
+          } else if (state is HomePageCompleted) {
+            print('fffffffffffff : => ${state.babyTasks.length}');
+
+            return IndexedStack(
+              index: _selectedIndex,
+              children: widgetList,
+            );
+          }
+          return Container();
+        },
       ),
       floatingActionButton: _selectedIndex == 0
           ? SpeedDial(

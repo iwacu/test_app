@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:momnotebook/models/baby.dart';
+import 'package:momnotebook/models/babyTask.dart';
 import 'package:momnotebook/models/respopnse.dart';
 import 'package:momnotebook/models/timer.dart';
 import 'package:momnotebook/models/user.dart';
@@ -51,6 +52,30 @@ class DatabaseHelper {
          
       )
     ''');
+    await db.execute('''
+      CREATE TABLE babyTask(
+        id INTEGER PRIMARY KEY,
+        baby_id INTEGER,
+        task_name TEXT,
+        time_stamp TEXT,
+        note TEXT,
+        resume_time TEXT,
+        qty_food TEXT,
+        qty_left TEXT,
+        qty_right TEXT,
+        qty_feeder TEXT,
+        left_breast INTEGER,
+        right_breast INTEGER,
+        food_group TEXT,
+        pee INTEGER,
+        poo INTEGER,
+        durationH TEXT,
+        durationM TEXT,
+        durationS TEXT,
+        color TEXT
+         
+      )
+    ''');
   }
 
   // read user tbl
@@ -73,6 +98,16 @@ class DatabaseHelper {
         object: res.isNotEmpty ? Timerr.fromMap(res.first) : null,
         message: 'success',
         error: false);
+  }
+
+  // ready babytasks
+  Future<List<BabyTask>> getBabyTasks() async {
+    Database db = await instance.database;
+    var response = await db.query('babyTask', orderBy: 'id');
+    List<BabyTask> babyTasks = response.isNotEmpty
+        ? response.map((c) => BabyTask.fromMap(c)).toList()
+        : [];
+    return babyTasks;
   }
 
   // insert into user tbl
@@ -98,6 +133,12 @@ class DatabaseHelper {
   Future<int> addBaby(Baby baby) async {
     Database db = await instance.database;
     return await db.insert('baby', baby.toMap());
+  }
+
+  // insert into babyTask tbl
+  Future<int> addBabyTask(BabyTask babyTask) async {
+    Database db = await instance.database;
+    return await db.insert('babyTask', babyTask.toMap());
   }
 
   // drop table

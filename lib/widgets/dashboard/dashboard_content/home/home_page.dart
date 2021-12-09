@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'dart:ui' as ui;
 import 'chart_painter/chartPainter.dart';
 
@@ -122,125 +124,631 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: SizeConfig.heightMultiplier * 2,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 12),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: SizeConfig.heightMultiplier * 8,
-                              width: SizeConfig.widthMultiplier * 18,
-                              decoration: BoxDecoration(
-                                  color: movGray, shape: BoxShape.circle),
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  "assets/icons/feeder.svg",
-                                  height: SizeConfig.heightMultiplier * 4,
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: SizeConfig.widthMultiplier * 3,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Feeder',
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.textMultiplier * 2,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black38),
-                                    ),
-                                    SizedBox(
-                                      width: SizeConfig.widthMultiplier * 26,
-                                    ),
-                                    Text(
-                                      DateFormat('hh:mm a').format(_todayDate),
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.textMultiplier * 2,
-                                          fontFamily: 'Montserrat',
-                                          // fontWeight: FontWeight.w700,
-                                          color: Colors.black38),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                    height: SizeConfig.heightMultiplier * 1.5),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SvgPicture.asset(
-                                      "assets/icons/ml.svg",
-                                      height: SizeConfig.heightMultiplier * 2,
-                                    ),
-                                    SizedBox(
-                                      width: SizeConfig.widthMultiplier * 3,
-                                    ),
-                                    Text(
-                                      '80 ml',
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.textMultiplier * 2,
-                                          fontFamily: 'Montserrat',
-                                          // fontWeight: FontWeight.w700,
-                                          color: Colors.black38),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: SizeConfig.heightMultiplier * 2,
-                                ),
-                                SizedBox(
-                                  width: 190,
-                                  child: Text(
-                                      "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: false,
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.textMultiplier * 2,
-                                          fontFamily: 'Montserrat',
-                                          // fontWeight: FontWeight.w700,
-                                          color: Colors.black38)),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 14),
-                        child: Divider(
-                          thickness: 0.8,
-                          color: Colors.black38,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              _babyTasks(),
             ],
           ),
         ),
       ),
     );
   }
+
+  _babyTasks() {
+    return BlocBuilder<HomePageCubit, HomePageState>(
+      builder: (context, state) {
+        if (state is HomePageInitial) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (state is HomePageCompleted) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            child: Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
+              child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: state.babyTasks.length,
+                  itemBuilder: (_, index) {
+                    if (state.babyTasks[index].taskName == 'sleeping') {
+                      return _sleeping(state, index);
+                    } else if (state.babyTasks[index].taskName == 'food') {
+                      return _food(state, index);
+                    } else if (state.babyTasks[index].taskName == 'feeder') {
+                      return _feeder(state, index);
+                    }
+                    return Container();
+                  }),
+            ),
+          );
+        }
+        return Container();
+      },
+    );
+  }
+
+  _sleeping(HomePageCompleted state, int index) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: SizeConfig.heightMultiplier * 8,
+                width: SizeConfig.widthMultiplier * 18,
+                decoration: BoxDecoration(
+                    color: Color(int.parse(state.babyTasks[index].color)),
+                    shape: BoxShape.circle),
+                child: Center(
+                  child: SvgPicture.asset(
+                    "assets/icons/${state.babyTasks[index].taskName}.svg",
+                    height: SizeConfig.heightMultiplier * 4,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: SizeConfig.widthMultiplier * 3,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${state.babyTasks[index].taskName[0].toUpperCase()}${state.babyTasks[index].taskName.substring(1)}",
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black38),
+                      ),
+                      SizedBox(
+                        width: SizeConfig.widthMultiplier * 26,
+                      ),
+                      Text(
+                        DateFormat('hh:mm a').format(
+                            DateTime.parse(state.babyTasks[index].timeStamp)),
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontFamily: 'Montserrat',
+                            // fontWeight: FontWeight.w700,
+                            color: Colors.black38),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Start',
+                            style: TextStyle(
+                                fontSize: SizeConfig.textMultiplier * 1.3,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black38),
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 1.2,
+                          ),
+                          Text(
+                            '11H23 am',
+                            style: TextStyle(
+                                fontSize: SizeConfig.textMultiplier * 1.3,
+                                fontFamily: 'Montserrat',
+                                // fontWeight: FontWeight.w700,
+                                color: Colors.black38),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: SizeConfig.widthMultiplier * 2,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'End',
+                            style: TextStyle(
+                                fontSize: SizeConfig.textMultiplier * 1.3,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black38),
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 3,
+                          ),
+                          Text(
+                            '12H23 pm',
+                            style: TextStyle(
+                                fontSize: SizeConfig.textMultiplier * 1.3,
+                                fontFamily: 'Montserrat',
+                                // fontWeight: FontWeight.w700,
+                                color: Colors.black38),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: SizeConfig.widthMultiplier * 1.4,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: SizeConfig.heightMultiplier * 1.3,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Duration',
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 1.3,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black38),
+                      ),
+                      SizedBox(
+                        width: SizeConfig.widthMultiplier * 3,
+                      ),
+                      Text(
+                        '${state.babyTasks[index].durationH}H ${state.babyTasks[index].durationM}M ${state.babyTasks[index].durationS}S',
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 1.3,
+                            fontFamily: 'Montserrat',
+                            // fontWeight: FontWeight.w700,
+                            color: Colors.black38),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: SizeConfig.heightMultiplier * 2),
+                  SizedBox(
+                    width: 190,
+                    child: Text("${state.babyTasks[index].note}",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontFamily: 'Montserrat',
+                            // fontWeight: FontWeight.w700,
+                            color: Colors.black38)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        index + 1 == state.babyTasks.length
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Divider(
+                  thickness: 0.8,
+                  color: primaryColor,
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Divider(
+                  thickness: 0.8,
+                  color: Colors.black38,
+                ),
+              ),
+      ],
+    );
+  }
+
+  _food(HomePageCompleted state, int index) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: SizeConfig.heightMultiplier * 8,
+                width: SizeConfig.widthMultiplier * 18,
+                decoration: BoxDecoration(
+                    color: Color(int.parse(state.babyTasks[index].color)),
+                    shape: BoxShape.circle),
+                child: Center(
+                  child: SvgPicture.asset(
+                    "assets/icons/${state.babyTasks[index].taskName}.svg",
+                    height: SizeConfig.heightMultiplier * 4,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: SizeConfig.widthMultiplier * 3,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${state.babyTasks[index].taskName[0].toUpperCase()}${state.babyTasks[index].taskName.substring(1)}",
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black38),
+                      ),
+                      SizedBox(
+                        width: SizeConfig.widthMultiplier * 34,
+                      ),
+                      Text(
+                        DateFormat('hh:mm a').format(
+                            DateTime.parse(state.babyTasks[index].timeStamp)),
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontFamily: 'Montserrat',
+                            // fontWeight: FontWeight.w700,
+                            color: Colors.black38),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/group.svg",
+                            height: SizeConfig.heightMultiplier * 2,
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 1.2,
+                          ),
+                          Text(
+                            'Food Group',
+                            style: TextStyle(
+                                fontSize: SizeConfig.textMultiplier * 1.3,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black38),
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 1.2,
+                          ),
+                          Text(
+                            '${state.babyTasks[index].groupFood}',
+                            style: TextStyle(
+                                fontSize: SizeConfig.textMultiplier * 1.3,
+                                fontFamily: 'Montserrat',
+                                // fontWeight: FontWeight.w700,
+                                color: Colors.black38),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: SizeConfig.widthMultiplier * 2,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/amount.svg",
+                            height: SizeConfig.heightMultiplier * 2,
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 1.2,
+                          ),
+                          Text(
+                            'Amount',
+                            style: TextStyle(
+                                fontSize: SizeConfig.textMultiplier * 1.3,
+                                fontFamily: 'Montserrat',
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black38),
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 1.2,
+                          ),
+                          Text(
+                            '${state.babyTasks[index].qtyFood}',
+                            style: TextStyle(
+                                fontSize: SizeConfig.textMultiplier * 1.3,
+                                fontFamily: 'Montserrat',
+                                // fontWeight: FontWeight.w700,
+                                color: Colors.black38),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: SizeConfig.widthMultiplier * 1.4,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: SizeConfig.heightMultiplier * 2),
+                  SizedBox(
+                    width: 190,
+                    child: Text("${state.babyTasks[index].note}",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontFamily: 'Montserrat',
+                            // fontWeight: FontWeight.w700,
+                            color: Colors.black38)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        index + 1 == state.babyTasks.length
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Divider(
+                  thickness: 0.8,
+                  color: primaryColor,
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Divider(
+                  thickness: 0.8,
+                  color: Colors.black38,
+                ),
+              ),
+      ],
+    );
+  }
+
+  _feeder(HomePageCompleted state, int index) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: SizeConfig.heightMultiplier * 8,
+                width: SizeConfig.widthMultiplier * 18,
+                decoration: BoxDecoration(
+                    color: Color(int.parse(state.babyTasks[index].color)),
+                    shape: BoxShape.circle),
+                child: Center(
+                  child: SvgPicture.asset(
+                    "assets/icons/${state.babyTasks[index].taskName}.svg",
+                    height: SizeConfig.heightMultiplier * 4,
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: SizeConfig.widthMultiplier * 3,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "${state.babyTasks[index].taskName[0].toUpperCase()}${state.babyTasks[index].taskName.substring(1)}",
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontFamily: 'Montserrat',
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black38),
+                      ),
+                      SizedBox(
+                        width: SizeConfig.widthMultiplier * 30,
+                      ),
+                      Text(
+                        DateFormat('hh:mm a').format(
+                            DateTime.parse(state.babyTasks[index].timeStamp)),
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontFamily: 'Montserrat',
+                            // fontWeight: FontWeight.w700,
+                            color: Colors.black38),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/icons/ml.svg",
+                            height: SizeConfig.heightMultiplier * 2,
+                          ),
+                          SizedBox(
+                            width: SizeConfig.widthMultiplier * 1.2,
+                          ),
+                          Text(
+                            '${state.babyTasks[index].qtyFood}',
+                            style: TextStyle(
+                                fontSize: SizeConfig.textMultiplier * 1.3,
+                                fontFamily: 'Montserrat',
+                                // fontWeight: FontWeight.w700,
+                                color: Colors.black38),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        width: SizeConfig.widthMultiplier * 1.4,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: SizeConfig.heightMultiplier * 2),
+                  SizedBox(
+                    width: 190,
+                    child: Text("${state.babyTasks[index].note}",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        style: TextStyle(
+                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontFamily: 'Montserrat',
+                            // fontWeight: FontWeight.w700,
+                            color: Colors.black38)),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        index + 1 == state.babyTasks.length
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Divider(
+                  thickness: 0.8,
+                  color: primaryColor,
+                ),
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                child: Divider(
+                  thickness: 0.8,
+                  color: Colors.black38,
+                ),
+              ),
+      ],
+    );
+  }
 }
+
+
+                //  Column(
+                //       children: [
+                //         Padding(
+                //           padding: const EdgeInsets.symmetric(
+                //               horizontal: 12, vertical: 12),
+                //           child: Row(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Container(
+                //                 height: SizeConfig.heightMultiplier * 8,
+                //                 width: SizeConfig.widthMultiplier * 18,
+                //                 decoration: BoxDecoration(
+                //                     color: Color(int.parse(
+                //                         state.babyTasks[index].color)),
+                //                     shape: BoxShape.circle),
+                //                 child: Center(
+                //                   child: SvgPicture.asset(
+                //                     "assets/icons/${state.babyTasks[index].taskName}.svg",
+                //                     height: SizeConfig.heightMultiplier * 4,
+                //                   ),
+                //                 ),
+                //               ),
+                //               SizedBox(
+                //                 width: SizeConfig.widthMultiplier * 3,
+                //               ),
+                //               Column(
+                //                 crossAxisAlignment: CrossAxisAlignment.start,
+                //                 children: [
+                //                   Row(
+                //                     crossAxisAlignment:
+                //                         CrossAxisAlignment.start,
+                //                     children: [
+                //                       Text(
+                //                         "${state.babyTasks[index].taskName[0].toUpperCase()}${state.babyTasks[index].taskName.substring(1)}",
+                //                         style: TextStyle(
+                //                             fontSize:
+                //                                 SizeConfig.textMultiplier * 2,
+                //                             fontFamily: 'Montserrat',
+                //                             fontWeight: FontWeight.w700,
+                //                             color: Colors.black38),
+                //                       ),
+                //                       SizedBox(
+                //                         width: SizeConfig.widthMultiplier * 26,
+                //                       ),
+                //                       Text(
+                //                         DateFormat('hh:mm a').format(
+                //                             DateTime.parse(state
+                //                                 .babyTasks[index].timeStamp)),
+                //                         style: TextStyle(
+                //                             fontSize:
+                //                                 SizeConfig.textMultiplier * 2,
+                //                             fontFamily: 'Montserrat',
+                //                             // fontWeight: FontWeight.w700,
+                //                             color: Colors.black38),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                   SizedBox(
+                //                       height:
+                //                           SizeConfig.heightMultiplier * 1.5),
+                //                   Row(
+                //                     crossAxisAlignment:
+                //                         CrossAxisAlignment.start,
+                //                     children: [
+                //                       SvgPicture.asset(
+                //                         "assets/icons/ml.svg",
+                //                         height: SizeConfig.heightMultiplier * 2,
+                //                       ),
+                //                       SizedBox(
+                //                         width: SizeConfig.widthMultiplier * 3,
+                //                       ),
+                //                       Text(
+                //                         '80 ml',
+                //                         style: TextStyle(
+                //                             fontSize:
+                //                                 SizeConfig.textMultiplier * 2,
+                //                             fontFamily: 'Montserrat',
+                //                             // fontWeight: FontWeight.w700,
+                //                             color: Colors.black38),
+                //                       ),
+                //                     ],
+                //                   ),
+                //                   SizedBox(
+                //                     width: SizeConfig.heightMultiplier * 2,
+                //                   ),
+                //                   SizedBox(
+                //                     width: 190,
+                //                     child: Text(
+                //                         "${state.babyTasks[index].note}",
+                //                         maxLines: 1,
+                //                         overflow: TextOverflow.ellipsis,
+                //                         softWrap: false,
+                //                         style: TextStyle(
+                //                             fontSize:
+                //                                 SizeConfig.textMultiplier * 2,
+                //                             fontFamily: 'Montserrat',
+                //                             // fontWeight: FontWeight.w700,
+                //                             color: Colors.black38)),
+                //                   ),
+                //                 ],
+                //               ),
+                //             ],
+                //           ),
+                //         ),
+                //         index + 1 == state.babyTasks.length
+                //             ? Padding(
+                //                 padding:
+                //                     const EdgeInsets.symmetric(horizontal: 14),
+                //                 child: Divider(
+                //                   thickness: 0.8,
+                //                   color: primaryColor,
+                //                 ),
+                //               )
+                //             : Padding(
+                //                 padding:
+                //                     const EdgeInsets.symmetric(horizontal: 14),
+                //                 child: Divider(
+                //                   thickness: 0.8,
+                //                   color: Colors.black38,
+                //                 ),
+                //               ),
+                //       ],
+                //     );
+   

@@ -1,0 +1,85 @@
+class BabyTask {
+  final int? id;
+  final int babyId;
+  final String taskName;
+  final String timeStamp;
+  final String note;
+  final String resumeTime;
+  final String qtyFood;
+  final String qtyLeft;
+  final String qtyRight;
+  final String qtyFeeder;
+  final int leftBreast;
+  final int rightBreast;
+  final String groupFood;
+  final int pee;
+  final int poo;
+  final String durationH;
+  final String durationM;
+  final String durationS;
+  final String color;
+
+  BabyTask(
+      {this.id,
+      required this.babyId,
+      required this.taskName,
+      required this.timeStamp,
+      required this.note,
+      required this.resumeTime,
+      required this.qtyFood,
+      required this.qtyLeft,
+      required this.qtyRight,
+      required this.qtyFeeder,
+      required this.leftBreast,
+      required this.rightBreast,
+      required this.groupFood,
+      required this.pee,
+      required this.poo,
+      required this.durationH,
+      required this.durationM,
+      required this.durationS,
+      required this.color});
+  factory BabyTask.fromMap(Map<String, dynamic> json) => new BabyTask(
+      id: json['id'],
+      babyId: json['baby_id'],
+      taskName: json['task_name'],
+      timeStamp: json['time_stamp'],
+      note: json['note'],
+      resumeTime: json['resume_time'],
+      qtyFood: json['qty_food'],
+      qtyLeft: json['qty_left'],
+      qtyRight: json['qty_right'],
+      qtyFeeder: json['qty_feeder'],
+      leftBreast: json['left_breast'],
+      rightBreast: json['right_breast'],
+      groupFood: json['food_group'],
+      pee: json['pee'],
+      poo: json['poo'],
+      durationH: json['durationH'],
+      durationM: json['durationM'],
+      durationS: json['durationS'],
+      color: json['color']);
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'baby_id': babyId,
+      'task_name': taskName,
+      'time_stamp': timeStamp,
+      'note': note,
+      'resume_time': resumeTime,
+      'qty_food': qtyFood,
+      'qty_left': qtyLeft,
+      'qty_right': qtyRight,
+      'qty_feeder': qtyFeeder,
+      'left_breast': leftBreast,
+      'right_breast': rightBreast,
+      'food_group': groupFood,
+      'pee': pee,
+      'poo': poo,
+      'durationH': durationH,
+      'durationM': durationM,
+      'durationS': durationS,
+      'color': color
+    };
+  }
+}

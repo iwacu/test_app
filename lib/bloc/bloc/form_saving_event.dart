@@ -17,7 +17,18 @@ class BabyRelationshipChanged extends FormSavingEvent {
   BabyRelationshipChanged(this.babyRelationship);
 }
 
+class NoteChanged extends FormSavingEvent {
+  final String note;
+  NoteChanged(this.note);
+}
+
 class SubmitForm extends FormSavingEvent {}
+
+class SubmitFormSleeping extends FormSavingEvent {
+  final Duration duration;
+  final String color;
+  SubmitFormSleeping(this.duration, this.color);
+}
 
 class SubmitFormSaveBaby extends FormSavingEvent {
   final String babyBirthDay;

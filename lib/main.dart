@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/routes/appRouter.dart';
 
 import 'bloc/bloc/form_saving_bloc.dart';
@@ -20,11 +21,16 @@ class MyApp extends StatelessWidget {
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
         SizeConfig().init(constraints, orientation);
-        return MaterialApp(
-          title: "Mom's notebook",
-          debugShowCheckedModeBanner: false,
-          theme: theme(),
-          onGenerateRoute: _appRouter.onGenerateRoute,
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (context) => HomePageCubit()..getBabyTasks())
+          ],
+          child: MaterialApp(
+            title: "Mom's notebook",
+            debugShowCheckedModeBanner: false,
+            theme: theme(),
+            onGenerateRoute: _appRouter.onGenerateRoute,
+          ),
         );
       });
     });
