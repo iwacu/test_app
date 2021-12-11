@@ -5,30 +5,74 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:momnotebook/constants/colors.dart';
+import 'package:momnotebook/models/babyTask.dart';
 
 class TimelinePainter extends CustomPainter {
-  // final ui.Image img;
+  final List<BabyTask> babyTask;
 
-  // TimelinePainter(this.img);
+  TimelinePainter(this.babyTask);
   @override
   void paint(Canvas canvas, Size size) {
     drwaLines(canvas, size / 3);
+    // drwaTasks(canvas, size / 3, getValues);
   }
 
   void drwaLines(Canvas canvas, Size size) {
     var i = 1;
+    var c = 1.8;
     final paint = Paint()
-      ..color = Colors.black38
+      ..color = Colors.black26
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 2;
 
     while (i <= 23) {
+      var getValues = babyTask
+          .where((element) => DateTime.parse(element.timeStamp).hour == i)
+          .toList();
+      getValues.asMap().forEach((index, element) {
+        final paint = Paint()
+          ..color = Color(int.parse(element.color))
+          ..strokeWidth = 4.0
+          ..style = PaintingStyle.fill;
+        final paintLine = Paint()
+          ..color = Color(int.parse(element.color))
+          ..strokeWidth = 10.0
+          ..style = PaintingStyle.fill;
+        if (element.taskName == 'sleeping' || element.taskName == 'walking') {
+          var startTime = DateTime.parse(element.startTime);
+          var endTime = DateTime.parse(element.endTime);
+          print('Before $i :: $c ');
+          if (startTime.hour == endTime.hour) {
+            canvas.drawCircle(
+                new Offset(
+                    i * (size.width * 1 / 6), size.height * (1.8 + index) / 2),
+                size.width * 1 / 10,
+                paint);
+          } else {
+            canvas.drawLine(
+                Offset(
+                    startTime.hour * (size.width * 1 / 6), size.height * c / 2),
+                Offset(
+                    endTime.hour * (size.width * 1 / 6), size.height * c / 2),
+                paintLine);
+          }
+          c = c + 0.6;
+          print('c $i :: $c ');
+        } else {
+          canvas.drawCircle(
+              new Offset(
+                  i * (size.width * 1 / 6), size.height * (1.8 + index) / 2),
+              size.width * 1 / 10,
+              paint);
+        }
+        print('baby task length ::$i $index  ${element.taskName} => $i ');
+      });
       canvas.drawLine(
         Offset(i * (size.width * 1 / 6), size.height * 1 / 2),
         Offset(i * (size.width * 1 / 6), size.height * 5 / 2),
         paint,
       );
-      // drawImage(canvas, size, i);
+
       drawText(canvas, size, i);
 
       i++;
@@ -48,6 +92,36 @@ class TimelinePainter extends CustomPainter {
         canvas, new Offset(i * (size.width * 1 / 6), size.height * 5.2 / 2));
   }
 
+  void drwaTasks(Canvas canvas, Size size, List<BabyTask> babyTasks) {
+    // for (var i = 0; i < babyTask.length; i++) {
+
+    // }
+    final paint = Paint()
+      ..color = Colors.red
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(
+        new Offset(1 * (size.width * 1 / 6), size.height * 2.1 / 2),
+        size.width * 1 / 10,
+        paint);
+    canvas.drawCircle(
+        new Offset(2 * (size.width * 1 / 6), size.height * 2.1 / 2),
+        size.width * 1 / 10,
+        paint);
+    canvas.drawCircle(
+        new Offset(20 * (size.width * 1 / 6), size.height * 2.1 / 2),
+        size.width * 1 / 10,
+        paint);
+    // for (int i = 0; i > babyTasks.length; i++) {
+    //   final paint = Paint()
+    //     ..color = Colors.red
+    //     ..style = PaintingStyle.fill;
+    //   canvas.drawCircle(
+    //       new Offset(1 * (size.width * 1 / 6), size.height * 5 / 2),
+    //       size.width * 1 / 3,
+    //       paint);
+    // }
+  }
+
   // void drawImage(Canvas canvas, Size size, int i) {
   //   if (i % 5 == 0) {
   //     // paintImage(img, rect, canvas, Paint(), BoxFit.cover);
@@ -58,17 +132,17 @@ class TimelinePainter extends CustomPainter {
   //   }
   // }
 
-  void paintImage(
-      ui.Image image, Rect outputRect, Canvas canvas, Paint paint, BoxFit fit) {
-    final Size imageSize =
-        Size(image.width.toDouble(), image.height.toDouble());
-    final FittedSizes sizes = applyBoxFit(fit, imageSize, outputRect.size);
-    final Rect inputSubrect =
-        Alignment.center.inscribe(sizes.source, Offset.zero & imageSize);
-    final Rect outputSubrect =
-        Alignment.center.inscribe(sizes.destination, outputRect);
-    // canvas.drawImage(image, i * (size.width * 1 / 6), outputSubrect, paint);
-  }
+  // void paintImage(
+  //     ui.Image image, Rect outputRect, Canvas canvas, Paint paint, BoxFit fit) {
+  //   final Size imageSize =
+  //       Size(image.width.toDouble(), image.height.toDouble());
+  //   final FittedSizes sizes = applyBoxFit(fit, imageSize, outputRect.size);
+  //   final Rect inputSubrect =
+  //       Alignment.center.inscribe(sizes.source, Offset.zero & imageSize);
+  //   final Rect outputSubrect =
+  //       Alignment.center.inscribe(sizes.destination, outputRect);
+  //   // canvas.drawImage(image, i * (size.width * 1 / 6), outputSubrect, paint);
+  // }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {

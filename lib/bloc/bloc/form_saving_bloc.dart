@@ -31,7 +31,9 @@ class FormSavingBloc extends Bloc<FormSavingEvent, FormSavingState> {
       if (user.object == null) {
         print('user object null');
         // save user to database
-        await DatabaseHelper.instance.addUser(User(name: state.userName));
+        var ui =
+            await DatabaseHelper.instance.addUser(User(name: state.userName));
+        print('codecodeocodecoe $ui');
         yield state.copyWith(
             formSubmissionStatus:
                 SubmissionSuccess(message: 'User added successfully'));
@@ -55,25 +57,25 @@ class FormSavingBloc extends Bloc<FormSavingEvent, FormSavingState> {
       //     'relationship ${state.babyRelationship} ::: premature ${state.babyPremature} ::: sex ${event.babySex} ::: name ${state.userName} ::: birthday ${event.babyBirthDay} ');
     } else if (event is SubmitFormSleeping) {
       yield state.copyWith(formSubmissionStatus: FormSubmitting());
-      await DatabaseHelper.instance.addBabyTask(BabyTask(
-          babyId: 1,
-          taskName: 'sleeping',
-          timeStamp: DateTime.now().toString(),
-          note: state.note,
-          resumeTime: '',
-          qtyFood: '',
-          qtyLeft: '',
-          qtyRight: '',
-          qtyFeeder: '',
-          leftBreast: 1,
-          rightBreast: 1,
-          groupFood: '',
-          pee: 1,
-          poo: 1,
-          durationH: event.duration.inHours.toString(),
-          durationM: event.duration.inMinutes.toString(),
-          durationS: event.duration.inSeconds.toString(),
-          color: event.color));
+      // await DatabaseHelper.instance.addBabyTask(BabyTask(
+      //     babyId: 1,
+      //     taskName: 'sleeping',
+      //     timeStamp: DateTime.now().toString(),
+      //     note: state.note,
+      //     resumeTime: '',
+      //     qtyFood: '',
+      //     qtyLeft: '',
+      //     qtyRight: '',
+      //     qtyFeeder: '',
+      //     leftBreast: 1,
+      //     rightBreast: 1,
+      //     groupFood: '',
+      //     pee: 1,
+      //     poo: 1,
+      //     durationH: event.duration.inHours.toString(),
+      //     durationM: event.duration.inMinutes.toString(),
+      //     durationS: event.duration.inSeconds.toString(),
+      //     color: event.color));
       HomePageCubit().getBabyTasks();
       yield state.copyWith(
           formSubmissionStatus:

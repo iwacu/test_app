@@ -4,6 +4,8 @@ class BabyTask {
   final String taskName;
   final String timeStamp;
   final String note;
+  final String startTime;
+  final String endTime;
   final String resumeTime;
   final String qtyFood;
   final String qtyLeft;
@@ -25,6 +27,8 @@ class BabyTask {
       required this.taskName,
       required this.timeStamp,
       required this.note,
+      required this.startTime,
+      required this.endTime,
       required this.resumeTime,
       required this.qtyFood,
       required this.qtyLeft,
@@ -45,6 +49,8 @@ class BabyTask {
       taskName: json['task_name'],
       timeStamp: json['time_stamp'],
       note: json['note'],
+      startTime: json['start_time'],
+      endTime: json['end_time'],
       resumeTime: json['resume_time'],
       qtyFood: json['qty_food'],
       qtyLeft: json['qty_left'],
@@ -66,6 +72,8 @@ class BabyTask {
       'task_name': taskName,
       'time_stamp': timeStamp,
       'note': note,
+      'start_time': startTime,
+      'end_time': endTime,
       'resume_time': resumeTime,
       'qty_food': qtyFood,
       'qty_left': qtyLeft,

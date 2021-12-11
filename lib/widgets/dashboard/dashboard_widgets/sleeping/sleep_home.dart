@@ -28,6 +28,8 @@ class _HomeSleepState extends State<HomeSleep> {
   Timer? timer;
   Duration duration = Duration();
   Duration _dtion = Duration();
+  String _startTime = '';
+  String _endTime = '';
   @override
   void initState() {
     super.initState();
@@ -46,20 +48,25 @@ class _HomeSleepState extends State<HomeSleep> {
   }
 
   void reset() async {
-    await DatabaseHelper.instance.deleteRecord(1);
+    var tm = await DatabaseHelper.instance.getTimerr(1);
+    _startTime = tm.object!.startTime;
+    _endTime = _nowDate.toString();
     _dtion = duration;
     setState(() {
       duration = Duration();
       timer!.cancel();
     });
+    await DatabaseHelper.instance.deleteRecord(1);
   }
 
   void saveTimer() async {
-    await DatabaseHelper.instance.addTimer(Timerr(
+    var io = await DatabaseHelper.instance.addTimer(Timerr(
+        startTime: _nowDate.toString(),
         hour: _nowDate.hour,
         minutes: _nowDate.minute,
         seconds: _nowDate.second,
         taskId: 1));
+    print('time saved $io');
   }
 
   void addTime() {
@@ -456,11 +463,14 @@ class _HomeSleepState extends State<HomeSleep> {
                                 di.indexOf(end, startIndex + start.length);
                             var fnl = di.substring(
                                 startIndex + start.length, endIndex);
-                            BlocProvider.of<HomePageCubit>(context).saveTasks(
-                                taskName: 'sleeping',
-                                note: _text.text,
-                                color: fnl,
-                                duration: _dtion);
+                            BlocProvider.of<HomePageCubit>(context)
+                                .saveTasksWalkingSleeping(
+                                    taskName: 'sleeping',
+                                    note: _text.text,
+                                    startTime: _startTime,
+                                    endTime: _endTime,
+                                    color: fnl,
+                                    duration: _dtion);
                           },
                         )),
                     SizedBox(

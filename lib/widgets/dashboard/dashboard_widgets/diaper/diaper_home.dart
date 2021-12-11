@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/customAppBar.dart';
 import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 
 class HomeDiaper extends StatefulWidget {
   HomeDiaper({Key? key}) : super(key: key);
@@ -16,7 +18,9 @@ class HomeDiaper extends StatefulWidget {
 
 class _HomeDiaperState extends State<HomeDiaper> {
   DateTime _nowDate = DateTime.now();
-
+  bool _pee = false;
+  bool _poop = false;
+  final _text = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -155,54 +159,76 @@ class _HomeDiaperState extends State<HomeDiaper> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
-                                height: SizeConfig.heightMultiplier * 8,
-                                width: SizeConfig.widthMultiplier * 36,
-                                decoration: BoxDecoration(
-                                    color: bluewhite,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/pee.svg',
-                                      height: SizeConfig.heightMultiplier * 3,
-                                    ),
-                                    Text(
-                                      'Pee',
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.textMultiplier * 2,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black38),
-                                    )
-                                  ],
+                              GestureDetector(
+                                onTap: () => setState(() => _pee = !_pee),
+                                child: Container(
+                                  height: SizeConfig.heightMultiplier * 8,
+                                  width: SizeConfig.widthMultiplier * 36,
+                                  decoration: BoxDecoration(
+                                      color: _pee ? greenAccGray : bluewhite,
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/icons/pee.svg',
+                                        height: SizeConfig.heightMultiplier * 3,
+                                        color: _pee
+                                            ? primaryColor
+                                            : Colors.black38,
+                                      ),
+                                      SizedBox(
+                                        width: SizeConfig.widthMultiplier * 1.5,
+                                      ),
+                                      Text(
+                                        'Pee',
+                                        style: TextStyle(
+                                            fontSize:
+                                                SizeConfig.textMultiplier * 2,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w700,
+                                            color: _pee
+                                                ? primaryColor
+                                                : Colors.black38),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                              Container(
-                                height: SizeConfig.heightMultiplier * 8,
-                                width: SizeConfig.widthMultiplier * 36,
-                                decoration: BoxDecoration(
-                                    color: bluewhite,
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/poop.svg',
-                                      height: SizeConfig.heightMultiplier * 3,
-                                    ),
-                                    Text(
-                                      'Poop',
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.textMultiplier * 2,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black38),
-                                    )
-                                  ],
+                              GestureDetector(
+                                onTap: () => setState(() => _poop = !_poop),
+                                child: Container(
+                                  height: SizeConfig.heightMultiplier * 8,
+                                  width: SizeConfig.widthMultiplier * 36,
+                                  decoration: BoxDecoration(
+                                      color: _poop ? greenAccGray : bluewhite,
+                                      borderRadius: BorderRadius.circular(5)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(
+                                        'assets/icons/poop.svg',
+                                        height: SizeConfig.heightMultiplier * 3,
+                                        color: _poop
+                                            ? primaryColor
+                                            : Colors.black38,
+                                      ),
+                                      SizedBox(
+                                        width: SizeConfig.widthMultiplier * 1.5,
+                                      ),
+                                      Text(
+                                        'Poop',
+                                        style: TextStyle(
+                                            fontSize:
+                                                SizeConfig.textMultiplier * 2,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w700,
+                                            color: _poop
+                                                ? primaryColor
+                                                : Colors.black38),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -216,24 +242,17 @@ class _HomeDiaperState extends State<HomeDiaper> {
                   height: SizeConfig.heightMultiplier * 2,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 22),
-                  child: Text(
-                    'Notes',
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 2,
-                ),
-                Padding(
                     padding: const EdgeInsets.only(left: 12, right: 12),
                     child: TextFormField(
+                        controller: _text,
                         maxLength: 1000,
                         decoration: InputDecoration(
+                          labelText: 'Notes',
+                          labelStyle: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 2,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
                           enabledBorder: new UnderlineInputBorder(
                               borderSide: new BorderSide(
                                   color: almostGrey, width: 0.8)),
@@ -246,7 +265,25 @@ class _HomeDiaperState extends State<HomeDiaper> {
                       horizontal: SizeConfig.widthMultiplier * 8),
                   child: DefaultButtonBsz(
                     text: 'Save',
-                    press: () {},
+                    press: () {
+                      var di = greenAccGray.toString();
+                      print(di);
+                      const start = "Color(";
+                      const end = ")";
+
+                      final startIndex = di.indexOf(start);
+                      final endIndex =
+                          di.indexOf(end, startIndex + start.length);
+                      var fnl =
+                          di.substring(startIndex + start.length, endIndex);
+                      BlocProvider.of<HomePageCubit>(context).saveTasksDiaper(
+                          pee: _pee ? 0 : 1,
+                          poop: _poop ? 0 : 1,
+                          taskName: 'diaper',
+                          note: _text.text,
+                          color: fnl,
+                          duration: Duration());
+                    },
                   ),
                 ),
                 SizedBox(

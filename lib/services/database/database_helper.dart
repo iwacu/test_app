@@ -46,6 +46,7 @@ class DatabaseHelper {
       CREATE TABLE timer(
         id INTEGER PRIMARY KEY,
         task INTEGER,
+        start_time TEXT,
         h INTEGER,
         m INTEGER,
         s INTEGER
@@ -59,6 +60,8 @@ class DatabaseHelper {
         task_name TEXT,
         time_stamp TEXT,
         note TEXT,
+        start_time TEXT,
+        end_time TEXT,
         resume_time TEXT,
         qty_food TEXT,
         qty_left TEXT,
@@ -92,8 +95,8 @@ class DatabaseHelper {
   // read timer tbl
   Future<Response<Timerr>> getTimerr(int id) async {
     Database db = await instance.database;
-    var res = await db.query("timer", where: "id = ?", whereArgs: [id]);
-    print('chchchchchchchcchhc $res');
+    var res = await db.query("timer", where: "task = ?", whereArgs: [id]);
+    print('chchchchchchchcchhc ${res.length}');
     return Response(
         object: res.isNotEmpty ? Timerr.fromMap(res.first) : null,
         message: 'success',
@@ -113,19 +116,21 @@ class DatabaseHelper {
   // insert into user tbl
   Future<int> addUser(User user) async {
     Database db = await instance.database;
-    return await db.insert('user', user.toMap());
+    var io = await db.insert('user', user.toMap());
+    return io;
   }
 
   // delete record
   Future<int> deleteRecord(int id) async {
     Database db = await instance.database;
     // await db.execute("delete from " + "timer");
-    return await db.delete("timer", where: "id = ?", whereArgs: [id]);
+    return await db.delete("timer", where: "task = ?", whereArgs: [id]);
   }
 
   // insert into timer tbl
   Future<int> addTimer(Timerr timerr) async {
     Database db = await instance.database;
+
     return await db.insert('timer', timerr.toMap());
   }
 

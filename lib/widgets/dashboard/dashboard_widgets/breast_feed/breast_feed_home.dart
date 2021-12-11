@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/customAppBar.dart';
 import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 
 class HomeBreastFeed extends StatefulWidget {
   HomeBreastFeed({Key? key}) : super(key: key);
@@ -16,7 +18,9 @@ class HomeBreastFeed extends StatefulWidget {
 
 class _HomeBreastFeedState extends State<HomeBreastFeed> {
   DateTime _nowDate = DateTime.now();
-
+  final _text = TextEditingController();
+  bool _left = false;
+  bool _right = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,212 +96,64 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 8, vertical: 12),
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              Center(
-                                child: Text(
-                                  '01 :',
-                                  style: TextStyle(
-                                      fontSize: 32,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black38),
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  'Hours',
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 1.7,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
-                                      color: rsGray),
-                                ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Center(
-                                child: Text(
-                                  ' 10 :',
-                                  style: TextStyle(
-                                      fontSize: 32,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black38),
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  'Minutes',
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 1.7,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
-                                      color: rsGray),
-                                ),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Center(
-                                child: Text(
-                                  ' 20',
-                                  style: TextStyle(
-                                      fontSize: 32,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black38),
-                                ),
-                              ),
-                              Center(
-                                child: Text(
-                                  'Seconds',
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 1.7,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w300,
-                                      color: rsGray),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 2,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.grey[50],
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 12),
-                      child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Column(
-                            children: [
-                              Container(
-                                height: SizeConfig.heightMultiplier * 8,
-                                width: SizeConfig.widthMultiplier * 36,
-                                decoration: BoxDecoration(
-                                    color: rsGray,
-                                    border: Border.all(color: rsGray),
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.stop_sharp,
-                                      color: primaryColor,
-                                    ),
-                                    Text(
-                                      '(L)',
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.textMultiplier * 2.5,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w300,
-                                          color: primaryColor),
-                                    ),
-                                    SizedBox(
-                                      width: SizeConfig.widthMultiplier * 1.5,
-                                    ),
-                                    Text(
-                                      'Stop',
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.textMultiplier * 2.5,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w300,
-                                          color: primaryColor),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: SizeConfig.heightMultiplier * 1.5,
-                              ),
-                              Center(
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _left = true;
+                                _right = false;
+                              });
+                            },
+                            child: Container(
+                              height: SizeConfig.heightMultiplier * 8,
+                              width: SizeConfig.widthMultiplier * 36,
+                              decoration: BoxDecoration(
+                                  color: _left ? rsGray : primaryColor,
+                                  border: Border.all(color: rsGray),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Center(
                                 child: Text(
-                                  '30 min 20 sec',
+                                  'Left',
                                   style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 1.7,
+                                      fontSize: SizeConfig.textMultiplier * 2.5,
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.w300,
-                                      color: rsGray),
+                                      color: _left
+                                          ? primaryColor
+                                          : Colors.black38),
                                 ),
-                              )
-                            ],
+                              ),
+                            ),
                           ),
-                          Column(
-                            children: [
-                              Container(
-                                height: SizeConfig.heightMultiplier * 8,
-                                width: SizeConfig.widthMultiplier * 36,
-                                decoration: BoxDecoration(
-                                    border: Border.all(color: rsGray),
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.play_arrow,
-                                      color: rsGray,
-                                    ),
-                                    Text(
-                                      '(R)',
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.textMultiplier * 2.5,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w300,
-                                          color: Colors.black38),
-                                    ),
-                                    SizedBox(
-                                      width: SizeConfig.widthMultiplier * 1.5,
-                                    ),
-                                    Text(
-                                      'Resume',
-                                      style: TextStyle(
-                                          fontSize:
-                                              SizeConfig.textMultiplier * 2.5,
-                                          fontFamily: 'Montserrat',
-                                          fontWeight: FontWeight.w300,
-                                          color: Colors.black38),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: SizeConfig.heightMultiplier * 1.5,
-                              ),
-                              Center(
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _right = true;
+                                _left = false;
+                              });
+                            },
+                            child: Container(
+                              height: SizeConfig.heightMultiplier * 8,
+                              width: SizeConfig.widthMultiplier * 36,
+                              decoration: BoxDecoration(
+                                  color: _right ? rsGray : primaryColor,
+                                  border: Border.all(color: rsGray),
+                                  borderRadius: BorderRadius.circular(5)),
+                              child: Center(
                                 child: Text(
-                                  '40 min 00 sec',
+                                  'Right',
                                   style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 1.7,
+                                      fontSize: SizeConfig.textMultiplier * 2.5,
                                       fontFamily: 'Montserrat',
                                       fontWeight: FontWeight.w300,
-                                      color: Colors.black38),
+                                      color: _right
+                                          ? primaryColor
+                                          : Colors.black38),
                                 ),
-                              )
-                            ],
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -377,24 +233,17 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                   height: SizeConfig.heightMultiplier * 2,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 22),
-                  child: Text(
-                    'Notes',
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.heightMultiplier * 2,
-                ),
-                Padding(
                     padding: const EdgeInsets.only(left: 12, right: 12),
                     child: TextFormField(
+                        controller: _text,
                         maxLength: 1000,
                         decoration: InputDecoration(
+                          labelText: 'Notes',
+                          labelStyle: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 2,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
                           enabledBorder: new UnderlineInputBorder(
                               borderSide: new BorderSide(
                                   color: almostGrey, width: 0.8)),
@@ -407,7 +256,28 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                       horizontal: SizeConfig.widthMultiplier * 8),
                   child: DefaultButtonBsz(
                     text: 'Save',
-                    press: () {},
+                    press: () {
+                      var di = rsGray.toString();
+                      print(di);
+                      const start = "Color(";
+                      const end = ")";
+
+                      final startIndex = di.indexOf(start);
+                      final endIndex =
+                          di.indexOf(end, startIndex + start.length);
+                      var fnl =
+                          di.substring(startIndex + start.length, endIndex);
+                      BlocProvider.of<HomePageCubit>(context).saveTasksBF(
+                          note: _text.text,
+                          foodGroup: '',
+                          color: fnl,
+                          amount: '',
+                          left: _left,
+                          right: _right,
+                          amountScale: '',
+                          duration: Duration(),
+                          taskName: 'breast-feed');
+                    },
                   ),
                 ),
                 SizedBox(
