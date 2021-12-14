@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:momnotebook/constants/animations.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/cubit/cubit/auth_cubit_cubit.dart';
 import 'package:momnotebook/services/database/database_helper.dart';
 import 'package:momnotebook/widgets/splashScreen/splash_content.dart';
 
@@ -81,17 +83,25 @@ class _SplashScreenState extends State<SplashScreen> {
                         ),
                       ),
                       Spacer(),
-                      DefaultButton(
-                          text: 'Start',
-                          press: () async {
-                            var user = await DatabaseHelper.instance.getUser();
-                            if (user.object == null) {
-                              Navigator.of(context).pushNamed('/sign_up');
-                            } else {
-                              Navigator.of(context)
-                                  .pushNamed('/home_dashboard');
-                            }
-                          }),
+                      BlocBuilder<AuthCubitCubit, AuthCubitState>(
+                        builder: (context, state) {
+                          if (state is AuthCubitInitial) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (state is AuthCubitNoUser) {
+                            return DefaultButton(
+                                text: 'Start',
+                                press: () => Navigator.of(context)
+                                    .pushNamed('/sign_up'));
+                          } else if (state is AuthCubitUser) {
+                            return DefaultButton(
+                                text: 'Start',
+                                press: () => Navigator.of(context).pushNamed(
+                                    '/home_dashboard',
+                                    arguments: {'baby': state.baby}));
+                          }
+                          return Container();
+                        },
+                      ),
                       SizedBox(
                         height: SizeConfig.heightMultiplier * 4,
                       ),

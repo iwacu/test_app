@@ -471,6 +471,7 @@ class _HomeSleepState extends State<HomeSleep> {
                                     endTime: _endTime,
                                     color: fnl,
                                     duration: _dtion);
+                            Navigator.pop(context);
                           },
                         )),
                     SizedBox(

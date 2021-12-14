@@ -1,10 +1,4 @@
-import 'dart:async';
-import 'dart:typed_data';
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/models/babyTask.dart';
 
 class TimelinePainter extends CustomPainter {
@@ -29,6 +23,12 @@ class TimelinePainter extends CustomPainter {
       var getValues = babyTask
           .where((element) => DateTime.parse(element.timeStamp).hour == i)
           .toList();
+      canvas.drawLine(
+        Offset(i * (size.width * 1 / 6), size.height * 1 / 2),
+        Offset(i * (size.width * 1 / 6), size.height * 5 / 2),
+        paint,
+      );
+      drawText(canvas, size, i);
       getValues.asMap().forEach((index, element) {
         final paint = Paint()
           ..color = Color(int.parse(element.color))
@@ -67,13 +67,6 @@ class TimelinePainter extends CustomPainter {
         }
         print('baby task length ::$i $index  ${element.taskName} => $i ');
       });
-      canvas.drawLine(
-        Offset(i * (size.width * 1 / 6), size.height * 1 / 2),
-        Offset(i * (size.width * 1 / 6), size.height * 5 / 2),
-        paint,
-      );
-
-      drawText(canvas, size, i);
 
       i++;
     }

@@ -452,6 +452,7 @@ class _HomeWalkingState extends State<HomeWalking> {
                               note: _text.text,
                               color: fnl,
                               duration: _dtion);
+                      Navigator.pop(context);
                     },
                   ),
                 ),

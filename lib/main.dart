@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/cubit/cubit/auth_cubit_cubit.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/routes/appRouter.dart';
 
@@ -23,7 +24,8 @@ class MyApp extends StatelessWidget {
         SizeConfig().init(constraints, orientation);
         return MultiBlocProvider(
           providers: [
-            BlocProvider(create: (context) => HomePageCubit()..getBabyTasks())
+            BlocProvider(create: (context) => HomePageCubit()..getBabyTasks()),
+            BlocProvider(create: (context) => AuthCubitCubit()..getUser()),
           ],
           child: MaterialApp(
             title: "Mom's notebook",

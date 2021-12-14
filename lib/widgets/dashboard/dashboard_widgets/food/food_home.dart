@@ -353,6 +353,7 @@ class _HomeFoodState extends State<HomeFood> {
                             amountScale: _dropDownW,
                             duration: Duration(),
                             taskName: 'food');
+                        Navigator.pop(context);
                       },
                     ),
                   ),

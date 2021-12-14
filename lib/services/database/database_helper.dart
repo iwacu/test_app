@@ -92,6 +92,16 @@ class DatabaseHelper {
         error: false);
   }
 
+  // read baby tbl
+  Future<Response<Baby>> getBaby() async {
+    Database db = await instance.database;
+    var res = await db.query("baby", where: "id = ?", whereArgs: [1]);
+    return Response(
+        object: res.isNotEmpty ? Baby.fromMap(res.first) : null,
+        error: false,
+        message: 'success');
+  }
+
   // read timer tbl
   Future<Response<Timerr>> getTimerr(int id) async {
     Database db = await instance.database;

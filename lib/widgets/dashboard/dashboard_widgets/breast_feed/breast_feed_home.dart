@@ -277,6 +277,7 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                           amountScale: '',
                           duration: Duration(),
                           taskName: 'breast-feed');
+                      Navigator.pop(context);
                     },
                   ),
                 ),

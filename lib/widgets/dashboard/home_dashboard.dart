@@ -7,6 +7,7 @@ import 'package:momnotebook/constants/customAppBar.dart';
 import 'package:momnotebook/constants/data_obj.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
+import 'package:momnotebook/models/baby.dart';
 import 'package:momnotebook/widgets/dashboard/dashboard_content/home/home_page.dart';
 
 import 'dashboard_content/growth/growth_page.dart';
@@ -14,7 +15,8 @@ import 'dashboard_content/profile_account/profile_page.dart';
 import 'dashboard_content/statistics/statistics_page.dart';
 
 class HomeDashboard extends StatefulWidget {
-  const HomeDashboard({Key? key}) : super(key: key);
+  final Baby baby;
+  const HomeDashboard({Key? key, required this.baby}) : super(key: key);
 
   @override
   _HomeDashboardState createState() => _HomeDashboardState();
@@ -26,7 +28,9 @@ class _HomeDashboardState extends State<HomeDashboard> {
     HomePage(
       splashData: DataObj().splashData,
     ),
-    StatisticsPage(),
+    StatisticsPage(
+      splashData: DataObj().splashData,
+    ),
     GrowthPage(),
     ProfilePage()
   ];
@@ -39,7 +43,7 @@ class _HomeDashboardState extends State<HomeDashboard> {
           height: SizeConfig.heightMultiplier * 9,
           child: _selectedIndex == 3
               ? appBarDashboardAccount(context, 'Account', () {}, () {})
-              : appBarDashboard(context, 'Sam', () {}, () {})),
+              : appBarDashboard(context, '${widget.baby.name}', () {}, () {})),
       body: BlocBuilder<HomePageCubit, HomePageState>(
         builder: (context, state) {
           if (state is HomePageInitial) {

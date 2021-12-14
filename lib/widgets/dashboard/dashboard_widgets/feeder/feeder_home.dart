@@ -239,6 +239,7 @@ class _HomeFeederState extends State<HomeFeeder> {
                                 amountScale: 'ml',
                                 duration: Duration(),
                                 taskName: 'feeder');
+                            Navigator.pop(context);
                           },
                         ),
                       ),

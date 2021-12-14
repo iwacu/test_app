@@ -321,6 +321,7 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                                 amountScale: 'ml',
                                 duration: Duration(),
                                 taskName: 'breast-pumping');
+                            Navigator.pop(context);
                           },
                         ),
                       ),

@@ -6,7 +6,7 @@ import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
-import 'dart:ui' as ui;
+import 'package:momnotebook/models/babyTask.dart';
 import 'chart_painter/chartPainter.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,14 +23,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DateTime _todayDate = DateTime.now();
-
-  List<Map<String, Object>> get mapValues {
-    return List.generate(23, (index) {
-      var list = new List<int>.generate(23, (i) => i + 1);
-
-      return {'hour': list[index]};
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -119,12 +111,21 @@ class _HomePageState extends State<HomePage> {
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Container(
-                            color: primaryColor,
                             child: SizedBox(
                               width: SizeConfig.widthMultiplier * 73,
                               child: CustomPaint(
                                 child: Container(),
-                                painter: TimelinePainter(state.babyTasks),
+                                painter: TimelinePainter(state.babyTasks
+                                    .where((element) =>
+                                        DateTime.parse(element.timeStamp).day ==
+                                            _todayDate.day &&
+                                        DateTime.parse(element.timeStamp)
+                                                .month ==
+                                            _todayDate.month &&
+                                        DateTime.parse(element.timeStamp)
+                                                .year ==
+                                            _todayDate.year)
+                                    .toList()),
                               ),
                             ),
                           ),
@@ -154,45 +155,69 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator(),
           );
         } else if (state is HomePageCompleted) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(15)),
-              child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: state.babyTasks.length,
-                  itemBuilder: (_, index) {
-                    if (state.babyTasks[index].taskName == 'sleeping') {
-                      return _sleeping(state, index);
-                    } else if (state.babyTasks[index].taskName == 'food') {
-                      return _food(state, index);
-                    } else if (state.babyTasks[index].taskName == 'feeder') {
-                      return _feeder(state, index);
-                    } else if (state.babyTasks[index].taskName == 'diaper') {
-                      return _diaper(state, index);
-                    } else if (state.babyTasks[index].taskName == 'walking') {
-                      return _walking(state, index);
-                    } else if (state.babyTasks[index].taskName ==
-                        'breast-pumping') {
-                      return _breastPumping(state, index);
-                    } else if (state.babyTasks[index].taskName ==
-                        'breast-feed') {
-                      return _breastFeeding(state, index);
-                    }
-                    return Container();
-                  }),
-            ),
-          );
+          var babyTasks = state.babyTasks
+              .where((element) =>
+                  DateTime.parse(element.timeStamp).day == _todayDate.day &&
+                  DateTime.parse(element.timeStamp).month == _todayDate.month &&
+                  DateTime.parse(element.timeStamp).year == _todayDate.year)
+              .toList();
+          return babyTasks.isEmpty
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 32),
+                    child: SvgPicture.asset(
+                      "assets/icons/carrirage.svg",
+                      height: SizeConfig.imageSizeMultiplier * 30,
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(15)),
+                    child: ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: babyTasks.length,
+                        itemBuilder: (_, index) {
+                          if (babyTasks[index].taskName == 'sleeping') {
+                            return _sleeping(
+                                babyTasks[index], index, babyTasks.length);
+                          } else if (babyTasks[index].taskName == 'food') {
+                            return _food(
+                                babyTasks[index], index, babyTasks.length);
+                          } else if (babyTasks[index].taskName == 'feeder') {
+                            return _feeder(
+                                babyTasks[index], index, babyTasks.length);
+                          } else if (babyTasks[index].taskName == 'diaper') {
+                            return _diaper(
+                                babyTasks[index], index, babyTasks.length);
+                          } else if (babyTasks[index].taskName == 'walking') {
+                            return _walking(
+                                babyTasks[index], index, babyTasks.length);
+                          } else if (babyTasks[index].taskName ==
+                              'breast-pumping') {
+                            return _breastPumping(
+                                babyTasks[index], index, babyTasks.length);
+                          } else if (babyTasks[index].taskName ==
+                              'breast-feed') {
+                            return _breastFeeding(
+                                babyTasks[index], index, babyTasks.length);
+                          }
+                          return Container();
+                        }),
+                  ),
+                );
         }
         return Container();
       },
     );
   }
 
-  _sleeping(HomePageCompleted state, int index) {
+  _sleeping(BabyTask baby, int index, int length) {
     return Column(
       children: [
         Padding(
@@ -204,11 +229,11 @@ class _HomePageState extends State<HomePage> {
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
                 decoration: BoxDecoration(
-                    color: Color(int.parse(state.babyTasks[index].color)),
+                    color: Color(int.parse(baby.color)),
                     shape: BoxShape.circle),
                 child: Center(
                   child: SvgPicture.asset(
-                    "assets/icons/${state.babyTasks[index].taskName}.svg",
+                    "assets/icons/${baby.taskName}.svg",
                     height: SizeConfig.heightMultiplier * 4,
                   ),
                 ),
@@ -223,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${state.babyTasks[index].taskName[0].toUpperCase()}${state.babyTasks[index].taskName.substring(1)}",
+                        "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -234,8 +259,8 @@ class _HomePageState extends State<HomePage> {
                         width: SizeConfig.widthMultiplier * 26,
                       ),
                       Text(
-                        DateFormat('hh:mm a').format(
-                            DateTime.parse(state.babyTasks[index].timeStamp)),
+                        DateFormat('hh:mm a')
+                            .format(DateTime.parse(baby.timeStamp)),
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -264,8 +289,8 @@ class _HomePageState extends State<HomePage> {
                             width: SizeConfig.widthMultiplier * 1.2,
                           ),
                           Text(
-                            DateFormat('hh:mm a').format(DateTime.parse(
-                                state.babyTasks[index].startTime)),
+                            DateFormat('hh:mm a')
+                                .format(DateTime.parse(baby.startTime)),
                             style: TextStyle(
                                 fontSize: SizeConfig.textMultiplier * 1.3,
                                 fontFamily: 'Montserrat',
@@ -292,8 +317,8 @@ class _HomePageState extends State<HomePage> {
                             width: SizeConfig.widthMultiplier * 3,
                           ),
                           Text(
-                            DateFormat('hh:mm a').format(
-                                DateTime.parse(state.babyTasks[index].endTime)),
+                            DateFormat('hh:mm a')
+                                .format(DateTime.parse(baby.endTime)),
                             style: TextStyle(
                                 fontSize: SizeConfig.textMultiplier * 1.3,
                                 fontFamily: 'Montserrat',
@@ -325,7 +350,7 @@ class _HomePageState extends State<HomePage> {
                         width: SizeConfig.widthMultiplier * 3,
                       ),
                       Text(
-                        '${state.babyTasks[index].durationH}H ${state.babyTasks[index].durationM}M ${state.babyTasks[index].durationS}S',
+                        '${baby.durationH}H ${baby.durationM}M ${baby.durationS}S',
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 1.3,
                             fontFamily: 'Montserrat',
@@ -337,7 +362,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: SizeConfig.heightMultiplier * 2),
                   SizedBox(
                     width: 190,
-                    child: Text("${state.babyTasks[index].note}",
+                    child: Text("${baby.note}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
@@ -352,7 +377,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        index + 1 == state.babyTasks.length
+        index + 1 == length
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
@@ -371,7 +396,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _food(HomePageCompleted state, int index) {
+  _food(BabyTask baby, int index, int length) {
     return Column(
       children: [
         Padding(
@@ -383,11 +408,11 @@ class _HomePageState extends State<HomePage> {
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
                 decoration: BoxDecoration(
-                    color: Color(int.parse(state.babyTasks[index].color)),
+                    color: Color(int.parse(baby.color)),
                     shape: BoxShape.circle),
                 child: Center(
                   child: SvgPicture.asset(
-                    "assets/icons/${state.babyTasks[index].taskName}.svg",
+                    "assets/icons/${baby.taskName}.svg",
                     height: SizeConfig.heightMultiplier * 4,
                   ),
                 ),
@@ -402,7 +427,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${state.babyTasks[index].taskName[0].toUpperCase()}${state.babyTasks[index].taskName.substring(1)}",
+                        "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -413,8 +438,8 @@ class _HomePageState extends State<HomePage> {
                         width: SizeConfig.widthMultiplier * 34,
                       ),
                       Text(
-                        DateFormat('hh:mm a').format(
-                            DateTime.parse(state.babyTasks[index].timeStamp)),
+                        DateFormat('hh:mm a')
+                            .format(DateTime.parse(baby.timeStamp)),
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -449,7 +474,7 @@ class _HomePageState extends State<HomePage> {
                             width: SizeConfig.widthMultiplier * 1.2,
                           ),
                           Text(
-                            '${state.babyTasks[index].groupFood}',
+                            '${baby.groupFood}',
                             style: TextStyle(
                                 fontSize: SizeConfig.textMultiplier * 1.3,
                                 fontFamily: 'Montserrat',
@@ -483,7 +508,7 @@ class _HomePageState extends State<HomePage> {
                             width: SizeConfig.widthMultiplier * 1.2,
                           ),
                           Text(
-                            '${state.babyTasks[index].qtyFood}',
+                            '${baby.qtyFood}',
                             style: TextStyle(
                                 fontSize: SizeConfig.textMultiplier * 1.3,
                                 fontFamily: 'Montserrat',
@@ -500,7 +525,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: SizeConfig.heightMultiplier * 2),
                   SizedBox(
                     width: 190,
-                    child: Text("${state.babyTasks[index].note}",
+                    child: Text("${baby.note}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
@@ -515,7 +540,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        index + 1 == state.babyTasks.length
+        index + 1 == length
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
@@ -534,7 +559,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _feeder(HomePageCompleted state, int index) {
+  _feeder(BabyTask baby, int index, int length) {
     return Column(
       children: [
         Padding(
@@ -546,11 +571,11 @@ class _HomePageState extends State<HomePage> {
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
                 decoration: BoxDecoration(
-                    color: Color(int.parse(state.babyTasks[index].color)),
+                    color: Color(int.parse(baby.color)),
                     shape: BoxShape.circle),
                 child: Center(
                   child: SvgPicture.asset(
-                    "assets/icons/${state.babyTasks[index].taskName}.svg",
+                    "assets/icons/${baby.taskName}.svg",
                     height: SizeConfig.heightMultiplier * 4,
                   ),
                 ),
@@ -565,7 +590,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${state.babyTasks[index].taskName[0].toUpperCase()}${state.babyTasks[index].taskName.substring(1)}",
+                        "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -576,8 +601,8 @@ class _HomePageState extends State<HomePage> {
                         width: SizeConfig.widthMultiplier * 30,
                       ),
                       Text(
-                        DateFormat('hh:mm a').format(
-                            DateTime.parse(state.babyTasks[index].timeStamp)),
+                        DateFormat('hh:mm a')
+                            .format(DateTime.parse(baby.timeStamp)),
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -601,7 +626,7 @@ class _HomePageState extends State<HomePage> {
                             width: SizeConfig.widthMultiplier * 1.2,
                           ),
                           Text(
-                            '${state.babyTasks[index].qtyFood}',
+                            '${baby.qtyFood}',
                             style: TextStyle(
                                 fontSize: SizeConfig.textMultiplier * 1.3,
                                 fontFamily: 'Montserrat',
@@ -618,7 +643,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: SizeConfig.heightMultiplier * 2),
                   SizedBox(
                     width: 190,
-                    child: Text("${state.babyTasks[index].note}",
+                    child: Text("${baby.note}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
@@ -633,7 +658,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        index + 1 == state.babyTasks.length
+        index + 1 == length
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
@@ -652,7 +677,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _diaper(HomePageCompleted state, int index) {
+  _diaper(BabyTask baby, int index, int length) {
     return Column(
       children: [
         Padding(
@@ -664,11 +689,11 @@ class _HomePageState extends State<HomePage> {
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
                 decoration: BoxDecoration(
-                    color: Color(int.parse(state.babyTasks[index].color)),
+                    color: Color(int.parse(baby.color)),
                     shape: BoxShape.circle),
                 child: Center(
                   child: SvgPicture.asset(
-                    "assets/icons/${state.babyTasks[index].taskName}.svg",
+                    "assets/icons/${baby.taskName}.svg",
                     height: SizeConfig.heightMultiplier * 4,
                   ),
                 ),
@@ -683,7 +708,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${state.babyTasks[index].taskName[0].toUpperCase()}${state.babyTasks[index].taskName.substring(1)}",
+                        "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -694,8 +719,8 @@ class _HomePageState extends State<HomePage> {
                         width: SizeConfig.widthMultiplier * 30,
                       ),
                       Text(
-                        DateFormat('hh:mm a').format(
-                            DateTime.parse(state.babyTasks[index].timeStamp)),
+                        DateFormat('hh:mm a')
+                            .format(DateTime.parse(baby.timeStamp)),
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -711,18 +736,18 @@ class _HomePageState extends State<HomePage> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          state.babyTasks[index].pee == 1
+                          baby.pee == 1
                               ? Container()
                               : SvgPicture.asset(
                                   "assets/icons/pee.svg",
                                   height: SizeConfig.heightMultiplier * 2,
                                 ),
-                          state.babyTasks[index].pee == 1
+                          baby.pee == 1
                               ? Container()
                               : SizedBox(
                                   width: SizeConfig.widthMultiplier * 1.2,
                                 ),
-                          state.babyTasks[index].pee == 1
+                          baby.pee == 1
                               ? Container()
                               : Padding(
                                   padding: const EdgeInsets.only(top: 3.0),
@@ -736,23 +761,23 @@ class _HomePageState extends State<HomePage> {
                                         color: Colors.black38),
                                   ),
                                 ),
-                          state.babyTasks[index].pee == 1
+                          baby.pee == 1
                               ? Container()
                               : SizedBox(
                                   width: SizeConfig.widthMultiplier * 8,
                                 ),
-                          state.babyTasks[index].poo == 1
+                          baby.poo == 1
                               ? Container()
                               : SvgPicture.asset(
                                   "assets/icons/poop.svg",
                                   height: SizeConfig.heightMultiplier * 2,
                                 ),
-                          state.babyTasks[index].poo == 1
+                          baby.poo == 1
                               ? Container()
                               : SizedBox(
                                   width: SizeConfig.widthMultiplier * 1.2,
                                 ),
-                          state.babyTasks[index].poo == 1
+                          baby.poo == 1
                               ? Container()
                               : Padding(
                                   padding: const EdgeInsets.only(top: 3.0),
@@ -776,7 +801,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: SizeConfig.heightMultiplier * 2),
                   SizedBox(
                     width: 190,
-                    child: Text("${state.babyTasks[index].note}",
+                    child: Text("${baby.note}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
@@ -791,7 +816,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        index + 1 == state.babyTasks.length
+        index + 1 == length
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
@@ -810,7 +835,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _walking(HomePageCompleted state, int index) {
+  _walking(BabyTask baby, int index, int length) {
     return Column(
       children: [
         Padding(
@@ -822,11 +847,11 @@ class _HomePageState extends State<HomePage> {
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
                 decoration: BoxDecoration(
-                    color: Color(int.parse(state.babyTasks[index].color)),
+                    color: Color(int.parse(baby.color)),
                     shape: BoxShape.circle),
                 child: Center(
                   child: SvgPicture.asset(
-                    "assets/icons/${state.babyTasks[index].taskName}.svg",
+                    "assets/icons/${baby.taskName}.svg",
                     height: SizeConfig.heightMultiplier * 4,
                   ),
                 ),
@@ -841,7 +866,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${state.babyTasks[index].taskName[0].toUpperCase()}${state.babyTasks[index].taskName.substring(1)}",
+                        "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -852,8 +877,8 @@ class _HomePageState extends State<HomePage> {
                         width: SizeConfig.widthMultiplier * 26,
                       ),
                       Text(
-                        DateFormat('hh:mm a').format(
-                            DateTime.parse(state.babyTasks[index].timeStamp)),
+                        DateFormat('hh:mm a')
+                            .format(DateTime.parse(baby.timeStamp)),
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -882,8 +907,8 @@ class _HomePageState extends State<HomePage> {
                             width: SizeConfig.widthMultiplier * 1.2,
                           ),
                           Text(
-                            DateFormat('hh:mm a').format(DateTime.parse(
-                                state.babyTasks[index].startTime)),
+                            DateFormat('hh:mm a')
+                                .format(DateTime.parse(baby.startTime)),
                             style: TextStyle(
                                 fontSize: SizeConfig.textMultiplier * 1.3,
                                 fontFamily: 'Montserrat',
@@ -910,8 +935,8 @@ class _HomePageState extends State<HomePage> {
                             width: SizeConfig.widthMultiplier * 3,
                           ),
                           Text(
-                            DateFormat('hh:mm a').format(
-                                DateTime.parse(state.babyTasks[index].endTime)),
+                            DateFormat('hh:mm a')
+                                .format(DateTime.parse(baby.endTime)),
                             style: TextStyle(
                                 fontSize: SizeConfig.textMultiplier * 1.3,
                                 fontFamily: 'Montserrat',
@@ -943,7 +968,7 @@ class _HomePageState extends State<HomePage> {
                         width: SizeConfig.widthMultiplier * 3,
                       ),
                       Text(
-                        '${state.babyTasks[index].durationH}H ${state.babyTasks[index].durationM}M ${state.babyTasks[index].durationS}S',
+                        '${baby.durationH}H ${baby.durationM}M ${baby.durationS}S',
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 1.3,
                             fontFamily: 'Montserrat',
@@ -955,7 +980,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: SizeConfig.heightMultiplier * 2),
                   SizedBox(
                     width: 190,
-                    child: Text("${state.babyTasks[index].note}",
+                    child: Text("${baby.note}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
@@ -970,7 +995,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        index + 1 == state.babyTasks.length
+        index + 1 == length
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
@@ -989,7 +1014,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _breastPumping(HomePageCompleted state, int index) {
+  _breastPumping(BabyTask baby, int index, int length) {
     return Column(
       children: [
         Padding(
@@ -1001,11 +1026,11 @@ class _HomePageState extends State<HomePage> {
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
                 decoration: BoxDecoration(
-                    color: Color(int.parse(state.babyTasks[index].color)),
+                    color: Color(int.parse(baby.color)),
                     shape: BoxShape.circle),
                 child: Center(
                   child: SvgPicture.asset(
-                    "assets/icons/${state.babyTasks[index].taskName}.svg",
+                    "assets/icons/${baby.taskName}.svg",
                     height: SizeConfig.heightMultiplier * 4,
                   ),
                 ),
@@ -1031,8 +1056,8 @@ class _HomePageState extends State<HomePage> {
                         width: SizeConfig.widthMultiplier * 15,
                       ),
                       Text(
-                        DateFormat('hh:mm a').format(
-                            DateTime.parse(state.babyTasks[index].timeStamp)),
+                        DateFormat('hh:mm a')
+                            .format(DateTime.parse(baby.timeStamp)),
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -1056,7 +1081,7 @@ class _HomePageState extends State<HomePage> {
                             width: SizeConfig.widthMultiplier * 1.2,
                           ),
                           Text(
-                            '${state.babyTasks[index].qtyFood}',
+                            '${baby.qtyFood}',
                             style: TextStyle(
                                 fontSize: SizeConfig.textMultiplier * 1.3,
                                 fontFamily: 'Montserrat',
@@ -1073,7 +1098,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: SizeConfig.heightMultiplier * 2),
                   SizedBox(
                     width: 190,
-                    child: Text("${state.babyTasks[index].note}",
+                    child: Text("${baby.note}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
@@ -1088,7 +1113,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        index + 1 == state.babyTasks.length
+        index + 1 == length
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
@@ -1107,7 +1132,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  _breastFeeding(HomePageCompleted state, int index) {
+  _breastFeeding(BabyTask baby, int index, int length) {
     return Column(
       children: [
         Padding(
@@ -1119,11 +1144,11 @@ class _HomePageState extends State<HomePage> {
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
                 decoration: BoxDecoration(
-                    color: Color(int.parse(state.babyTasks[index].color)),
+                    color: Color(int.parse(baby.color)),
                     shape: BoxShape.circle),
                 child: Center(
                   child: SvgPicture.asset(
-                    "assets/icons/${state.babyTasks[index].taskName}.svg",
+                    "assets/icons/${baby.taskName}.svg",
                     height: SizeConfig.heightMultiplier * 4,
                   ),
                 ),
@@ -1149,8 +1174,8 @@ class _HomePageState extends State<HomePage> {
                         width: SizeConfig.widthMultiplier * 15,
                       ),
                       Text(
-                        DateFormat('hh:mm a').format(
-                            DateTime.parse(state.babyTasks[index].timeStamp)),
+                        DateFormat('hh:mm a')
+                            .format(DateTime.parse(baby.timeStamp)),
                         style: TextStyle(
                             fontSize: SizeConfig.textMultiplier * 2,
                             fontFamily: 'Montserrat',
@@ -1177,7 +1202,7 @@ class _HomePageState extends State<HomePage> {
                           SizedBox(
                             width: SizeConfig.widthMultiplier * 1.2,
                           ),
-                          state.babyTasks[index].leftBreast == 0
+                          baby.leftBreast == 0
                               ? Text(
                                   'Left',
                                   style: TextStyle(
@@ -1187,7 +1212,7 @@ class _HomePageState extends State<HomePage> {
                                       color: Colors.black38),
                                 )
                               : Container(),
-                          state.babyTasks[index].rightBreast == 0
+                          baby.rightBreast == 0
                               ? Text(
                                   'Right',
                                   style: TextStyle(
@@ -1207,7 +1232,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: SizeConfig.heightMultiplier * 2),
                   SizedBox(
                     width: 190,
-                    child: Text("${state.babyTasks[index].note}",
+                    child: Text("${baby.note}",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
@@ -1222,7 +1247,7 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         ),
-        index + 1 == state.babyTasks.length
+        index + 1 == length
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(

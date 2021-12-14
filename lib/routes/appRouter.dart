@@ -26,7 +26,10 @@ class AppRouter {
       case '/add_baby_form':
         return MaterialPageRoute(builder: (_) => AddBabyForm());
       case '/home_dashboard':
-        return MaterialPageRoute(builder: (_) => HomeDashboard());
+        return MaterialPageRoute(
+            builder: (_) => HomeDashboard(
+                  baby: (arguments as Map)['baby'],
+                ));
       case '/feeder':
         return MaterialPageRoute(builder: (_) => HomeFeeder());
       case '/breast_pumping':
