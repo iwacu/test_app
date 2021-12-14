@@ -17,7 +17,7 @@ class TimelinePainter extends CustomPainter {
     final paint = Paint()
       ..color = Colors.black26
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 2;
+      ..strokeWidth = 0.9;
 
     while (i <= 23) {
       var getValues = babyTask

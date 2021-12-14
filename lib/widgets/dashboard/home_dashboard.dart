@@ -23,7 +23,7 @@ class HomeDashboard extends StatefulWidget {
 }
 
 class _HomeDashboardState extends State<HomeDashboard> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
   final widgetList = [
     HomePage(
       splashData: DataObj().splashData,

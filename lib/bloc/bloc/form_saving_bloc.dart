@@ -50,9 +50,11 @@ class FormSavingBloc extends Bloc<FormSavingEvent, FormSavingState> {
           birthDay: event.babyBirthDay,
           premature: state.babyPremature,
           relationship: state.babyRelationship));
+      var baby = await DatabaseHelper.instance.getBaby();
+
       yield state.copyWith(
-          formSubmissionStatus:
-              SubmissionSuccess(message: 'Baby added successfully'));
+          formSubmissionStatus: SubmissionSuccessBaby(
+              message: 'Baby added successfully', baby: baby.object!));
       // print(
       //     'relationship ${state.babyRelationship} ::: premature ${state.babyPremature} ::: sex ${event.babySex} ::: name ${state.userName} ::: birthday ${event.babyBirthDay} ');
     } else if (event is SubmitFormSleeping) {

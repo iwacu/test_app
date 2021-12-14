@@ -10,6 +10,7 @@ import 'package:momnotebook/constants/customAppBar.dart';
 import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/show_snackBar.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/cubit/cubit/auth_cubit_cubit.dart';
 
 class AddBabyForm extends StatefulWidget {
   const AddBabyForm({Key? key}) : super(key: key);
@@ -47,9 +48,10 @@ class _AddBabyFormState extends State<AddBabyForm> {
           body: BlocListener<FormSavingBloc, FormSavingState>(
             listener: (context, state) {
               final formStatus = state.formSubmissionStatus;
-              if (formStatus is SubmissionSuccess) {
+              if (formStatus is SubmissionSuccessBaby) {
                 showSnackBar(context, formStatus.message);
-                Navigator.of(context).pushNamed('/home_dashboard');
+                Navigator.of(context).pushNamed('/home_dashboard',
+                    arguments: {'baby': formStatus.baby});
               }
             },
             child: SingleChildScrollView(
@@ -459,6 +461,8 @@ class _AddBabyFormState extends State<AddBabyForm> {
                                               currentBox == 1
                                                   ? 'Boy'
                                                   : 'Girl'));
+                                      BlocProvider.of<AuthCubitCubit>(context)
+                                          .getUser();
                                     }
                                   });
                         },
