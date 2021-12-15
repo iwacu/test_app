@@ -31,7 +31,6 @@ class _HomeDashboardState extends State<HomeDashboard> {
     StatisticsPage(
       splashData: DataObj().splashData,
     ),
-    GrowthPage(),
     ProfilePage()
   ];
 
@@ -41,9 +40,10 @@ class _HomeDashboardState extends State<HomeDashboard> {
       backgroundColor: bluewhite,
       appBar: CustomAppBar(
           height: SizeConfig.heightMultiplier * 9,
-          child: _selectedIndex == 3
+          child: _selectedIndex == 2
               ? appBarDashboardAccount(context, 'Account', () {}, () {})
-              : appBarDashboard(context, '${widget.baby.name}', () {}, () {})),
+              : appBarDashboard(
+                  widget.baby, context, '${widget.baby.name}', () {}, () {})),
       body: BlocBuilder<HomePageCubit, HomePageState>(
         builder: (context, state) {
           if (state is HomePageInitial) {
@@ -65,49 +65,66 @@ class _HomeDashboardState extends State<HomeDashboard> {
           ? SpeedDial(
               animatedIcon: AnimatedIcons.menu_close,
               backgroundColor: buttonBGColor,
+              curve: Curves.bounceIn,
               children: [
                 SpeedDialChild(
-                  child: SvgPicture.asset('assets/icons/sleeping.svg'),
+                  child: SvgPicture.asset(
+                    'assets/icons/sleeping.svg',
+                    height: SizeConfig.heightMultiplier * 3,
+                  ),
                   label: 'Sleeping',
                   backgroundColor: greenGray,
-                  onTap: () => Navigator.of(context).pushNamed('/sleep'),
+                  onTap: () => Navigator.of(context)
+                      .pushNamed('/sleep', arguments: {'baby': widget.baby}),
                 ),
                 SpeedDialChild(
-                  child: SvgPicture.asset('assets/icons/feeder.svg'),
+                  child: SvgPicture.asset('assets/icons/feeder.svg',
+                      height: SizeConfig.heightMultiplier * 3),
                   label: 'Feeder',
                   backgroundColor: movGray,
-                  onTap: () => Navigator.of(context).pushNamed('/feeder'),
+                  onTap: () => Navigator.of(context)
+                      .pushNamed('/feeder', arguments: {'baby': widget.baby}),
                 ),
                 SpeedDialChild(
-                  child: SvgPicture.asset('assets/icons/breast-pumping.svg'),
+                  child: SvgPicture.asset('assets/icons/breast-pumping.svg',
+                      height: SizeConfig.heightMultiplier * 3),
                   label: 'Breast Pumping',
                   backgroundColor: orGray,
-                  onTap: () =>
-                      Navigator.of(context).pushNamed('/breast_pumping'),
+                  onTap: () => Navigator.of(context).pushNamed(
+                      '/breast_pumping',
+                      arguments: {'baby': widget.baby}),
                 ),
                 SpeedDialChild(
-                  child: SvgPicture.asset('assets/icons/breast-feed.svg'),
+                  child: SvgPicture.asset('assets/icons/breast-feed.svg',
+                      height: SizeConfig.heightMultiplier * 3),
                   label: 'Breast Feed',
                   backgroundColor: rsGray,
-                  onTap: () => Navigator.of(context).pushNamed('/breast_feed'),
+                  onTap: () => Navigator.of(context).pushNamed('/breast_feed',
+                      arguments: {'baby': widget.baby}),
                 ),
                 SpeedDialChild(
-                  child: SvgPicture.asset('assets/icons/food.svg'),
+                  child: SvgPicture.asset('assets/icons/food.svg',
+                      height: SizeConfig.heightMultiplier * 3),
                   label: 'Food',
                   backgroundColor: buttonBGColor,
-                  onTap: () => Navigator.of(context).pushNamed('/food'),
+                  onTap: () => Navigator.of(context)
+                      .pushNamed('/food', arguments: {'baby': widget.baby}),
                 ),
                 SpeedDialChild(
-                  child: SvgPicture.asset('assets/icons/diaper.svg'),
+                  child: SvgPicture.asset('assets/icons/diaper.svg',
+                      height: SizeConfig.heightMultiplier * 3),
                   label: 'Diaper',
                   backgroundColor: greenAccGray,
-                  onTap: () => Navigator.of(context).pushNamed('/diaper'),
+                  onTap: () => Navigator.of(context)
+                      .pushNamed('/diaper', arguments: {'baby': widget.baby}),
                 ),
                 SpeedDialChild(
-                  child: SvgPicture.asset('assets/icons/walking.svg'),
+                  child: SvgPicture.asset('assets/icons/walking.svg',
+                      height: SizeConfig.heightMultiplier * 3),
                   label: 'Walking',
                   backgroundColor: jnAccGray,
-                  onTap: () => Navigator.of(context).pushNamed('/walk'),
+                  onTap: () => Navigator.of(context)
+                      .pushNamed('/walk', arguments: {'baby': widget.baby}),
                 ),
               ],
             )
@@ -159,29 +176,14 @@ class _HomeDashboardState extends State<HomeDashboard> {
                   )),
               BottomNavigationBarItem(
                   icon: SvgPicture.asset(
-                    'assets/icons/growth.svg',
-                    color: _selectedIndex == 2 ? buttonBGColor : Colors.black38,
-                  ),
-                  title: Text(
-                    "Growth",
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        color: _selectedIndex == 2
-                            ? buttonBGColor
-                            : Colors.black38,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w500),
-                  )),
-              BottomNavigationBarItem(
-                  icon: SvgPicture.asset(
                     'assets/icons/user-alt.svg',
-                    color: _selectedIndex == 3 ? buttonBGColor : Colors.black38,
+                    color: _selectedIndex == 2 ? buttonBGColor : Colors.black38,
                   ),
                   title: Text(
                     "Profile",
                     style: TextStyle(
                         fontSize: SizeConfig.textMultiplier * 2,
-                        color: _selectedIndex == 3
+                        color: _selectedIndex == 2
                             ? buttonBGColor
                             : Colors.black38,
                         fontFamily: 'Montserrat',

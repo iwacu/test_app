@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/bloc/bloc/form_saving_bloc.dart';
 import 'package:momnotebook/bloc/form_submission/form_sub.dart';
@@ -13,11 +14,14 @@ import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/show_snackBar.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
+import 'package:momnotebook/models/baby.dart';
 import 'package:momnotebook/models/timer.dart';
 import 'package:momnotebook/services/database/database_helper.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class HomeSleep extends StatefulWidget {
-  HomeSleep({Key? key}) : super(key: key);
+  final Baby baby;
+  HomeSleep({Key? key, required this.baby}) : super(key: key);
 
   @override
   State<HomeSleep> createState() => _HomeSleepState();
@@ -28,6 +32,7 @@ class _HomeSleepState extends State<HomeSleep> {
   Timer? timer;
   Duration duration = Duration();
   Duration _dtion = Duration();
+  bool _stopTimer = false;
   String _startTime = '';
   String _endTime = '';
   @override
@@ -44,6 +49,7 @@ class _HomeSleepState extends State<HomeSleep> {
           minutes: (_nowDate.minute) - tm.object!.minutes,
           seconds: (_nowDate.second) - tm.object!.seconds);
       startTime();
+      _stopTimer = true;
     }
   }
 
@@ -56,6 +62,7 @@ class _HomeSleepState extends State<HomeSleep> {
       duration = Duration();
       timer!.cancel();
     });
+    _stopTimer = false;
     await DatabaseHelper.instance.deleteRecord(1);
   }
 
@@ -98,7 +105,7 @@ class _HomeSleepState extends State<HomeSleep> {
         backgroundColor: bluewhite,
         appBar: CustomAppBar(
             height: SizeConfig.heightMultiplier * 9,
-            child: appBarDashboardW(context, 'Sam', () {}, () {})),
+            child: appBarDashboardW(widget.baby, context, () {}, () {})),
         body: BlocListener<FormSavingBloc, FormSavingState>(
           listener: (context, state) {
             final formStatus = state.formSubmissionStatus;
@@ -125,25 +132,25 @@ class _HomeSleepState extends State<HomeSleep> {
                       child: Padding(
                         padding: const EdgeInsets.only(top: 8),
                         child: Container(
-                          height: SizeConfig.heightMultiplier * 18,
-                          width: SizeConfig.widthMultiplier * 28,
+                          height: SizeConfig.heightMultiplier * 12,
+                          width: SizeConfig.widthMultiplier * 22,
                           decoration: BoxDecoration(
                               color: greenGray, shape: BoxShape.circle),
                           child: Center(
                             child: SvgPicture.asset('assets/icons/sleeping.svg',
-                                height: SizeConfig.heightMultiplier * 8),
+                                height: SizeConfig.heightMultiplier * 6),
                           ),
                         ),
                       ),
                     ),
                     SizedBox(
-                      height: SizeConfig.heightMultiplier * 4,
+                      height: SizeConfig.heightMultiplier * 2,
                     ),
                     Center(
                       child: Text(
                         'Sleeping',
                         style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 3,
+                            fontSize: SizeConfig.textMultiplier * 2.5,
                             fontFamily: 'Montserrat',
                             fontWeight: FontWeight.w700,
                             color: Colors.black38),
@@ -152,15 +159,34 @@ class _HomeSleepState extends State<HomeSleep> {
                     SizedBox(
                       height: SizeConfig.heightMultiplier * 2,
                     ),
-                    Center(
-                      child: Text(
-                        'Last 4h 20min ago',
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w200,
-                            color: Colors.black38),
-                      ),
+                    BlocBuilder<HomePageCubit, HomePageState>(
+                      builder: (context, state) {
+                        if (state is HomePageInitial) {
+                          return Center(
+                            child: Text('loading'),
+                          );
+                        } else if (state is HomePageCompleted) {
+                          var lastWalk = state.babyTasks
+                              .where(
+                                  (element) => element.taskName == 'sleeping')
+                              .toList();
+                          var lastwlk = lastWalk.isEmpty
+                              ? 'Start'
+                              : 'Last: ${timeago.format(DateTime.parse(lastWalk[0].timeStamp))}';
+
+                          return Center(
+                            child: Text(
+                              lastwlk,
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w200,
+                                  color: Colors.black38),
+                            ),
+                          );
+                        }
+                        return Container();
+                      },
                     ),
                     SizedBox(
                       height: SizeConfig.heightMultiplier * 3.5,
@@ -323,6 +349,9 @@ class _HomeSleepState extends State<HomeSleep> {
                               onTap: () {
                                 startTime();
                                 saveTimer();
+                                setState(() {
+                                  _stopTimer = true;
+                                });
                               },
                               child: Container(
                                 height: SizeConfig.heightMultiplier * 8,
@@ -356,6 +385,21 @@ class _HomeSleepState extends State<HomeSleep> {
                               ),
                             ),
                     ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 0.5,
+                    ),
+                    _dtion.inSeconds == 0
+                        ? Container()
+                        : Center(
+                            child: Text(
+                              'Duration ${_dtion.inHours}h ${_dtion.inMinutes}min ${_dtion.inSeconds}sec',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w200,
+                                  color: Colors.black38),
+                            ),
+                          ),
                     SizedBox(
                       height: SizeConfig.heightMultiplier * 2,
                     ),
@@ -411,7 +455,7 @@ class _HomeSleepState extends State<HomeSleep> {
                                   decoration: BoxDecoration(
                                       border: Border.all(color: greyColor)),
                                   child: Text(
-                                    '10:40 Am',
+                                    DateFormat('hh:mm a').format(_nowDate),
                                     style: TextStyle(
                                         fontSize: SizeConfig.textMultiplier * 2,
                                         fontFamily: 'Montserrat',
@@ -445,7 +489,7 @@ class _HomeSleepState extends State<HomeSleep> {
                                       color: almostGrey, width: 0.8)),
                             ))),
                     SizedBox(
-                      height: SizeConfig.heightMultiplier * 12,
+                      height: SizeConfig.heightMultiplier * 4,
                     ),
                     Padding(
                         padding: EdgeInsets.symmetric(
@@ -453,25 +497,29 @@ class _HomeSleepState extends State<HomeSleep> {
                         child: DefaultButtonBsz(
                           text: 'Save',
                           press: () {
-                            var di = greenGray.toString();
-                            print(di);
-                            const start = "Color(";
-                            const end = ")";
+                            if (_stopTimer) {
+                              showSnackBar(context, 'Please stop The timer');
+                            } else {
+                              var di = greenGray.toString();
+                              print(di);
+                              const start = "Color(";
+                              const end = ")";
 
-                            final startIndex = di.indexOf(start);
-                            final endIndex =
-                                di.indexOf(end, startIndex + start.length);
-                            var fnl = di.substring(
-                                startIndex + start.length, endIndex);
-                            BlocProvider.of<HomePageCubit>(context)
-                                .saveTasksWalkingSleeping(
-                                    taskName: 'sleeping',
-                                    note: _text.text,
-                                    startTime: _startTime,
-                                    endTime: _endTime,
-                                    color: fnl,
-                                    duration: _dtion);
-                            Navigator.pop(context);
+                              final startIndex = di.indexOf(start);
+                              final endIndex =
+                                  di.indexOf(end, startIndex + start.length);
+                              var fnl = di.substring(
+                                  startIndex + start.length, endIndex);
+                              BlocProvider.of<HomePageCubit>(context)
+                                  .saveTasksWalkingSleeping(
+                                      taskName: 'sleeping',
+                                      note: _text.text,
+                                      startTime: _startTime,
+                                      endTime: _endTime,
+                                      color: fnl,
+                                      duration: _dtion);
+                              Navigator.pop(context);
+                            }
                           },
                         )),
                     SizedBox(

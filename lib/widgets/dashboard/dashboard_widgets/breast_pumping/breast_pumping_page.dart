@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/customAppBar.dart';
@@ -9,9 +10,12 @@ import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/counter_cubit.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
+import 'package:momnotebook/models/baby.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class HomeBreastPumping extends StatefulWidget {
-  HomeBreastPumping({Key? key}) : super(key: key);
+  final Baby baby;
+  HomeBreastPumping({Key? key, required this.baby}) : super(key: key);
 
   @override
   State<HomeBreastPumping> createState() => _HomeBreastPumpingState();
@@ -30,7 +34,7 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
         backgroundColor: bluewhite,
         appBar: CustomAppBar(
             height: SizeConfig.heightMultiplier * 9,
-            child: appBarDashboardW(context, 'Sam', () {}, () {})),
+            child: appBarDashboardW(widget.baby, context, () {}, () {})),
         body: BlocBuilder<CounterCubit, CounterState>(
           builder: (context, state) {
             return Container(
@@ -51,20 +55,20 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Container(
-                            height: SizeConfig.heightMultiplier * 18,
-                            width: SizeConfig.widthMultiplier * 28,
+                            height: SizeConfig.heightMultiplier * 12,
+                            width: SizeConfig.widthMultiplier * 22,
                             decoration: BoxDecoration(
                                 color: orGray, shape: BoxShape.circle),
                             child: Center(
                               child: SvgPicture.asset(
                                   'assets/icons/breast-pumping.svg',
-                                  height: SizeConfig.heightMultiplier * 12),
+                                  height: SizeConfig.heightMultiplier * 6),
                             ),
                           ),
                         ),
                       ),
                       SizedBox(
-                        height: SizeConfig.heightMultiplier * 4,
+                        height: SizeConfig.heightMultiplier * 2,
                       ),
                       Center(
                         child: Text(
@@ -75,6 +79,38 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                               fontWeight: FontWeight.w700,
                               color: Colors.black38),
                         ),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.heightMultiplier * 2,
+                      ),
+                      BlocBuilder<HomePageCubit, HomePageState>(
+                        builder: (context, state) {
+                          if (state is HomePageInitial) {
+                            return Center(
+                              child: Text('loading'),
+                            );
+                          } else if (state is HomePageCompleted) {
+                            var lastWalk = state.babyTasks
+                                .where((element) =>
+                                    element.taskName == 'breast-pumping')
+                                .toList();
+                            var lastwlk = lastWalk.isEmpty
+                                ? 'Start'
+                                : 'Last: ${timeago.format(DateTime.parse(lastWalk[0].timeStamp))}';
+
+                            return Center(
+                              child: Text(
+                                lastwlk,
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 2,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w200,
+                                    color: Colors.black38),
+                              ),
+                            );
+                          }
+                          return Container();
+                        },
                       ),
                       SizedBox(
                         height: SizeConfig.heightMultiplier * 2,
@@ -198,7 +234,7 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                                     decoration: BoxDecoration(
                                         border: Border.all(color: greyColor)),
                                     child: Text(
-                                      '10:40 Am',
+                                      DateFormat('hh:mm a').format(_nowDate),
                                       style: TextStyle(
                                           fontSize:
                                               SizeConfig.textMultiplier * 2,
@@ -224,7 +260,7 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                               borderRadius: BorderRadius.circular(15)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 44, vertical: 12),
+                                horizontal: 24, vertical: 8),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

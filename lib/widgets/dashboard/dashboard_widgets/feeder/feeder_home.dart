@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/customAppBar.dart';
@@ -9,9 +10,12 @@ import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/counter_cubit.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
+import 'package:momnotebook/models/baby.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class HomeFeeder extends StatefulWidget {
-  HomeFeeder({Key? key}) : super(key: key);
+  final Baby baby;
+  HomeFeeder({Key? key, required this.baby}) : super(key: key);
 
   @override
   State<HomeFeeder> createState() => _HomeFeederState();
@@ -28,7 +32,7 @@ class _HomeFeederState extends State<HomeFeeder> {
         backgroundColor: bluewhite,
         appBar: CustomAppBar(
             height: SizeConfig.heightMultiplier * 9,
-            child: appBarDashboardW(context, 'Sam', () {}, () {})),
+            child: appBarDashboardW(widget.baby, context, () {}, () {})),
         body: BlocBuilder<CounterCubit, CounterState>(
           builder: (context, state) {
             return Container(
@@ -55,13 +59,13 @@ class _HomeFeederState extends State<HomeFeeder> {
                                 color: movGray, shape: BoxShape.circle),
                             child: Center(
                               child: SvgPicture.asset('assets/icons/feeder.svg',
-                                  height: SizeConfig.heightMultiplier * 12),
+                                  height: SizeConfig.heightMultiplier * 6),
                             ),
                           ),
                         ),
                       ),
                       SizedBox(
-                        height: SizeConfig.heightMultiplier * 4,
+                        height: SizeConfig.heightMultiplier * 2,
                       ),
                       Center(
                         child: Text(
@@ -72,6 +76,41 @@ class _HomeFeederState extends State<HomeFeeder> {
                               fontWeight: FontWeight.w700,
                               color: Colors.black38),
                         ),
+                      ),
+                      SizedBox(
+                        height: SizeConfig.heightMultiplier * 2,
+                      ),
+                      BlocBuilder<HomePageCubit, HomePageState>(
+                        builder: (context, state) {
+                          if (state is HomePageInitial) {
+                            return Center(
+                              child: Text('loading'),
+                            );
+                          } else if (state is HomePageCompleted) {
+                            var lastWalk = state.babyTasks
+                                .where(
+                                    (element) => element.taskName == 'feeder')
+                                .toList();
+                            var lastwlk = lastWalk.isEmpty
+                                ? 'Start'
+                                : 'Last: ${timeago.format(DateTime.parse(lastWalk[0].timeStamp))}';
+
+                            return Center(
+                              child: Text(
+                                lastwlk,
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 2,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w200,
+                                    color: Colors.black38),
+                              ),
+                            );
+                          }
+                          return Container();
+                        },
+                      ),
+                      SizedBox(
+                        height: SizeConfig.heightMultiplier * 2,
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -126,7 +165,7 @@ class _HomeFeederState extends State<HomeFeeder> {
                                     decoration: BoxDecoration(
                                         border: Border.all(color: greyColor)),
                                     child: Text(
-                                      '10:40 Am',
+                                      DateFormat('hh:mm a').format(_nowDate),
                                       style: TextStyle(
                                           fontSize:
                                               SizeConfig.textMultiplier * 2,
@@ -189,31 +228,23 @@ class _HomeFeederState extends State<HomeFeeder> {
                         height: SizeConfig.heightMultiplier * 2,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 22),
-                        child: Text(
-                          'Notes',
-                          style: TextStyle(
-                              fontSize: SizeConfig.textMultiplier * 2,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w700,
-                              color: Colors.black38),
-                        ),
-                      ),
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier * 2,
-                      ),
-                      Padding(
                           padding: const EdgeInsets.only(left: 12, right: 12),
                           child: TextFormField(
                               controller: _text,
                               maxLength: 1000,
                               decoration: InputDecoration(
+                                labelText: 'Notes',
+                                labelStyle: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 2,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black38),
                                 enabledBorder: new UnderlineInputBorder(
                                     borderSide: new BorderSide(
                                         color: almostGrey, width: 0.8)),
                               ))),
                       SizedBox(
-                        height: SizeConfig.heightMultiplier * 12,
+                        height: SizeConfig.heightMultiplier * 10,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(

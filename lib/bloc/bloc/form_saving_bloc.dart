@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:momnotebook/bloc/form_submission/form_sub.dart';
@@ -45,6 +47,7 @@ class FormSavingBloc extends Bloc<FormSavingEvent, FormSavingState> {
     } else if (event is SubmitFormSaveBaby) {
       yield state.copyWith(formSubmissionStatus: FormSubmitting());
       await DatabaseHelper.instance.addBaby(Baby(
+          picture: event.babyImagePath,
           babySex: event.babySex,
           name: state.userName,
           birthDay: event.babyBirthDay,

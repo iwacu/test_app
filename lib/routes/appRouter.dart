@@ -31,19 +31,27 @@ class AppRouter {
                   baby: (arguments as Map)['baby'],
                 ));
       case '/feeder':
-        return MaterialPageRoute(builder: (_) => HomeFeeder());
+        return MaterialPageRoute(
+            builder: (_) => HomeFeeder(baby: (arguments as Map)['baby']));
       case '/breast_pumping':
-        return MaterialPageRoute(builder: (_) => HomeBreastPumping());
+        return MaterialPageRoute(
+            builder: (_) =>
+                HomeBreastPumping(baby: (arguments as Map)['baby']));
       case '/food':
-        return MaterialPageRoute(builder: (_) => HomeFood());
+        return MaterialPageRoute(
+            builder: (_) => HomeFood(baby: (arguments as Map)['baby']));
       case '/breast_feed':
-        return MaterialPageRoute(builder: (_) => HomeBreastFeed());
+        return MaterialPageRoute(
+            builder: (_) => HomeBreastFeed(baby: (arguments as Map)['baby']));
       case '/sleep':
-        return MaterialPageRoute(builder: (_) => HomeSleep());
+        return MaterialPageRoute(
+            builder: (_) => HomeSleep(baby: (arguments as Map)['baby']));
       case '/walk':
-        return MaterialPageRoute(builder: (_) => HomeWalking());
+        return MaterialPageRoute(
+            builder: (_) => HomeWalking(baby: (arguments as Map)['baby']));
       case '/diaper':
-        return MaterialPageRoute(builder: (_) => HomeDiaper());
+        return MaterialPageRoute(
+            builder: (_) => HomeDiaper(baby: (arguments as Map)['baby']));
       default:
         return MaterialPageRoute(builder: (_) => PageNotFound());
     }

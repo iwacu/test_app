@@ -43,38 +43,41 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(top: 18, left: 12),
                 child: Container(
-                  height: SizeConfig.heightMultiplier * 18,
+                  height: SizeConfig.heightMultiplier * 16,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: widget.splashData.length,
                       itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Container(
-                              height: SizeConfig.heightMultiplier * 8,
-                              width: SizeConfig.widthMultiplier * 18,
-                              decoration: BoxDecoration(
-                                  color: widget.splashData[index]['color'],
-                                  shape: BoxShape.circle),
-                              child: Center(
-                                child: SvgPicture.asset(
-                                  widget.splashData[index]['image']!,
-                                  height: SizeConfig.heightMultiplier * 4,
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: SizeConfig.heightMultiplier * 8,
+                                width: SizeConfig.widthMultiplier * 18,
+                                decoration: BoxDecoration(
+                                    color: widget.splashData[index]['color'],
+                                    shape: BoxShape.circle),
+                                child: Center(
+                                  child: SvgPicture.asset(
+                                    widget.splashData[index]['image']!,
+                                    height: SizeConfig.heightMultiplier * 4,
+                                  ),
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: SizeConfig.heightMultiplier * 1.5,
-                            ),
-                            Text(
-                              widget.splashData[index]['title']!,
-                              style: TextStyle(
-                                  fontSize: SizeConfig.textMultiplier * 2,
-                                  color: Colors.black38,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
+                              SizedBox(
+                                height: SizeConfig.heightMultiplier * 1.5,
+                              ),
+                              Text(
+                                widget.splashData[index]['title']!,
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 1.8,
+                                    color: Colors.black38,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          ),
                         );
                       }),
                 ),
@@ -381,14 +384,14 @@ class _HomePageState extends State<HomePage> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.4,
                   color: primaryColor,
                 ),
               )
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: Colors.black38,
                 ),
               ),
@@ -544,14 +547,14 @@ class _HomePageState extends State<HomePage> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: primaryColor,
                 ),
               )
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: Colors.black38,
                 ),
               ),
@@ -662,14 +665,14 @@ class _HomePageState extends State<HomePage> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: primaryColor,
                 ),
               )
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: Colors.black38,
                 ),
               ),
@@ -820,14 +823,14 @@ class _HomePageState extends State<HomePage> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: primaryColor,
                 ),
               )
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: Colors.black38,
                 ),
               ),
@@ -999,14 +1002,14 @@ class _HomePageState extends State<HomePage> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: primaryColor,
                 ),
               )
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: Colors.black38,
                 ),
               ),
@@ -1117,14 +1120,14 @@ class _HomePageState extends State<HomePage> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: primaryColor,
                 ),
               )
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: Colors.black38,
                 ),
               ),
@@ -1251,14 +1254,14 @@ class _HomePageState extends State<HomePage> {
             ? Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: primaryColor,
                 ),
               )
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Divider(
-                  thickness: 0.8,
+                  thickness: 0.2,
                   color: Colors.black38,
                 ),
               ),
@@ -1266,129 +1269,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-
-                //  Column(
-                //       children: [
-                //         Padding(
-                //           padding: const EdgeInsets.symmetric(
-                //               horizontal: 12, vertical: 12),
-                //           child: Row(
-                //             crossAxisAlignment: CrossAxisAlignment.start,
-                //             children: [
-                //               Container(
-                //                 height: SizeConfig.heightMultiplier * 8,
-                //                 width: SizeConfig.widthMultiplier * 18,
-                //                 decoration: BoxDecoration(
-                //                     color: Color(int.parse(
-                //                         state.babyTasks[index].color)),
-                //                     shape: BoxShape.circle),
-                //                 child: Center(
-                //                   child: SvgPicture.asset(
-                //                     "assets/icons/${state.babyTasks[index].taskName}.svg",
-                //                     height: SizeConfig.heightMultiplier * 4,
-                //                   ),
-                //                 ),
-                //               ),
-                //               SizedBox(
-                //                 width: SizeConfig.widthMultiplier * 3,
-                //               ),
-                //               Column(
-                //                 crossAxisAlignment: CrossAxisAlignment.start,
-                //                 children: [
-                //                   Row(
-                //                     crossAxisAlignment:
-                //                         CrossAxisAlignment.start,
-                //                     children: [
-                //                       Text(
-                //                         "${state.babyTasks[index].taskName[0].toUpperCase()}${state.babyTasks[index].taskName.substring(1)}",
-                //                         style: TextStyle(
-                //                             fontSize:
-                //                                 SizeConfig.textMultiplier * 2,
-                //                             fontFamily: 'Montserrat',
-                //                             fontWeight: FontWeight.w700,
-                //                             color: Colors.black38),
-                //                       ),
-                //                       SizedBox(
-                //                         width: SizeConfig.widthMultiplier * 26,
-                //                       ),
-                //                       Text(
-                //                         DateFormat('hh:mm a').format(
-                //                             DateTime.parse(state
-                //                                 .babyTasks[index].timeStamp)),
-                //                         style: TextStyle(
-                //                             fontSize:
-                //                                 SizeConfig.textMultiplier * 2,
-                //                             fontFamily: 'Montserrat',
-                //                             // fontWeight: FontWeight.w700,
-                //                             color: Colors.black38),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                   SizedBox(
-                //                       height:
-                //                           SizeConfig.heightMultiplier * 1.5),
-                //                   Row(
-                //                     crossAxisAlignment:
-                //                         CrossAxisAlignment.start,
-                //                     children: [
-                //                       SvgPicture.asset(
-                //                         "assets/icons/ml.svg",
-                //                         height: SizeConfig.heightMultiplier * 2,
-                //                       ),
-                //                       SizedBox(
-                //                         width: SizeConfig.widthMultiplier * 3,
-                //                       ),
-                //                       Text(
-                //                         '80 ml',
-                //                         style: TextStyle(
-                //                             fontSize:
-                //                                 SizeConfig.textMultiplier * 2,
-                //                             fontFamily: 'Montserrat',
-                //                             // fontWeight: FontWeight.w700,
-                //                             color: Colors.black38),
-                //                       ),
-                //                     ],
-                //                   ),
-                //                   SizedBox(
-                //                     width: SizeConfig.heightMultiplier * 2,
-                //                   ),
-                //                   SizedBox(
-                //                     width: 190,
-                //                     child: Text(
-                //                         "${state.babyTasks[index].note}",
-                //                         maxLines: 1,
-                //                         overflow: TextOverflow.ellipsis,
-                //                         softWrap: false,
-                //                         style: TextStyle(
-                //                             fontSize:
-                //                                 SizeConfig.textMultiplier * 2,
-                //                             fontFamily: 'Montserrat',
-                //                             // fontWeight: FontWeight.w700,
-                //                             color: Colors.black38)),
-                //                   ),
-                //                 ],
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //         index + 1 == state.babyTasks.length
-                //             ? Padding(
-                //                 padding:
-                //                     const EdgeInsets.symmetric(horizontal: 14),
-                //                 child: Divider(
-                //                   thickness: 0.8,
-                //                   color: primaryColor,
-                //                 ),
-                //               )
-                //             : Padding(
-                //                 padding:
-                //                     const EdgeInsets.symmetric(horizontal: 14),
-                //                 child: Divider(
-                //                   thickness: 0.8,
-                //                   color: Colors.black38,
-                //                 ),
-                //               ),
-                //       ],
-                //     );
-   

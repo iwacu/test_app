@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:momnotebook/bloc/bloc/form_saving_bloc.dart';
 import 'package:momnotebook/bloc/form_submission/form_sub.dart';
+import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/customAppBar.dart';
 import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/show_snackBar.dart';
@@ -86,6 +87,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
+                          fontSize: SizeConfig.textMultiplier * 2.5,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
@@ -96,24 +98,33 @@ class _SignUpPageState extends State<SignUpPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 94),
                     child: BlocBuilder<FormSavingBloc, FormSavingState>(
                       builder: (context, state) {
-                        return TextFormField(
-                            validator: (value) => state.isValidUsername
-                                ? null
-                                : 'Enter your First and Last name',
-                            onChanged: (val) {
-                              context
-                                  .read<FormSavingBloc>()
-                                  .add(UserNameChanged(val));
-                            },
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              labelText: "First and Last name",
-                            ));
+                        return Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          decoration: BoxDecoration(
+                              color: bluewhite,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: TextFormField(
+                              validator: (value) => state.isValidUsername
+                                  ? null
+                                  : 'Enter your First and Last name',
+                              style: TextStyle(
+                                  fontFamily: 'Montserrat',
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  fontWeight: FontWeight.w300),
+                              onChanged: (val) {
+                                context
+                                    .read<FormSavingBloc>()
+                                    .add(UserNameChanged(val));
+                              },
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Enter your name here')),
+                        );
                       },
                     ),
                   ),
                   SizedBox(
-                    height: SizeConfig.heightMultiplier * 32,
+                    height: SizeConfig.heightMultiplier * 35.6,
                   ),
                   Center(
                     child: BlocBuilder<FormSavingBloc, FormSavingState>(

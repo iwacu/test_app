@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:momnotebook/constants/colors.dart';
@@ -52,34 +54,13 @@ class ProfilePage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 12),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Babies',
-                              style: TextStyle(
-                                  fontSize: SizeConfig.textMultiplier * 2.5,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black38),
-                            ),
-                            Spacer(),
-                            Icon(
-                              Icons.add,
-                              color: buttonBGColor,
-                              size: SizeConfig.imageSizeMultiplier * 3,
-                            ),
-                            SizedBox(
-                              width: SizeConfig.widthMultiplier * 1.3,
-                            ),
-                            Text(
-                              'Add Baby',
-                              style: TextStyle(
-                                  fontSize: SizeConfig.textMultiplier * 2,
-                                  fontFamily: 'Montserrat',
-                                  color: buttonBGColor),
-                            ),
-                          ],
+                        child: Text(
+                          'Baby',
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 2.5,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black38),
                         ),
                       ),
                       Padding(
@@ -95,19 +76,26 @@ class ProfilePage extends StatelessWidget {
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Container(
-                                  padding: EdgeInsets.all(
-                                      SizeConfig.heightMultiplier * 1.5),
-                                  height: SizeConfig.heightMultiplier * 6,
-                                  width: SizeConfig.widthMultiplier * 10,
-                                  decoration: BoxDecoration(
-                                    // color: kSecondaryColor.withOpacity(0.1),
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/user_icon.png')),
-                                    shape: BoxShape.circle,
-                                  ),
-                                ),
+                                state.baby.picture == ''
+                                    ? Container(
+                                        padding: EdgeInsets.all(
+                                            SizeConfig.heightMultiplier * 1.5),
+                                        height: SizeConfig.heightMultiplier * 6,
+                                        width: SizeConfig.widthMultiplier * 10,
+                                        decoration: BoxDecoration(
+                                          // color: kSecondaryColor.withOpacity(0.1),
+                                          image: DecorationImage(
+                                              image: AssetImage(
+                                                  'assets/images/user_icon.png')),
+                                          shape: BoxShape.circle,
+                                        ),
+                                      )
+                                    : CircleAvatar(
+                                        backgroundImage:
+                                            FileImage(File(state.baby.picture)),
+                                        radius: SizeConfig.widthMultiplier * 7,
+                                        backgroundColor: Colors.white,
+                                      ),
                                 SizedBox(
                                   width: SizeConfig.widthMultiplier * 6,
                                 ),
@@ -227,7 +215,8 @@ class ProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     Spacer(),
-                                    Expanded(
+                                    SizedBox(
+                                      width: SizeConfig.widthMultiplier * 30,
                                       child: DropdownButtonFormField(
                                           decoration: InputDecoration(
                                             enabledBorder: InputBorder.none,
@@ -275,7 +264,8 @@ class ProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     Spacer(),
-                                    Expanded(
+                                    SizedBox(
+                                      width: SizeConfig.widthMultiplier * 30,
                                       child: DropdownButtonFormField(
                                           decoration: InputDecoration(
                                             enabledBorder: InputBorder.none,
@@ -351,7 +341,8 @@ class ProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     Spacer(),
-                                    Expanded(
+                                    SizedBox(
+                                      width: SizeConfig.widthMultiplier * 30,
                                       child: DropdownButtonFormField(
                                           decoration: InputDecoration(
                                             enabledBorder: InputBorder.none,
@@ -399,7 +390,8 @@ class ProfilePage extends StatelessWidget {
                                       ),
                                     ),
                                     Spacer(),
-                                    Expanded(
+                                    SizedBox(
+                                      width: SizeConfig.widthMultiplier * 30,
                                       child: DropdownButtonFormField(
                                           decoration: InputDecoration(
                                             enabledBorder: InputBorder.none,

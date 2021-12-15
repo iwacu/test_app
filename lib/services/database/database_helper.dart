@@ -35,6 +35,7 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE baby(
         id INTEGER PRIMARY KEY,
+        picture TEXT,
         name TEXT,
         sex TEXT,
         birthDay TEXT,
@@ -116,7 +117,7 @@ class DatabaseHelper {
   // ready babytasks
   Future<List<BabyTask>> getBabyTasks() async {
     Database db = await instance.database;
-    var response = await db.query('babyTask', orderBy: 'id');
+    var response = await db.query('babyTask', orderBy: 'id DESC');
     List<BabyTask> babyTasks = response.isNotEmpty
         ? response.map((c) => BabyTask.fromMap(c)).toList()
         : [];

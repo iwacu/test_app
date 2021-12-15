@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/bloc/bloc/form_saving_bloc.dart';
 import 'package:momnotebook/bloc/form_submission/form_sub.dart';
@@ -11,6 +14,7 @@ import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/show_snackBar.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/auth_cubit_cubit.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AddBabyForm extends StatefulWidget {
   const AddBabyForm({Key? key}) : super(key: key);
@@ -22,6 +26,8 @@ class AddBabyForm extends StatefulWidget {
 class _AddBabyFormState extends State<AddBabyForm> {
   int currentBox = 1;
   bool _status = false;
+  File? _babyImage;
+  File? _saveImage;
   DateTime _nowDate = DateTime.now();
   final _formKey = GlobalKey<FormState>();
   List<String> _relationships = [
@@ -114,7 +120,7 @@ class _AddBabyFormState extends State<AddBabyForm> {
                                                       38,
                                               decoration: BoxDecoration(
                                                 color: currentBox == 1
-                                                    ? greyOrange
+                                                    ? buttonBGColor
                                                     : whiteGrey,
                                                 borderRadius:
                                                     BorderRadius.circular(8),
@@ -222,22 +228,41 @@ class _AddBabyFormState extends State<AddBabyForm> {
                                     height: SizeConfig.heightMultiplier * 18,
                                     width: SizeConfig.widthMultiplier * 38,
                                     decoration: BoxDecoration(
-                                        color: greyOrange,
+                                        color: currentBox == 1
+                                            ? buttonBGColor
+                                            : greyOrange,
                                         shape: BoxShape.circle),
                                     child: Center(
-                                      child: Container(
-                                        height:
-                                            SizeConfig.heightMultiplier * 16,
-                                        width: SizeConfig.widthMultiplier * 34,
-                                        decoration: BoxDecoration(
-                                            color: primaryColor,
-                                            shape: BoxShape.circle),
-                                        child: Center(
-                                          child: Image.asset(
-                                            'assets/images/is.png',
-                                            height:
-                                                SizeConfig.heightMultiplier * 3,
-                                          ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          getImage();
+                                        },
+                                        child: Container(
+                                          height:
+                                              SizeConfig.heightMultiplier * 16,
+                                          width:
+                                              SizeConfig.widthMultiplier * 34,
+                                          decoration: BoxDecoration(
+                                              color: primaryColor,
+                                              shape: BoxShape.circle),
+                                          child: Center(
+                                              child: _babyImage == null
+                                                  ? Image.asset(
+                                                      'assets/images/is.png',
+                                                      height: SizeConfig
+                                                              .heightMultiplier *
+                                                          3,
+                                                    )
+                                                  : CircleAvatar(
+                                                      backgroundImage:
+                                                          FileImage(File(
+                                                              _babyImage!
+                                                                  .path)),
+                                                      radius: SizeConfig
+                                                              .widthMultiplier *
+                                                          12,
+                                                      backgroundColor:
+                                                          Colors.white)),
                                         ),
                                       ),
                                     ),
@@ -458,9 +483,10 @@ class _AddBabyFormState extends State<AddBabyForm> {
                                       context.read<FormSavingBloc>().add(
                                           SubmitFormSaveBaby(
                                               _nowDate.toString(),
-                                              currentBox == 1
-                                                  ? 'Boy'
-                                                  : 'Girl'));
+                                              currentBox == 1 ? 'Boy' : 'Girl',
+                                              _saveImage == null
+                                                  ? ''
+                                                  : _saveImage!.path));
                                       BlocProvider.of<AuthCubitCubit>(context)
                                           .getUser();
                                     }
@@ -476,6 +502,18 @@ class _AddBabyFormState extends State<AddBabyForm> {
         ),
       ),
     );
+  }
+
+  void getImage() async {
+    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      _babyImage = File(image!.path);
+    });
+    // getting a directory path for saving
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String path = appDocDir.path;
+    // copy the file to a new path
+    _saveImage = await _babyImage!.copy('$path/babyImage.png');
   }
 
   void _showDatePicker(ctx) {

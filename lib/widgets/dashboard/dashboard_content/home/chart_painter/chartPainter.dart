@@ -41,11 +41,10 @@ class TimelinePainter extends CustomPainter {
         if (element.taskName == 'sleeping' || element.taskName == 'walking') {
           var startTime = DateTime.parse(element.startTime);
           var endTime = DateTime.parse(element.endTime);
-          print('Before $i :: $c ');
           if (startTime.hour == endTime.hour) {
             canvas.drawCircle(
-                new Offset(
-                    i * (size.width * 1 / 6), size.height * (1.8 + index) / 2),
+                new Offset(i * (size.width * 1 / 6),
+                    size.height * (1.8 + (index - 0.3)) / 3),
                 size.width * 1 / 10,
                 paint);
           } else {
@@ -60,8 +59,8 @@ class TimelinePainter extends CustomPainter {
           print('c $i :: $c ');
         } else {
           canvas.drawCircle(
-              new Offset(
-                  i * (size.width * 1 / 6), size.height * (1.8 + index) / 2),
+              new Offset(i * (size.width * 1 / 6),
+                  size.height * (1.8 + (index - 0.3)) / 3),
               size.width * 1 / 10,
               paint);
         }

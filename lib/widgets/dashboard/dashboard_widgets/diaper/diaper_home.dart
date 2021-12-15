@@ -8,9 +8,12 @@ import 'package:momnotebook/constants/customAppBar.dart';
 import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
+import 'package:momnotebook/models/baby.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class HomeDiaper extends StatefulWidget {
-  HomeDiaper({Key? key}) : super(key: key);
+  final Baby baby;
+  HomeDiaper({Key? key, required this.baby}) : super(key: key);
 
   @override
   State<HomeDiaper> createState() => _HomeDiaperState();
@@ -27,7 +30,7 @@ class _HomeDiaperState extends State<HomeDiaper> {
       backgroundColor: bluewhite,
       appBar: CustomAppBar(
           height: SizeConfig.heightMultiplier * 9,
-          child: appBarDashboardW(context, 'Sam', () {}, () {})),
+          child: appBarDashboardW(widget.baby, context, () {}, () {})),
       body: Container(
         color: Colors.white,
         child: Container(
@@ -46,13 +49,13 @@ class _HomeDiaperState extends State<HomeDiaper> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Container(
-                      height: SizeConfig.heightMultiplier * 18,
-                      width: SizeConfig.widthMultiplier * 28,
+                      height: SizeConfig.heightMultiplier * 12,
+                      width: SizeConfig.widthMultiplier * 22,
                       decoration: BoxDecoration(
                           color: greenAccGray, shape: BoxShape.circle),
                       child: Center(
                         child: SvgPicture.asset('assets/icons/diaper.svg',
-                            height: SizeConfig.heightMultiplier * 8),
+                            height: SizeConfig.heightMultiplier * 6),
                       ),
                     ),
                   ),
@@ -64,7 +67,7 @@ class _HomeDiaperState extends State<HomeDiaper> {
                   child: Text(
                     'Diaper',
                     style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 3,
+                        fontSize: SizeConfig.textMultiplier * 2.5,
                         fontFamily: 'Montserrat',
                         fontWeight: FontWeight.w700,
                         color: Colors.black38),
@@ -73,15 +76,32 @@ class _HomeDiaperState extends State<HomeDiaper> {
                 SizedBox(
                   height: SizeConfig.heightMultiplier * 2,
                 ),
-                Center(
-                  child: Text(
-                    'Last: 4h 20min ago',
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w200,
-                        color: Colors.black38),
-                  ),
+                BlocBuilder<HomePageCubit, HomePageState>(
+                  builder: (context, state) {
+                    if (state is HomePageInitial) {
+                      return Center(
+                        child: Text('loading'),
+                      );
+                    } else if (state is HomePageCompleted) {
+                      var lastdps = state.babyTasks
+                          .where((element) => element.taskName == 'diaper')
+                          .toList();
+                      var lastdp = lastdps.isEmpty
+                          ? 'Start'
+                          : 'Last: ${timeago.format(DateTime.parse(lastdps[0].timeStamp))}';
+                      return Center(
+                        child: Text(
+                          lastdp,
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 2,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w200,
+                              color: Colors.black38),
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
                 ),
                 SizedBox(
                   height: SizeConfig.heightMultiplier * 3.5,

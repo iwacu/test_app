@@ -33,6 +33,6 @@ class SubmitFormSleeping extends FormSavingEvent {
 class SubmitFormSaveBaby extends FormSavingEvent {
   final String babyBirthDay;
   final String babySex;
-
-  SubmitFormSaveBaby(this.babyBirthDay, this.babySex);
+  final String babyImagePath;
+  SubmitFormSaveBaby(this.babyBirthDay, this.babySex, this.babyImagePath);
 }

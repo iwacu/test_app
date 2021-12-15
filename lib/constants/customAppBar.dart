@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/models/baby.dart';
 
 import 'boxIcon.dart';
 
@@ -69,8 +72,8 @@ appBarM(BuildContext context, String text, GestureTapCallback press,
   );
 }
 
-appBarDashboard(BuildContext context, String text, GestureTapCallback press,
-    GestureTapCallback reset) {
+appBarDashboard(Baby baby, BuildContext context, String text,
+    GestureTapCallback press, GestureTapCallback reset) {
   return Container(
     color: Colors.white,
     child: SafeArea(
@@ -80,42 +83,34 @@ appBarDashboard(BuildContext context, String text, GestureTapCallback press,
           crossAxisAlignment: CrossAxisAlignment.start,
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1.5),
-              height: SizeConfig.heightMultiplier * 6,
-              width: SizeConfig.widthMultiplier * 10,
-              decoration: BoxDecoration(
-                // color: kSecondaryColor.withOpacity(0.1),
-                image: DecorationImage(
-                    image: AssetImage('assets/images/user_icon.png')),
-                shape: BoxShape.circle,
-              ),
-            ),
+            baby.picture == ''
+                ? Container(
+                    padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1.5),
+                    height: SizeConfig.heightMultiplier * 6,
+                    width: SizeConfig.widthMultiplier * 10,
+                    decoration: BoxDecoration(
+                      // color: kSecondaryColor.withOpacity(0.1),
+                      image: DecorationImage(
+                          image: AssetImage('assets/images/user_icon.png')),
+                      shape: BoxShape.circle,
+                    ),
+                  )
+                : CircleAvatar(
+                    backgroundImage: FileImage(File(baby.picture)),
+                    radius: SizeConfig.widthMultiplier * 7,
+                    backgroundColor: Colors.white,
+                  ),
             SizedBox(
               width: SizeConfig.widthMultiplier * 6,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8),
-              child: Text(
-                text,
-                style: TextStyle(
-                    fontSize: SizeConfig.textMultiplier * 3,
-                    fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black38),
-              ),
+              child: Text(text,
+                  style: TextStyle(
+                      fontFamily: 'Montserrat',
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black38)),
             ),
-            Spacer(),
-            BoxIcon(
-              svgSrc: 'assets/icons/search.svg',
-              numOfitem: 0,
-              press: () => Navigator.pop(context),
-            ),
-            BoxIcon(
-              svgSrc: 'assets/icons/notification.svg',
-              numOfitem: 0,
-              press: () => Navigator.pop(context),
-            )
           ],
         ),
       ),
@@ -145,7 +140,7 @@ appBarDashboardAccount(BuildContext context, String text,
   );
 }
 
-appBarDashboardW(BuildContext context, String text, GestureTapCallback press,
+appBarDashboardW(Baby baby, BuildContext context, GestureTapCallback press,
     GestureTapCallback reset) {
   return Container(
     color: Colors.white,
@@ -164,28 +159,33 @@ appBarDashboardW(BuildContext context, String text, GestureTapCallback press,
             SizedBox(
               width: SizeConfig.widthMultiplier * 6,
             ),
-            Container(
-              padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1.5),
-              height: SizeConfig.heightMultiplier * 6,
-              width: SizeConfig.widthMultiplier * 10,
-              decoration: BoxDecoration(
-                // color: kSecondaryColor.withOpacity(0.1),
-                image: DecorationImage(
-                    image: AssetImage('assets/images/user_icon.png')),
-                shape: BoxShape.circle,
-              ),
-            ),
+            baby.picture == ''
+                ? Container(
+                    padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1.5),
+                    height: SizeConfig.heightMultiplier * 6,
+                    width: SizeConfig.widthMultiplier * 10,
+                    decoration: BoxDecoration(
+                      // color: kSecondaryColor.withOpacity(0.1),
+                      image: DecorationImage(
+                          image: AssetImage('assets/images/user_icon.png')),
+                      shape: BoxShape.circle,
+                    ),
+                  )
+                : CircleAvatar(
+                    backgroundImage: FileImage(File(baby.picture)),
+                    radius: SizeConfig.widthMultiplier * 7,
+                    backgroundColor: Colors.white,
+                  ),
             SizedBox(
               width: SizeConfig.widthMultiplier * 6,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Text(
-                text,
+                baby.name,
                 style: TextStyle(
-                    fontSize: SizeConfig.textMultiplier * 3,
                     fontFamily: 'Montserrat',
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.bold,
                     color: Colors.black38),
               ),
             ),
