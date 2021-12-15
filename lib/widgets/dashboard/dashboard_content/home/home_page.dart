@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(top: 32),
                     child: SvgPicture.asset(
                       "assets/icons/carrirage.svg",
-                      height: SizeConfig.imageSizeMultiplier * 30,
+                      height: SizeConfig.imageSizeMultiplier * 20,
                     ),
                   ),
                 )
