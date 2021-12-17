@@ -5,7 +5,6 @@ import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/auth_cubit_cubit.dart';
-import 'package:momnotebook/services/database/database_helper.dart';
 import 'package:momnotebook/widgets/splashScreen/splash_content.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -33,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
     {
       "title": "Add Caregivers",
       "text":
-          "Share with partner and family \nmembers and add multiple children.",
+          "Share with partner and family \nmembers and add multiple \nchildren.",
       "image": "assets/images/splash_3.png"
     },
   ];

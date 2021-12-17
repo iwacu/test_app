@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:holding_gesture/holding_gesture.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/constants/colors.dart';
@@ -123,8 +124,7 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                           children: [
                             GestureDetector(
                               onTap: () => setState(() {
-                                _left = true;
-                                _right = false;
+                                _left = !_left;
                               }),
                               child: Container(
                                 height: SizeConfig.heightMultiplier * 8,
@@ -150,8 +150,7 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                             ),
                             GestureDetector(
                               onTap: () => setState(() {
-                                _right = true;
-                                _left = false;
+                                _right = !_right;
                               }),
                               child: Container(
                                 height: SizeConfig.heightMultiplier * 8,
@@ -265,22 +264,23 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                GestureDetector(
-                                  onTap: () =>
-                                      context.read<CounterCubit>().decrement(),
-                                  child: Container(
-                                    height: SizeConfig.heightMultiplier * 14,
-                                    width: SizeConfig.widthMultiplier * 14,
-                                    decoration: BoxDecoration(
-                                        color: orGray, shape: BoxShape.circle),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.remove,
-                                        color: primaryColor,
+                                HoldDetector(
+                                    onHold: () => context
+                                        .read<CounterCubit>()
+                                        .decrement(),
+                                    child: Container(
+                                      height: SizeConfig.heightMultiplier * 14,
+                                      width: SizeConfig.widthMultiplier * 14,
+                                      decoration: BoxDecoration(
+                                          color: orGray,
+                                          shape: BoxShape.circle),
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.remove,
+                                          color: primaryColor,
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ),
+                                    )),
                                 Text(
                                   '${state.countValue.toString()} ml',
                                   style: TextStyle(
@@ -290,8 +290,8 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.black38),
                                 ),
-                                GestureDetector(
-                                  onTap: () =>
+                                HoldDetector(
+                                  onHold: () =>
                                       context.read<CounterCubit>().increment(),
                                   child: Container(
                                     height: SizeConfig.heightMultiplier * 14,

@@ -63,8 +63,8 @@ class _HomeDashboardState extends State<HomeDashboard> {
       ),
       floatingActionButton: _selectedIndex == 0
           ? SpeedDial(
-              animatedIcon: AnimatedIcons.menu_close,
               backgroundColor: buttonBGColor,
+              icon: Icons.add,
               curve: Curves.bounceIn,
               children: [
                 SpeedDialChild(
@@ -87,7 +87,7 @@ class _HomeDashboardState extends State<HomeDashboard> {
                 ),
                 SpeedDialChild(
                   child: SvgPicture.asset('assets/icons/breast-pumping.svg',
-                      height: SizeConfig.heightMultiplier * 3),
+                      height: SizeConfig.heightMultiplier * 2.3),
                   label: 'Breast Pumping',
                   backgroundColor: orGray,
                   onTap: () => Navigator.of(context).pushNamed(
@@ -112,7 +112,7 @@ class _HomeDashboardState extends State<HomeDashboard> {
                 ),
                 SpeedDialChild(
                   child: SvgPicture.asset('assets/icons/diaper.svg',
-                      height: SizeConfig.heightMultiplier * 3),
+                      height: SizeConfig.heightMultiplier * 2),
                   label: 'Diaper',
                   backgroundColor: greenAccGray,
                   onTap: () => Navigator.of(context)
@@ -131,6 +131,14 @@ class _HomeDashboardState extends State<HomeDashboard> {
           : Container(),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3), // changes position of shadow
+            ),
+          ],
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(30), topLeft: Radius.circular(30)),
         ),

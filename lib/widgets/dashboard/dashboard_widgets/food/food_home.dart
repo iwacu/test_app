@@ -277,6 +277,7 @@ class _HomeFoodState extends State<HomeFood> {
                                 Expanded(
                                   child: TextFormField(
                                       controller: _amount,
+                                      keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
                                         hintText: 'input',
                                         enabledBorder: new UnderlineInputBorder(

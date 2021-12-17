@@ -44,7 +44,7 @@ class TimelinePainter extends CustomPainter {
           if (startTime.hour == endTime.hour) {
             canvas.drawCircle(
                 new Offset(i * (size.width * 1 / 6),
-                    size.height * (1.8 + (index - 0.3)) / 3),
+                    size.height * (2.4 + (index - 0.3)) / 3),
                 size.width * 1 / 10,
                 paint);
           } else {
@@ -60,7 +60,7 @@ class TimelinePainter extends CustomPainter {
         } else {
           canvas.drawCircle(
               new Offset(i * (size.width * 1 / 6),
-                  size.height * (1.8 + (index - 0.3)) / 3),
+                  size.height * (2.4 + (index - 0.3)) / 3),
               size.width * 1 / 10,
               paint);
         }

@@ -97,17 +97,18 @@ appBarDashboard(Baby baby, BuildContext context, String text,
                   )
                 : CircleAvatar(
                     backgroundImage: FileImage(File(baby.picture)),
-                    radius: SizeConfig.widthMultiplier * 7,
+                    radius: SizeConfig.widthMultiplier * 5,
                     backgroundColor: Colors.white,
                   ),
             SizedBox(
-              width: SizeConfig.widthMultiplier * 6,
+              width: SizeConfig.widthMultiplier * 4,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Text(text,
                   style: TextStyle(
                       fontFamily: 'Montserrat',
+                      fontSize: SizeConfig.textMultiplier * 2.8,
                       fontWeight: FontWeight.bold,
                       color: Colors.black38)),
             ),
@@ -173,7 +174,7 @@ appBarDashboardW(Baby baby, BuildContext context, GestureTapCallback press,
                   )
                 : CircleAvatar(
                     backgroundImage: FileImage(File(baby.picture)),
-                    radius: SizeConfig.widthMultiplier * 7,
+                    radius: SizeConfig.widthMultiplier * 5,
                     backgroundColor: Colors.white,
                   ),
             SizedBox(
@@ -186,6 +187,7 @@ appBarDashboardW(Baby baby, BuildContext context, GestureTapCallback press,
                 style: TextStyle(
                     fontFamily: 'Montserrat',
                     fontWeight: FontWeight.bold,
+                    fontSize: SizeConfig.textMultiplier * 2.8,
                     color: Colors.black38),
               ),
             ),

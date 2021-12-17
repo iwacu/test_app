@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/customAppBar.dart';
@@ -161,7 +162,7 @@ class _HomeDiaperState extends State<HomeDiaper> {
                                   decoration: BoxDecoration(
                                       border: Border.all(color: greyColor)),
                                   child: Text(
-                                    '10:40 Am',
+                                    DateFormat('hh:mm a').format(_nowDate),
                                     style: TextStyle(
                                         fontSize: SizeConfig.textMultiplier * 2,
                                         fontFamily: 'Montserrat',

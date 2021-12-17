@@ -55,7 +55,6 @@ class _AddBabyFormState extends State<AddBabyForm> {
             listener: (context, state) {
               final formStatus = state.formSubmissionStatus;
               if (formStatus is SubmissionSuccessBaby) {
-                showSnackBar(context, formStatus.message);
                 Navigator.of(context).pushNamed('/home_dashboard',
                     arguments: {'baby': formStatus.baby});
               }
@@ -94,182 +93,10 @@ class _AddBabyFormState extends State<AddBabyForm> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Stack(
-                              clipBehavior: Clip.antiAlias,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 28, vertical: 8),
-                                  child: Row(
-                                    children: [
-                                      BlocBuilder<FormSavingBloc,
-                                          FormSavingState>(
-                                        builder: (context, state) {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                currentBox = 1;
-                                              });
-                                            },
-                                            child: Container(
-                                              height:
-                                                  SizeConfig.heightMultiplier *
-                                                      18,
-                                              width:
-                                                  SizeConfig.widthMultiplier *
-                                                      38,
-                                              decoration: BoxDecoration(
-                                                color: currentBox == 1
-                                                    ? buttonBGColor
-                                                    : whiteGrey,
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 22, top: 29),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      'assets/icons/girl.svg',
-                                                      color: currentBox == 1
-                                                          ? primaryColor
-                                                          : Colors.grey,
-                                                    ),
-                                                    Text(
-                                                      "Boy",
-                                                      // textAlign: TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontSize: SizeConfig
-                                                                  .textMultiplier *
-                                                              2,
-                                                          color: currentBox == 1
-                                                              ? Colors.white
-                                                              : Colors.black38,
-                                                          fontFamily:
-                                                              'Montserrat',
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      BlocBuilder<FormSavingBloc,
-                                          FormSavingState>(
-                                        builder: (context, state) {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              setState(() {
-                                                currentBox = 2;
-                                              });
-                                            },
-                                            child: Container(
-                                              height:
-                                                  SizeConfig.heightMultiplier *
-                                                      18,
-                                              width:
-                                                  SizeConfig.widthMultiplier *
-                                                      38,
-                                              decoration: BoxDecoration(
-                                                color: currentBox == 2
-                                                    ? greyOrange
-                                                    : whiteGrey,
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 22, top: 29),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      'assets/icons/boy.svg',
-                                                      color: currentBox == 2
-                                                          ? Colors.white
-                                                          : Colors.black38,
-                                                    ),
-                                                    Text(
-                                                      "Girl",
-                                                      // textAlign: TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontSize: SizeConfig
-                                                                  .textMultiplier *
-                                                              2,
-                                                          color: currentBox == 2
-                                                              ? Colors.white
-                                                              : Colors.black38,
-                                                          fontFamily:
-                                                              'Montserrat',
-                                                          fontWeight:
-                                                              FontWeight.w500),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Positioned(
-                                  top: 8,
-                                  left: SizeConfig.widthMultiplier * 25,
-                                  child: Container(
-                                    height: SizeConfig.heightMultiplier * 18,
-                                    width: SizeConfig.widthMultiplier * 38,
-                                    decoration: BoxDecoration(
-                                        color: currentBox == 1
-                                            ? buttonBGColor
-                                            : greyOrange,
-                                        shape: BoxShape.circle),
-                                    child: Center(
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          getImage();
-                                        },
-                                        child: Container(
-                                          height:
-                                              SizeConfig.heightMultiplier * 16,
-                                          width:
-                                              SizeConfig.widthMultiplier * 34,
-                                          decoration: BoxDecoration(
-                                              color: primaryColor,
-                                              shape: BoxShape.circle),
-                                          child: Center(
-                                              child: _babyImage == null
-                                                  ? Image.asset(
-                                                      'assets/images/is.png',
-                                                      height: SizeConfig
-                                                              .heightMultiplier *
-                                                          3,
-                                                    )
-                                                  : CircleAvatar(
-                                                      backgroundImage:
-                                                          FileImage(File(
-                                                              _babyImage!
-                                                                  .path)),
-                                                      radius: SizeConfig
-                                                              .widthMultiplier *
-                                                          12,
-                                                      backgroundColor:
-                                                          Colors.white)),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
+                            SizedBox(
+                              height: SizeConfig.heightMultiplier * 2,
                             ),
+                            _babySex(),
                             SizedBox(
                               height: SizeConfig.heightMultiplier * 2,
                             ),
@@ -344,15 +171,22 @@ class _AddBabyFormState extends State<AddBabyForm> {
                                     onTap: () => _showDatePicker(context),
                                     child: Container(
                                       decoration: BoxDecoration(
-                                          border: Border.all(color: greyColor)),
-                                      child: Text(
-                                        Jiffy(_nowDate).MMMEd,
-                                        style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.textMultiplier * 2,
-                                            fontFamily: 'Montserrat',
-                                            color: Colors.black38,
-                                            fontWeight: FontWeight.w500),
+                                          color: primaryColor,
+                                          border:
+                                              Border.all(color: Colors.black26),
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(4.0),
+                                        child: Text(
+                                          Jiffy(_nowDate).MMMEd,
+                                          style: TextStyle(
+                                              fontSize:
+                                                  SizeConfig.textMultiplier * 2,
+                                              fontFamily: 'Montserrat',
+                                              color: Colors.black38,
+                                              fontWeight: FontWeight.w500),
+                                        ),
                                       ),
                                     ),
                                   )
@@ -501,6 +335,146 @@ class _AddBabyFormState extends State<AddBabyForm> {
           ),
         ),
       ),
+    );
+  }
+
+  _babySex() {
+    return Stack(
+      clipBehavior: Clip.antiAlias,
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 8),
+          width: double.infinity,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              BlocBuilder<FormSavingBloc, FormSavingState>(
+                builder: (context, state) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        currentBox = 1;
+                      });
+                    },
+                    child: Container(
+                      height: SizeConfig.heightMultiplier * 14,
+                      width: SizeConfig.widthMultiplier * 38,
+                      decoration: BoxDecoration(
+                        color: currentBox == 1 ? buttonBGColor : whiteGrey,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 22, top: 29),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/girl.svg',
+                              color:
+                                  currentBox == 1 ? primaryColor : Colors.grey,
+                            ),
+                            Text(
+                              "Boy",
+                              // textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  color: currentBox == 1
+                                      ? Colors.white
+                                      : Colors.black38,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              BlocBuilder<FormSavingBloc, FormSavingState>(
+                builder: (context, state) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        currentBox = 2;
+                      });
+                    },
+                    child: Container(
+                      height: SizeConfig.heightMultiplier * 14,
+                      width: SizeConfig.widthMultiplier * 38,
+                      decoration: BoxDecoration(
+                        color: currentBox == 2 ? greyOrange : whiteGrey,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 22, top: 29),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            SvgPicture.asset(
+                              'assets/icons/boy.svg',
+                              color: currentBox == 2
+                                  ? Colors.white
+                                  : Colors.black38,
+                            ),
+                            Text(
+                              "Girl",
+                              // textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  color: currentBox == 2
+                                      ? Colors.white
+                                      : Colors.black38,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
+        ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: Container(
+              height: SizeConfig.heightMultiplier * 14,
+              width: SizeConfig.widthMultiplier * 34,
+              decoration: BoxDecoration(
+                  color: currentBox == 1 ? buttonBGColor : greyOrange,
+                  shape: BoxShape.circle),
+              child: Center(
+                child: GestureDetector(
+                  onTap: () {
+                    getImage();
+                  },
+                  child: Container(
+                    height: SizeConfig.heightMultiplier * 10,
+                    width: SizeConfig.widthMultiplier * 28,
+                    decoration: BoxDecoration(
+                        color: primaryColor, shape: BoxShape.circle),
+                    child: Center(
+                        child: _babyImage == null
+                            ? Image.asset(
+                                'assets/images/is.png',
+                                height: SizeConfig.heightMultiplier * 3,
+                              )
+                            : CircleAvatar(
+                                backgroundImage:
+                                    FileImage(File(_babyImage!.path)),
+                                radius: SizeConfig.widthMultiplier * 9,
+                                backgroundColor: Colors.white)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        )
+      ],
     );
   }
 

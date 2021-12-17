@@ -27,11 +27,14 @@ class AddBaby extends StatelessWidget {
               height: SizeConfig.heightMultiplier * 2,
             ),
             Center(
-              child: Text(
-                "Tell us a little bit about your baby",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontFamily: 'Montserrat', fontWeight: FontWeight.bold),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 18),
+                child: Text(
+                  "If you are here, means some adorable baby needs your attention That's so exiting!! Let us help with the routine writing, so you could put all your love to the cute one! Tell us more about your baby!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontFamily: 'Montserrat', fontWeight: FontWeight.bold),
+                ),
               ),
             ),
             Spacer(),

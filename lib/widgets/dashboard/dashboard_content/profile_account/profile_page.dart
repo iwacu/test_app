@@ -54,13 +54,34 @@ class ProfilePage extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 12),
-                        child: Text(
-                          'Baby',
-                          style: TextStyle(
-                              fontSize: SizeConfig.textMultiplier * 2.5,
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.w600,
-                              color: Colors.black38),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Baby',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2.5,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black38),
+                            ),
+                            Spacer(),
+                            Icon(
+                              Icons.add,
+                              color: buttonBGColor,
+                            ),
+                            SizedBox(
+                              width: SizeConfig.widthMultiplier * 1.2,
+                            ),
+                            Text(
+                              'Add baby',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w300,
+                                  color: buttonBGColor),
+                            ),
+                          ],
                         ),
                       ),
                       Padding(

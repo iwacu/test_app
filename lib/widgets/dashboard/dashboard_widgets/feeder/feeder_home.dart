@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:holding_gesture/holding_gesture.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:momnotebook/constants/colors.dart';
@@ -196,8 +197,8 @@ class _HomeFeederState extends State<HomeFeeder> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                GestureDetector(
-                                  onTap: () =>
+                                HoldDetector(
+                                  onHold: () =>
                                       context.read<CounterCubit>().decrement(),
                                   child: SvgPicture.asset(
                                       'assets/icons/minus-circle.svg',
@@ -212,8 +213,8 @@ class _HomeFeederState extends State<HomeFeeder> {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.black38),
                                 ),
-                                GestureDetector(
-                                  onTap: () =>
+                                HoldDetector(
+                                  onHold: () =>
                                       context.read<CounterCubit>().increment(),
                                   child: SvgPicture.asset(
                                       'assets/icons/icon-add.svg',

@@ -182,7 +182,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
 
   _scrollableDates() {
     return Padding(
-        padding: const EdgeInsets.only(left: 32),
+        padding: const EdgeInsets.only(left: 12),
         child: WeeklyDatePicker(
             enableWeeknumberText: false,
             selectedBackgroundColor: buttonBGColor,

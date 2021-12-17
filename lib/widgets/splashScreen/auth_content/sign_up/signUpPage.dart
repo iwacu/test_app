@@ -17,31 +17,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
-  // int currentPage = 0;
-  // List<Map<String, dynamic>> splashData = [
-  //   {
-  //     "title": "Add your name",
-  //     "text": "First and Last name",
-  //     "image": "assets/images/signUp_1.png",
-  //     "arr": [],
-  //   },
-  //   {
-  //     "title": "Sign up with your email",
-  //     "text": "name@example.com",
-  //     "image": "assets/images/signUp_2.png",
-  //     "arr": [],
-  //   },
-  //   {
-  //     "title": "Create your password",
-  //     "text": "Atleast 8 characters",
-  //     "image": "assets/images/signUp_3.png",
-  //     "arr": [
-  //       '8 characters minimum',
-  //       'At least one number',
-  //       'Upper & lowercase character'
-  //     ],
-  //   },
-  // ];
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -55,7 +31,6 @@ class _SignUpPageState extends State<SignUpPage> {
           listener: (context, state) {
             final formStatus = state.formSubmissionStatus;
             if (formStatus is SubmissionSuccess) {
-              showSnackBar(context, formStatus.message);
               Navigator.of(context).pushNamed('/add_baby');
             }
           },
@@ -83,7 +58,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   // Spacer(flex: 2),
                   Center(
                     child: Text(
-                      "Add your name",
+                      "Hi,What's your name",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'Montserrat',
@@ -104,6 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               color: bluewhite,
                               borderRadius: BorderRadius.circular(15)),
                           child: TextFormField(
+                              textCapitalization: TextCapitalization.characters,
                               validator: (value) => state.isValidUsername
                                   ? null
                                   : 'Enter your First and Last name',

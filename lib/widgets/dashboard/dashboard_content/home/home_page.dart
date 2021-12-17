@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 18, left: 12),
+                padding: const EdgeInsets.only(top: 18, left: 2),
                 child: Container(
                   height: SizeConfig.heightMultiplier * 16,
                   child: ListView.builder(
@@ -226,7 +226,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -405,7 +405,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -568,7 +568,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -686,7 +686,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -696,8 +696,8 @@ class _HomePageState extends State<HomePage> {
                     shape: BoxShape.circle),
                 child: Center(
                   child: SvgPicture.asset(
-                    "assets/icons/${baby.taskName}.svg",
-                    height: SizeConfig.heightMultiplier * 4,
+                    "assets/icons/diaperr.svg",
+                    height: SizeConfig.heightMultiplier * 3,
                   ),
                 ),
               ),
@@ -844,7 +844,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -1023,7 +1023,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -1034,7 +1034,7 @@ class _HomePageState extends State<HomePage> {
                 child: Center(
                   child: SvgPicture.asset(
                     "assets/icons/${baby.taskName}.svg",
-                    height: SizeConfig.heightMultiplier * 4,
+                    height: SizeConfig.heightMultiplier * 3,
                   ),
                 ),
               ),
@@ -1102,7 +1102,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 190,
                     child: Text("${baby.note}",
-                        maxLines: 1,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
                         style: TextStyle(
@@ -1141,7 +1141,7 @@ class _HomePageState extends State<HomePage> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
