@@ -9,8 +9,6 @@ import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/models/baby.dart';
 import 'package:momnotebook/widgets/dashboard/dashboard_content/home/home_page.dart';
-
-import 'dashboard_content/growth/growth_page.dart';
 import 'dashboard_content/profile_account/profile_page.dart';
 import 'dashboard_content/statistics/statistics_page.dart';
 
@@ -42,8 +40,7 @@ class _HomeDashboardState extends State<HomeDashboard> {
           height: SizeConfig.heightMultiplier * 9,
           child: _selectedIndex == 2
               ? appBarDashboardAccount(context, 'Account', () {}, () {})
-              : appBarDashboard(
-                  widget.baby, context, '${widget.baby.name}', () {}, () {})),
+              : appBarDashboard(context, () {}, () {})),
       body: BlocBuilder<HomePageCubit, HomePageState>(
         builder: (context, state) {
           if (state is HomePageInitial) {
@@ -51,8 +48,6 @@ class _HomeDashboardState extends State<HomeDashboard> {
               child: Text('loading'),
             );
           } else if (state is HomePageCompleted) {
-            print('fffffffffffff : => ${state.babyTasks.length}');
-
             return IndexedStack(
               index: _selectedIndex,
               children: widgetList,

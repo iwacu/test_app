@@ -135,7 +135,6 @@ class TimeLineChart extends CustomPainter {
 
   void getByDates(
       Canvas canvas, Size size, int i, double c, List<BabyTask> tasks) {
-    print('Number of tasksssssssssssssssssss ${tasks.length}');
     var mondaP = 16.0;
     var tueP = 3.5;
     var wend = 2.5;
@@ -238,7 +237,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 2:
           {
-            print(index);
             canvas.drawCircle(
                 new Offset(size.width * 1 / (datePosition - (index * 8)),
                     size.height * c),
@@ -257,7 +255,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 4:
           {
-            print('indexxxxxxxxx $index');
             canvas.drawCircle(
                 new Offset(size.width * 1 / (datePosition - (index * 3)),
                     size.height * c),
@@ -304,7 +301,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 2:
           {
-            print(index);
             canvas.drawCircle(
                 new Offset(size.width * 1 / (datePosition - (index * 8)),
                     size.height * c),
@@ -323,7 +319,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 4:
           {
-            print('indexxxxxxxxx $index');
             canvas.drawCircle(
                 new Offset(size.width * 1 / (datePosition - (index * 3)),
                     size.height * c),
@@ -371,7 +366,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 2:
           {
-            print(index);
             canvas.drawCircle(
                 new Offset(size.width * 1 / ((datePosition + 1.4) - index),
                     size.height * c),
@@ -391,7 +385,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 4:
           {
-            print('indexxxxxxxxx $index');
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 1.4) - (index / 3)),
@@ -449,7 +442,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 2:
           {
-            print(index);
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 0.4) - (index / 3)),
@@ -470,7 +462,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 4:
           {
-            print('indexxxxxxxxx $index');
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 0.4) - (index / 8)),
@@ -528,7 +519,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 2:
           {
-            print(index);
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 0.2) - (index / 4)),
@@ -549,7 +539,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 4:
           {
-            print('indexxxxxxxxx $index');
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 0.2) - (index / 12)),
@@ -607,7 +596,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 2:
           {
-            print(index);
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 0.16) - (index / 6)),
@@ -628,7 +616,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 4:
           {
-            print('indexxxxxxxxx $index');
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 0.16) - (index / 16)),
@@ -686,7 +673,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 2:
           {
-            print(index);
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 0.10) - (index / 8)),
@@ -707,7 +693,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 4:
           {
-            print('indexxxxxxxxx $index');
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 0.10) - (index / 20)),
@@ -765,7 +750,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 2:
           {
-            print(index);
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 0.047) - (index / 10)),
@@ -786,7 +770,6 @@ class TimeLineChart extends CustomPainter {
           break;
         case 4:
           {
-            print('indexxxxxxxxx $index');
             canvas.drawCircle(
                 new Offset(
                     size.width * 1 / ((datePosition + 0.047) - (index / 26)),

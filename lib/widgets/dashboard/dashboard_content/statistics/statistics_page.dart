@@ -1,4 +1,3 @@
-import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -84,7 +83,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           width: SizeConfig.widthMultiplier * 20,
                           child: DropdownButtonFormField<int>(
                             onChanged: (value) {
-                              print(value);
+                              // to_do change year according to selected time
                             },
                             hint: Text(
                               '$_year',
@@ -129,7 +128,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
 
   _scrollTasks() {
     return Padding(
-      padding: const EdgeInsets.only(left: 12),
+      padding: const EdgeInsets.only(left: 2),
       child: Container(
         height: SizeConfig.heightMultiplier * 18,
         child: ListView.builder(
@@ -147,7 +146,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   child: Center(
                     child: SvgPicture.asset(
                       widget.splashData[index]['image']!,
-                      height: SizeConfig.heightMultiplier * 4,
+                      height: SizeConfig.heightMultiplier * 2.5,
                     ),
                   ),
                 ),
@@ -155,29 +154,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
             }),
       ),
     );
-  }
-
-  _scrollDates() {
-    return Padding(
-        padding: const EdgeInsets.only(left: 32),
-        child: Container(
-          child: DatePicker(
-            DateTime.now(),
-            // height: SizeConfig.heightMultiplier * 14,
-            // width: SizeConfig.widthMultiplier * 1,
-            initialSelectedDate: DateTime.now(),
-            onDateChange: (value) {
-              print(value);
-            },
-            selectionColor: buttonBGColor,
-            selectedTextColor: primaryColor,
-            dateTextStyle: TextStyle(
-                fontSize: SizeConfig.textMultiplier * 2,
-                fontFamily: 'Montserrat',
-                fontWeight: FontWeight.w500,
-                color: Colors.black38),
-          ),
-        ));
   }
 
   _scrollableDates() {
@@ -208,8 +184,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
 
           _startTime = time;
           _endTime = time.add(Duration(days: 6));
-          print(
-              ' Start time :: ${_startTime.toString()},_end time :: ${_endTime.toString()} Monday :: $_mday\n Tuesday::$_tday\n Wend::$_wday\n Thday::$_thay\n frday::$_fday\n satday::$_satday\n sunday::$_sunday\n');
         }
         break;
       case 2:
@@ -224,8 +198,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
           _startTime = time;
           _startTime = time.subtract(Duration(days: 1));
           _endTime = time.add(Duration(days: 5));
-          print(
-              ' Start time :: ${_startTime.toString()},_end time :: ${_endTime.toString()} Monday :: $_mday\n Tuesday::$_tday\n Wend::$_wday\n Thday::$_thay\n frday::$_fday\n satday::$_satday\n sunday::$_sunday\n');
         }
 
         break;
@@ -240,8 +212,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
           _sunday = day + 4;
           _startTime = time.subtract(Duration(days: 2));
           _endTime = time.add(Duration(days: 4));
-          print(
-              ' Start time :: ${_startTime.toString()},_end time :: ${_endTime.toString()} Monday :: $_mday\n Tuesday::$_tday\n Wend::$_wday\n Thday::$_thay\n frday::$_fday\n satday::$_satday\n sunday::$_sunday\n');
         }
 
         break;
@@ -256,8 +226,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
           _sunday = day + 3;
           _startTime = time.subtract(Duration(days: 3));
           _endTime = time.add(Duration(days: 3));
-          print(
-              ' Start time :: ${_startTime.toString()},_end time :: ${_endTime.toString()} Monday :: $_mday\n Tuesday::$_tday\n Wend::$_wday\n Thday::$_thay\n frday::$_fday\n satday::$_satday\n sunday::$_sunday\n');
         }
 
         break;
@@ -272,8 +240,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
           _sunday = day + 2;
           _startTime = time.subtract(Duration(days: 4));
           _endTime = time.add(Duration(days: 2));
-          print(
-              ' Start time :: ${_startTime.toString()},_end time :: ${_endTime.toString()} Monday :: $_mday\n Tuesday::$_tday\n Wend::$_wday\n Thday::$_thay\n frday::$_fday\n satday::$_satday\n sunday::$_sunday\n');
         }
 
         break;
@@ -288,8 +254,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
           _sunday = day + 1;
           _startTime = time.subtract(Duration(days: 5));
           _endTime = time.add(Duration(days: 1));
-          print(
-              ' Start time :: ${_startTime.toString()},_end time :: ${_endTime.toString()} Monday :: $_mday\n Tuesday::$_tday\n Wend::$_wday\n Thday::$_thay\n frday::$_fday\n satday::$_satday\n sunday::$_sunday\n');
         }
 
         break;
@@ -304,8 +268,6 @@ class _StatisticsPageState extends State<StatisticsPage> {
           _sunday = day;
           _startTime = time.subtract(Duration(days: 6));
           _endTime = time;
-          print(
-              ' Start time :: ${_startTime.toString()}, _end time :: ${_endTime.toString()}, Monday :: $_mday\n Tuesday::$_tday\n Wend::$_wday\n Thday::$_thay\n frday::$_fday\n satday::$_satday\n sunday::$_sunday\n');
         }
 
         break;

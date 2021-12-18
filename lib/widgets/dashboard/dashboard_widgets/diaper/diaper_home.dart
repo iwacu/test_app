@@ -298,6 +298,7 @@ class _HomeDiaperState extends State<HomeDiaper> {
                       var fnl =
                           di.substring(startIndex + start.length, endIndex);
                       BlocProvider.of<HomePageCubit>(context).saveTasksDiaper(
+                          baby: widget.baby,
                           pee: _pee ? 0 : 1,
                           poop: _poop ? 0 : 1,
                           taskName: 'diaper',

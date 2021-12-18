@@ -361,6 +361,7 @@ class _HomeFoodState extends State<HomeFood> {
                         var fnl =
                             di.substring(startIndex + start.length, endIndex);
                         BlocProvider.of<HomePageCubit>(context).saveTasks(
+                            baby: widget.baby,
                             note: _text.text,
                             color: fnl,
                             amount: _amount.text,

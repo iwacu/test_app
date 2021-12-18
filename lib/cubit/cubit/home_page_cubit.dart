@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:momnotebook/models/baby.dart';
 import 'package:momnotebook/models/babyTask.dart';
 import 'package:momnotebook/services/database/database_helper.dart';
 
@@ -13,14 +14,17 @@ class HomePageCubit extends Cubit<HomePageState> {
     if (state is HomePageCompleted == false) {
       emit(HomePageInitial());
     }
-    var response = await DatabaseHelper.instance.getBabyTasks();
+    var user = await DatabaseHelper.instance.getUser();
+    var response =
+        await DatabaseHelper.instance.getBabyTasks(user.object!.babyId);
     print('ggggggggggggggggggggggggg ${response.length}');
 
     emit(HomePageCompleted(response));
   }
 
   void saveTasks(
-      {String? note,
+      {Baby? baby,
+      String? note,
       String? foodGroup,
       String? amount,
       String? amountScale,
@@ -28,7 +32,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       String? color,
       Duration? duration}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
-        babyId: 1,
+        babyId: baby!.id!,
         taskName: taskName!,
         timeStamp: DateTime.now().toString(),
         note: note!,
@@ -52,7 +56,8 @@ class HomePageCubit extends Cubit<HomePageState> {
   }
 
   void saveTasksBP(
-      {String? note,
+      {Baby? baby,
+      String? note,
       String? foodGroup,
       String? amount,
       String? amountScale,
@@ -60,7 +65,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       String? color,
       Duration? duration}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
-        babyId: 1,
+        babyId: baby!.id!,
         taskName: taskName!,
         timeStamp: DateTime.now().toString(),
         note: note!,
@@ -84,7 +89,8 @@ class HomePageCubit extends Cubit<HomePageState> {
   }
 
   void saveTasksBF(
-      {String? note,
+      {Baby? baby,
+      String? note,
       String? foodGroup,
       String? amount,
       String? amountScale,
@@ -94,7 +100,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       String? color,
       Duration? duration}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
-        babyId: 1,
+        babyId: baby!.id!,
         taskName: taskName!,
         timeStamp: DateTime.now().toString(),
         note: note!,
@@ -118,7 +124,8 @@ class HomePageCubit extends Cubit<HomePageState> {
   }
 
   void saveTasksDiaper(
-      {String? note,
+      {Baby? baby,
+      String? note,
       String? foodGroup,
       String? amount,
       String? amountScale,
@@ -128,7 +135,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       String? color,
       Duration? duration}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
-        babyId: 1,
+        babyId: baby!.id!,
         taskName: taskName!,
         timeStamp: DateTime.now().toString(),
         note: note!,
@@ -152,7 +159,8 @@ class HomePageCubit extends Cubit<HomePageState> {
   }
 
   void saveTasksWalkingSleeping(
-      {String? note,
+      {Baby? baby,
+      String? note,
       String? foodGroup,
       String? amount,
       String? amountScale,
@@ -164,7 +172,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       String? color,
       Duration? duration}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
-        babyId: 1,
+        babyId: baby!.id!,
         taskName: taskName!,
         timeStamp: DateTime.now().toString(),
         note: note!,

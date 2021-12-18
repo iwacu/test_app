@@ -512,6 +512,7 @@ class _HomeSleepState extends State<HomeSleep> {
                                   startIndex + start.length, endIndex);
                               BlocProvider.of<HomePageCubit>(context)
                                   .saveTasksWalkingSleeping(
+                                      baby: widget.baby,
                                       taskName: 'sleeping',
                                       note: _text.text,
                                       startTime: _startTime,

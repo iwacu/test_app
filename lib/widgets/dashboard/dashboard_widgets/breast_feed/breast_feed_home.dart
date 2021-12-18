@@ -290,6 +290,7 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                       var fnl =
                           di.substring(startIndex + start.length, endIndex);
                       BlocProvider.of<HomePageCubit>(context).saveTasksBF(
+                          baby: widget.baby,
                           note: _text.text,
                           foodGroup: '',
                           color: fnl,

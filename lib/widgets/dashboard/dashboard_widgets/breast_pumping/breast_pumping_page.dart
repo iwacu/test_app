@@ -350,6 +350,7 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                             var fnl = di.substring(
                                 startIndex + start.length, endIndex);
                             BlocProvider.of<HomePageCubit>(context).saveTasksBP(
+                                baby: widget.baby,
                                 note: _text.text,
                                 foodGroup: '',
                                 color: fnl,

@@ -7,7 +7,8 @@ class AuthCubitInitial extends AuthCubitState {}
 class AuthCubitUser extends AuthCubitState {
   final User user;
   final Baby baby;
-  AuthCubitUser(this.user, this.baby);
+  final List<Baby> babies;
+  AuthCubitUser(this.user, this.baby, this.babies);
 }
 
 class AuthCubitNoUser extends AuthCubitState {}

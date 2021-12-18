@@ -33,8 +33,8 @@ class FormSavingBloc extends Bloc<FormSavingEvent, FormSavingState> {
       if (user.object == null) {
         print('user object null');
         // save user to database
-        var ui =
-            await DatabaseHelper.instance.addUser(User(name: state.userName));
+        var ui = await DatabaseHelper.instance
+            .addUser(User(name: state.userName, babyId: 1));
         print('codecodeocodecoe $ui');
         yield state.copyWith(
             formSubmissionStatus:
@@ -53,7 +53,8 @@ class FormSavingBloc extends Bloc<FormSavingEvent, FormSavingState> {
           birthDay: event.babyBirthDay,
           premature: state.babyPremature,
           relationship: state.babyRelationship));
-      var baby = await DatabaseHelper.instance.getBaby();
+      var user = await DatabaseHelper.instance.getUser();
+      var baby = await DatabaseHelper.instance.getBaby(user.object!.babyId);
 
       yield state.copyWith(
           formSubmissionStatus: SubmissionSuccessBaby(

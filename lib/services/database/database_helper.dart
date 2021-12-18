@@ -29,7 +29,8 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE user(
         id INTEGER PRIMARY KEY,
-        name TEXT
+        name TEXT,
+        baby_id INTEGER
       )
     ''');
     await db.execute('''
@@ -94,13 +95,33 @@ class DatabaseHelper {
   }
 
   // read baby tbl
-  Future<Response<Baby>> getBaby() async {
+  Future<Response<Baby>> getBaby(int id) async {
     Database db = await instance.database;
-    var res = await db.query("baby", where: "id = ?", whereArgs: [1]);
+    var res = await db.query("baby", where: "id = ?", whereArgs: [id]);
     return Response(
         object: res.isNotEmpty ? Baby.fromMap(res.first) : null,
         error: false,
         message: 'success');
+  }
+
+  // ready babies
+  Future<List<Baby>> getBabies() async {
+    Database db = await instance.database;
+    var response = await db.query('baby', orderBy: 'id');
+    List<Baby> babies = response.isNotEmpty
+        ? response.map((c) => Baby.fromMap(c)).toList()
+        : [];
+    return babies;
+  }
+
+  // update user_table
+  Future<int> updateUser(User user) async {
+    Database db = await instance.database;
+    print('bbbbbb${user.name}bbb${user.babyId}bbbbbb${user.id}');
+
+    var res = await db
+        .update('user', user.toMap(), where: "id = ?", whereArgs: [user.id]);
+    return res;
   }
 
   // read timer tbl
@@ -115,9 +136,10 @@ class DatabaseHelper {
   }
 
   // ready babytasks
-  Future<List<BabyTask>> getBabyTasks() async {
+  Future<List<BabyTask>> getBabyTasks(int id) async {
     Database db = await instance.database;
-    var response = await db.query('babyTask', orderBy: 'id DESC');
+    var response = await db.query('babyTask',
+        where: "baby_id = ?", whereArgs: [id], orderBy: 'id DESC');
     List<BabyTask> babyTasks = response.isNotEmpty
         ? response.map((c) => BabyTask.fromMap(c)).toList()
         : [];

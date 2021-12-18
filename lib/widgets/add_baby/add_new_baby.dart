@@ -11,18 +11,19 @@ import 'package:momnotebook/bloc/form_submission/form_sub.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/customAppBar.dart';
 import 'package:momnotebook/constants/defaultButton.dart';
+import 'package:momnotebook/constants/show_snackBar.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/auth_cubit_cubit.dart';
 import 'package:path_provider/path_provider.dart';
 
-class AddBabyForm extends StatefulWidget {
-  const AddBabyForm({Key? key}) : super(key: key);
+class AddNewBabyForm extends StatefulWidget {
+  const AddNewBabyForm({Key? key}) : super(key: key);
 
   @override
-  State<AddBabyForm> createState() => _AddBabyFormState();
+  State<AddNewBabyForm> createState() => _AddNewBabyFormState();
 }
 
-class _AddBabyFormState extends State<AddBabyForm> {
+class _AddNewBabyFormState extends State<AddNewBabyForm> {
   int currentBox = 1;
   bool _status = false;
   File? _babyImage;
@@ -54,8 +55,7 @@ class _AddBabyFormState extends State<AddBabyForm> {
             listener: (context, state) {
               final formStatus = state.formSubmissionStatus;
               if (formStatus is SubmissionSuccessBaby) {
-                Navigator.of(context).pushNamed('/home_dashboard',
-                    arguments: {'baby': formStatus.baby});
+                showSnackBar(context, 'New Baby added');
               }
             },
             child: SingleChildScrollView(

@@ -493,6 +493,7 @@ class _HomeWalkingState extends State<HomeWalking> {
                             di.substring(startIndex + start.length, endIndex);
                         BlocProvider.of<HomePageCubit>(context)
                             .saveTasksWalkingSleeping(
+                                baby: widget.baby,
                                 taskName: 'walking',
                                 startTime: _startTime,
                                 endTime: _endTime,

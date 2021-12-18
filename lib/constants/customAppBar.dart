@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
+import 'package:momnotebook/cubit/cubit/auth_cubit_cubit.dart';
 import 'package:momnotebook/models/baby.dart';
 
 import 'boxIcon.dart';
@@ -72,50 +74,61 @@ appBarM(BuildContext context, String text, GestureTapCallback press,
   );
 }
 
-appBarDashboard(Baby baby, BuildContext context, String text,
-    GestureTapCallback press, GestureTapCallback reset) {
-  return Container(
-    color: Colors.white,
-    child: SafeArea(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            baby.picture == ''
-                ? Container(
-                    padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1.5),
-                    height: SizeConfig.heightMultiplier * 6,
-                    width: SizeConfig.widthMultiplier * 10,
-                    decoration: BoxDecoration(
-                      // color: kSecondaryColor.withOpacity(0.1),
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/user_icon.png')),
-                      shape: BoxShape.circle,
-                    ),
-                  )
-                : CircleAvatar(
-                    backgroundImage: FileImage(File(baby.picture)),
-                    radius: SizeConfig.widthMultiplier * 5,
-                    backgroundColor: Colors.white,
+appBarDashboard(
+    BuildContext context, GestureTapCallback press, GestureTapCallback reset) {
+  return BlocBuilder<AuthCubitCubit, AuthCubitState>(
+    builder: (context, state) {
+      if (state is AuthCubitInitial) {
+        return Center(child: Text('A moment Please'));
+      } else if (state is AuthCubitUser) {
+        return Container(
+          color: Colors.white,
+          child: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  state.baby.picture == ''
+                      ? Container(
+                          padding:
+                              EdgeInsets.all(SizeConfig.heightMultiplier * 1.5),
+                          height: SizeConfig.heightMultiplier * 6,
+                          width: SizeConfig.widthMultiplier * 10,
+                          decoration: BoxDecoration(
+                            // color: kSecondaryColor.withOpacity(0.1),
+                            image: DecorationImage(
+                                image:
+                                    AssetImage('assets/images/user_icon.png')),
+                            shape: BoxShape.circle,
+                          ),
+                        )
+                      : CircleAvatar(
+                          backgroundImage: FileImage(File(state.baby.picture)),
+                          radius: SizeConfig.widthMultiplier * 5,
+                          backgroundColor: Colors.white,
+                        ),
+                  SizedBox(
+                    width: SizeConfig.widthMultiplier * 4,
                   ),
-            SizedBox(
-              width: SizeConfig.widthMultiplier * 4,
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Text(state.baby.name,
+                        style: TextStyle(
+                            fontFamily: 'Montserrat',
+                            fontSize: SizeConfig.textMultiplier * 2.8,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black38)),
+                  ),
+                ],
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: Text(text,
-                  style: TextStyle(
-                      fontFamily: 'Montserrat',
-                      fontSize: SizeConfig.textMultiplier * 2.8,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black38)),
-            ),
-          ],
-        ),
-      ),
-    ),
+          ),
+        );
+      }
+      return Container();
+    },
   );
 }
 

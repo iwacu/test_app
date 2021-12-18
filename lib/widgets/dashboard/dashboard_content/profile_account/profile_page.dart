@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/auth_cubit_cubit.dart';
+import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/models/baby.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -25,6 +26,7 @@ class ProfilePage extends StatelessWidget {
     return age;
   }
 
+  String? _value;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,20 +68,28 @@ class ProfilePage extends StatelessWidget {
                                   color: Colors.black38),
                             ),
                             Spacer(),
-                            Icon(
-                              Icons.add,
-                              color: buttonBGColor,
-                            ),
-                            SizedBox(
-                              width: SizeConfig.widthMultiplier * 1.2,
-                            ),
-                            Text(
-                              'Add baby',
-                              style: TextStyle(
-                                  fontSize: SizeConfig.textMultiplier * 2,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w300,
-                                  color: buttonBGColor),
+                            GestureDetector(
+                              onTap: () => Navigator.of(context)
+                                  .pushNamed('/add_new_baby'),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.add,
+                                    color: buttonBGColor,
+                                  ),
+                                  SizedBox(
+                                    width: SizeConfig.widthMultiplier * 1.2,
+                                  ),
+                                  Text(
+                                    'Add baby',
+                                    style: TextStyle(
+                                        fontSize: SizeConfig.textMultiplier * 2,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w300,
+                                        color: buttonBGColor),
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -217,6 +227,65 @@ class ProfilePage extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 22),
+                                      child: Text(
+                                        'Change Baby',
+                                        style: TextStyle(
+                                            fontSize:
+                                                SizeConfig.textMultiplier * 1.8,
+                                            fontFamily: 'Montserrat',
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.black38),
+                                      ),
+                                    ),
+                                    Spacer(),
+                                    SizedBox(
+                                      width: SizeConfig.widthMultiplier * 30,
+                                      child: DropdownButtonFormField<Baby>(
+                                          value: state.babies
+                                              .where((element) =>
+                                                  element.id ==
+                                                  state.user.babyId)
+                                              .single,
+                                          onChanged: (value) {
+                                            BlocProvider.of<AuthCubitCubit>(
+                                                    context)
+                                                .updateUser(
+                                                    state.user, value!.id!);
+                                            BlocProvider.of<HomePageCubit>(
+                                                    context)
+                                                .getBabyTasks();
+                                          },
+                                          decoration: InputDecoration(
+                                            enabledBorder: InputBorder.none,
+                                          ),
+                                          items: state.babies.map(
+                                            (val) {
+                                              return DropdownMenuItem<Baby>(
+                                                child: Text(val.name),
+                                                value: val,
+                                              );
+                                            },
+                                          ).toList()),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: Divider(
+                                  thickness: 0.3,
+                                  color: Colors.black38,
+                                ),
+                              ),
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),

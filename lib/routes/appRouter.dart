@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:momnotebook/widgets/add_baby/add_baby.dart';
 import 'package:momnotebook/widgets/add_baby/add_baby_form.dart';
+import 'package:momnotebook/widgets/add_baby/add_new_baby.dart';
 import 'package:momnotebook/widgets/dashboard/dashboard_widgets/breast_feed/breast_feed_home.dart';
 import 'package:momnotebook/widgets/dashboard/dashboard_widgets/breast_pumping/breast_pumping_page.dart';
 import 'package:momnotebook/widgets/dashboard/dashboard_widgets/diaper/diaper_home.dart';
@@ -23,6 +24,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => SignUpPage());
       case '/add_baby':
         return MaterialPageRoute(builder: (_) => AddBaby());
+      case '/add_new_baby':
+        return MaterialPageRoute(builder: (_) => AddNewBabyForm());
       case '/add_baby_form':
         return MaterialPageRoute(builder: (_) => AddBabyForm());
       case '/home_dashboard':

@@ -264,6 +264,7 @@ class _HomeFeederState extends State<HomeFeeder> {
                             var fnl = di.substring(
                                 startIndex + start.length, endIndex);
                             BlocProvider.of<HomePageCubit>(context).saveTasks(
+                                baby: widget.baby,
                                 note: _text.text,
                                 foodGroup: '',
                                 color: fnl,
