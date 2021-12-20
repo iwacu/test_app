@@ -91,6 +91,11 @@ class _SplashScreenState extends State<SplashScreen> {
                                 text: 'Start',
                                 press: () => Navigator.of(context)
                                     .pushNamed('/sign_up'));
+                          } else if (state is AuthCubitNoBaby) {
+                            return DefaultButton(
+                                text: 'Continue',
+                                press: () => Navigator.of(context)
+                                    .pushNamed('/add_baby'));
                           } else if (state is AuthCubitUser) {
                             return DefaultButton(
                                 text: 'Start',

@@ -117,6 +117,9 @@ class _AddBabyFormState extends State<AddBabyForm> {
                                   BlocBuilder<FormSavingBloc, FormSavingState>(
                                 builder: (context, state) {
                                   return TextFormField(
+                                      keyboardType: TextInputType.text,
+                                      textCapitalization:
+                                          TextCapitalization.sentences,
                                       validator: (value) =>
                                           state.isValidUsername
                                               ? null
@@ -178,7 +181,7 @@ class _AddBabyFormState extends State<AddBabyForm> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(4.0),
                                         child: Text(
-                                          Jiffy(_nowDate).MMMEd,
+                                          Jiffy(_nowDate).yMMMMd,
                                           style: TextStyle(
                                               fontSize:
                                                   SizeConfig.textMultiplier * 2,
@@ -502,7 +505,7 @@ class _AddBabyFormState extends State<AddBabyForm> {
                     height: 400,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime(2018, 1, 1),
+                        initialDateTime: _nowDate,
                         onDateTimeChanged: (val) {
                           setState(() {
                             _nowDate = val;

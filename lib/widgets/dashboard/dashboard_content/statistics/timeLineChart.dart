@@ -109,6 +109,7 @@ class TimeLineChart extends CustomPainter {
       ..color = Colors.black12
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 0.9;
+
     while (i <= 24) {
       var getValues = babyTask
           .where((element) => DateTime.parse(element.timeStamp).hour == i)
@@ -120,6 +121,7 @@ class TimeLineChart extends CustomPainter {
               DateTime.parse(element.timeStamp).isBefore(endTime) &&
               DateTime.parse(element.timeStamp).isAfter(startTime))
           .toList();
+
       canvas.drawLine(
         Offset((size.width * 1 / 49), size.height * c),
         Offset(size.width, size.height * c),
@@ -223,9 +225,16 @@ class TimeLineChart extends CustomPainter {
       int index,
       double datePosition,
       int taskLength) {
-    if (int.parse(value.durationH) == 0 &&
-        int.parse(value.durationM) == 0 &&
-        int.parse(value.durationS) == 0) {
+    if (value.taskName == 'sleeping' || value.taskName == 'walking') {
+      var startTime = DateTime.parse(value.startTime);
+      var endTime = DateTime.parse(value.endTime);
+      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+          finalEndTime, datePosition);
+    } else {
       switch (taskLength) {
         case 1:
           {
@@ -265,14 +274,6 @@ class TimeLineChart extends CustomPainter {
 
         default:
       }
-    } else {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime =
-          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
-      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
     }
   }
 
@@ -287,9 +288,15 @@ class TimeLineChart extends CustomPainter {
       int index,
       double datePosition,
       int taskLength) {
-    if (int.parse(value.durationH) == 0 &&
-        int.parse(value.durationM) == 0 &&
-        int.parse(value.durationS) == 0) {
+    if (value.taskName == 'sleeping' || value.taskName == 'walking') {
+      var startTime = DateTime.parse(value.startTime);
+      var endTime = DateTime.parse(value.endTime);
+      var finalStartTime =
+          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
+      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
+      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+          finalEndTime, datePosition);
+    } else {
       switch (taskLength) {
         case 1:
           {
@@ -329,14 +336,6 @@ class TimeLineChart extends CustomPainter {
 
         default:
       }
-    } else {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime =
-          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
-      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
     }
   }
 
@@ -351,9 +350,16 @@ class TimeLineChart extends CustomPainter {
       int index,
       double datePosition,
       int taskLength) {
-    if (int.parse(value.durationH) == 0 &&
-        int.parse(value.durationM) == 0 &&
-        int.parse(value.durationS) == 0) {
+    if (value.taskName == 'sleeping' || value.taskName == 'walking') {
+      var startTime = DateTime.parse(value.startTime);
+      var endTime = DateTime.parse(value.endTime);
+      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+          finalEndTime, datePosition);
+    } else {
       switch (taskLength) {
         case 1:
           {
@@ -405,14 +411,6 @@ class TimeLineChart extends CustomPainter {
           }
           break;
       }
-    } else {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime =
-          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
-      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
     }
   }
 
@@ -427,9 +425,16 @@ class TimeLineChart extends CustomPainter {
       int index,
       double datePosition,
       int taskLength) {
-    if (int.parse(value.durationH) == 0 &&
-        int.parse(value.durationM) == 0 &&
-        int.parse(value.durationS) == 0) {
+    if (value.taskName == 'sleeping' || value.taskName == 'walking') {
+      var startTime = DateTime.parse(value.startTime);
+      var endTime = DateTime.parse(value.endTime);
+      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+          finalEndTime, datePosition);
+    } else {
       switch (taskLength) {
         case 1:
           {
@@ -482,14 +487,6 @@ class TimeLineChart extends CustomPainter {
           }
           break;
       }
-    } else {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime =
-          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
-      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
     }
   }
 
@@ -504,9 +501,16 @@ class TimeLineChart extends CustomPainter {
       int index,
       double datePosition,
       int taskLength) {
-    if (int.parse(value.durationH) == 0 &&
-        int.parse(value.durationM) == 0 &&
-        int.parse(value.durationS) == 0) {
+    if (value.taskName == 'sleeping' || value.taskName == 'walking') {
+      var startTime = DateTime.parse(value.startTime);
+      var endTime = DateTime.parse(value.endTime);
+      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+          finalEndTime, datePosition);
+    } else {
       switch (taskLength) {
         case 1:
           {
@@ -559,14 +563,6 @@ class TimeLineChart extends CustomPainter {
           }
           break;
       }
-    } else {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime =
-          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
-      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
     }
   }
 
@@ -581,9 +577,16 @@ class TimeLineChart extends CustomPainter {
       int index,
       double datePosition,
       int taskLength) {
-    if (int.parse(value.durationH) == 0 &&
-        int.parse(value.durationM) == 0 &&
-        int.parse(value.durationS) == 0) {
+    if (value.taskName == 'sleeping' || value.taskName == 'walking') {
+      var startTime = DateTime.parse(value.startTime);
+      var endTime = DateTime.parse(value.endTime);
+      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+          finalEndTime, datePosition);
+    } else {
       switch (taskLength) {
         case 1:
           {
@@ -636,14 +639,6 @@ class TimeLineChart extends CustomPainter {
           }
           break;
       }
-    } else {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime =
-          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
-      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
     }
   }
 
@@ -658,9 +653,16 @@ class TimeLineChart extends CustomPainter {
       int index,
       double datePosition,
       int taskLength) {
-    if (int.parse(value.durationH) == 0 &&
-        int.parse(value.durationM) == 0 &&
-        int.parse(value.durationS) == 0) {
+    if (value.taskName == 'sleeping' || value.taskName == 'walking') {
+      var startTime = DateTime.parse(value.startTime);
+      var endTime = DateTime.parse(value.endTime);
+      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+          finalEndTime, datePosition);
+    } else {
       switch (taskLength) {
         case 1:
           {
@@ -713,14 +715,6 @@ class TimeLineChart extends CustomPainter {
           }
           break;
       }
-    } else {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime =
-          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
-      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
     }
   }
 
@@ -735,9 +729,15 @@ class TimeLineChart extends CustomPainter {
       int index,
       double datePosition,
       int taskLength) {
-    if (int.parse(value.durationH) == 0 &&
-        int.parse(value.durationM) == 0 &&
-        int.parse(value.durationS) == 0) {
+    if (value.taskName == 'sleeping' || value.taskName == 'walking') {
+      var startTime = DateTime.parse(value.startTime);
+      var endTime = DateTime.parse(value.endTime);
+      var finalStartTime =
+          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
+      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
+      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+          finalEndTime, datePosition);
+    } else {
       switch (taskLength) {
         case 1:
           {
@@ -790,14 +790,6 @@ class TimeLineChart extends CustomPainter {
           }
           break;
       }
-    } else {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime =
-          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
-      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
     }
   }
 

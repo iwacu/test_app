@@ -130,7 +130,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
     return Padding(
       padding: const EdgeInsets.only(left: 2),
       child: Container(
-        height: SizeConfig.heightMultiplier * 18,
+        height: SizeConfig.heightMultiplier * 12,
         child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: widget.splashData.length,
@@ -143,12 +143,22 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   decoration: BoxDecoration(
                       color: widget.splashData[index]['color'],
                       shape: BoxShape.circle),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      widget.splashData[index]['image']!,
-                      height: SizeConfig.heightMultiplier * 2.5,
-                    ),
-                  ),
+                  child: index == 5
+                      ? Center(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: SvgPicture.asset(
+                              widget.splashData[index]['image']!,
+                              height: SizeConfig.heightMultiplier * 3,
+                            ),
+                          ),
+                        )
+                      : Center(
+                          child: SvgPicture.asset(
+                            widget.splashData[index]['image']!,
+                            height: SizeConfig.heightMultiplier * 3,
+                          ),
+                        ),
                 ),
               );
             }),
@@ -288,8 +298,13 @@ class _StatisticsPageState extends State<StatisticsPage> {
             height: SizeConfig.heightMultiplier * 90,
             child: CustomPaint(
               child: Container(),
-              painter: TimeLineChart(_startTime!,
-                  _endTime!.add(Duration(days: 1)), state.babyTasks, _dateTime),
+              painter: TimeLineChart(
+                  DateTime(_startTime!.year, _startTime!.month, _startTime!.day,
+                      0, 0, 0, 0, 0),
+                  DateTime(_endTime!.year, _endTime!.month, _endTime!.day + 1,
+                      0, 0, 0, 0, 0),
+                  state.babyTasks,
+                  _dateTime),
             ),
           );
         }

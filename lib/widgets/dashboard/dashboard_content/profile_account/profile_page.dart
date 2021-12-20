@@ -156,43 +156,6 @@ class ProfilePage extends StatelessWidget {
                                     )
                                   ],
                                 ),
-                                Spacer(),
-                                Stack(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        height: SizeConfig.heightMultiplier * 5,
-                                        width: SizeConfig.widthMultiplier * 7,
-                                        decoration: BoxDecoration(
-                                          // color: kSecondaryColor.withOpacity(0.1),
-                                          image: DecorationImage(
-                                              image: AssetImage(
-                                                  'assets/images/add_pctr.png')),
-                                          shape: BoxShape.circle,
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned(
-                                      bottom: 1,
-                                      left: 0,
-                                      child: Container(
-                                        height:
-                                            SizeConfig.heightMultiplier * 2.5,
-                                        width: SizeConfig.widthMultiplier * 4.5,
-                                        decoration: BoxDecoration(
-                                          color: buttonBGColor,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: Icon(
-                                          Icons.add,
-                                          color: primaryColor,
-                                          size: SizeConfig.heightMultiplier * 2,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
                               ],
                             ),
                           ),
@@ -231,19 +194,17 @@ class ProfilePage extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 22),
-                                      child: Text(
-                                        'Change Baby',
-                                        style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.textMultiplier * 1.8,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black38),
-                                      ),
+                                    Text(
+                                      'Pick Baby',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 1.8,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black38),
                                     ),
                                     Spacer(),
                                     SizedBox(
@@ -269,7 +230,17 @@ class ProfilePage extends StatelessWidget {
                                           items: state.babies.map(
                                             (val) {
                                               return DropdownMenuItem<Baby>(
-                                                child: Text(val.name),
+                                                child: Text(
+                                                  val.name,
+                                                  style: TextStyle(
+                                                      fontSize: SizeConfig
+                                                              .textMultiplier *
+                                                          1.8,
+                                                      fontFamily: 'Montserrat',
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Colors.black),
+                                                ),
                                                 value: val,
                                               );
                                             },
@@ -290,19 +261,17 @@ class ProfilePage extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 22),
-                                      child: Text(
-                                        'Language',
-                                        style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.textMultiplier * 1.8,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black38),
-                                      ),
+                                    Text(
+                                      'Language',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 1.8,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black38),
                                     ),
                                     Spacer(),
                                     SizedBox(
@@ -317,10 +286,10 @@ class ProfilePage extends StatelessWidget {
                                             style: TextStyle(
                                                 fontSize:
                                                     SizeConfig.textMultiplier *
-                                                        1.4,
+                                                        1.8,
                                                 fontFamily: 'Montserrat',
-                                                color: Colors.black38,
-                                                fontWeight: FontWeight.w500),
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black),
                                           ),
                                           items: []),
                                     )
@@ -339,19 +308,17 @@ class ProfilePage extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 22),
-                                      child: Text(
-                                        'Show Notifications',
-                                        style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.textMultiplier * 1.8,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black38),
-                                      ),
+                                    Text(
+                                      'Show Notifications',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 1.8,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black38),
                                     ),
                                     Spacer(),
                                     SizedBox(
@@ -366,10 +333,10 @@ class ProfilePage extends StatelessWidget {
                                             style: TextStyle(
                                                 fontSize:
                                                     SizeConfig.textMultiplier *
-                                                        1.4,
+                                                        1.8,
                                                 fontFamily: 'Montserrat',
-                                                color: Colors.black38,
-                                                fontWeight: FontWeight.w500),
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black),
                                           ),
                                           items: []),
                                     )
@@ -416,19 +383,17 @@ class ProfilePage extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 22),
-                                      child: Text(
-                                        'Weight',
-                                        style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.textMultiplier * 1.8,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black38),
-                                      ),
+                                    Text(
+                                      'Weight',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 1.8,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black38),
                                     ),
                                     Spacer(),
                                     SizedBox(
@@ -443,10 +408,10 @@ class ProfilePage extends StatelessWidget {
                                             style: TextStyle(
                                                 fontSize:
                                                     SizeConfig.textMultiplier *
-                                                        1.4,
+                                                        1.8,
                                                 fontFamily: 'Montserrat',
-                                                color: Colors.black38,
-                                                fontWeight: FontWeight.w500),
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.black),
                                           ),
                                           items: []),
                                     )
@@ -465,19 +430,17 @@ class ProfilePage extends StatelessWidget {
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 12),
                                 child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 22),
-                                      child: Text(
-                                        'Height',
-                                        style: TextStyle(
-                                            fontSize:
-                                                SizeConfig.textMultiplier * 1.8,
-                                            fontFamily: 'Montserrat',
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.black38),
-                                      ),
+                                    Text(
+                                      'Height',
+                                      style: TextStyle(
+                                          fontSize:
+                                              SizeConfig.textMultiplier * 1.8,
+                                          fontFamily: 'Montserrat',
+                                          fontWeight: FontWeight.w600,
+                                          color: Colors.black38),
                                     ),
                                     Spacer(),
                                     SizedBox(

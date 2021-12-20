@@ -498,6 +498,7 @@ class _HomeWalkingState extends State<HomeWalking> {
                                 startTime: _startTime,
                                 endTime: _endTime,
                                 note: _text.text,
+                                dateTime: _nowDate,
                                 color: fnl,
                                 duration: _dtion);
                         Navigator.pop(context);
@@ -532,7 +533,13 @@ class _HomeWalkingState extends State<HomeWalking> {
                         initialDateTime: DateTime(2018, 1, 1),
                         onDateTimeChanged: (val) {
                           setState(() {
-                            _nowDate = val;
+                            _nowDate = DateTime(
+                                val.year,
+                                val.month,
+                                val.day,
+                                _nowDate.hour,
+                                _nowDate.minute,
+                                _nowDate.second);
                           });
                         }),
                   ),
@@ -561,7 +568,9 @@ class _HomeWalkingState extends State<HomeWalking> {
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.time,
                         onDateTimeChanged: (val) {
-                          print(val);
+                          setState(() {
+                            _nowDate = val;
+                          });
                         }),
                   ),
 

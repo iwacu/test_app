@@ -27,6 +27,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       String? note,
       String? foodGroup,
       String? amount,
+      DateTime? dateTime,
       String? amountScale,
       String? taskName,
       String? color,
@@ -34,7 +35,7 @@ class HomePageCubit extends Cubit<HomePageState> {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
         babyId: baby!.id!,
         taskName: taskName!,
-        timeStamp: DateTime.now().toString(),
+        timeStamp: dateTime.toString(),
         note: note!,
         startTime: '',
         resumeTime: '',
@@ -61,13 +62,14 @@ class HomePageCubit extends Cubit<HomePageState> {
       String? foodGroup,
       String? amount,
       String? amountScale,
+      DateTime? dateTime,
       String? taskName,
       String? color,
       Duration? duration}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
         babyId: baby!.id!,
         taskName: taskName!,
-        timeStamp: DateTime.now().toString(),
+        timeStamp: dateTime.toString(),
         note: note!,
         startTime: '',
         resumeTime: '',
@@ -92,6 +94,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       {Baby? baby,
       String? note,
       String? foodGroup,
+      DateTime? dateTime,
       String? amount,
       String? amountScale,
       String? taskName,
@@ -102,7 +105,7 @@ class HomePageCubit extends Cubit<HomePageState> {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
         babyId: baby!.id!,
         taskName: taskName!,
-        timeStamp: DateTime.now().toString(),
+        timeStamp: dateTime.toString(),
         note: note!,
         startTime: '',
         resumeTime: '',
@@ -125,6 +128,7 @@ class HomePageCubit extends Cubit<HomePageState> {
 
   void saveTasksDiaper(
       {Baby? baby,
+      DateTime? dateTime,
       String? note,
       String? foodGroup,
       String? amount,
@@ -137,7 +141,7 @@ class HomePageCubit extends Cubit<HomePageState> {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
         babyId: baby!.id!,
         taskName: taskName!,
-        timeStamp: DateTime.now().toString(),
+        timeStamp: dateTime.toString(),
         note: note!,
         resumeTime: '',
         endTime: '',
@@ -164,6 +168,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       String? foodGroup,
       String? amount,
       String? amountScale,
+      DateTime? dateTime,
       String? taskName,
       String? startTime,
       String? endTime,
@@ -174,7 +179,7 @@ class HomePageCubit extends Cubit<HomePageState> {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
         babyId: baby!.id!,
         taskName: taskName!,
-        timeStamp: DateTime.now().toString(),
+        timeStamp: dateTime.toString(),
         note: note!,
         resumeTime: '',
         endTime: endTime!,

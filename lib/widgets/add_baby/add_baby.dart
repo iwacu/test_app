@@ -47,7 +47,7 @@ class AddBaby extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: SizeConfig.heightMultiplier * 4,
+              height: SizeConfig.heightMultiplier * 7,
             ),
           ],
         ),

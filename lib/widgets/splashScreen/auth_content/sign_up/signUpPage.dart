@@ -79,7 +79,8 @@ class _SignUpPageState extends State<SignUpPage> {
                               color: bluewhite,
                               borderRadius: BorderRadius.circular(15)),
                           child: TextFormField(
-                              textCapitalization: TextCapitalization.characters,
+                              keyboardType: TextInputType.text,
+                              textCapitalization: TextCapitalization.sentences,
                               validator: (value) => state.isValidUsername
                                   ? null
                                   : 'Enter your First and Last name',

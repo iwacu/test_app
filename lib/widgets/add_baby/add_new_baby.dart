@@ -56,6 +56,7 @@ class _AddNewBabyFormState extends State<AddNewBabyForm> {
               final formStatus = state.formSubmissionStatus;
               if (formStatus is SubmissionSuccessBaby) {
                 showSnackBar(context, 'New Baby added');
+                Navigator.pop(context);
               }
             },
             child: SingleChildScrollView(

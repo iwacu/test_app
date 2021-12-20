@@ -55,8 +55,11 @@ class _HomeDiaperState extends State<HomeDiaper> {
                       decoration: BoxDecoration(
                           color: greenAccGray, shape: BoxShape.circle),
                       child: Center(
-                        child: SvgPicture.asset('assets/icons/diaper.svg',
-                            height: SizeConfig.heightMultiplier * 6),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: SvgPicture.asset('assets/icons/diaper.svg',
+                              height: SizeConfig.heightMultiplier * 6),
+                        ),
                       ),
                     ),
                   ),
@@ -304,6 +307,7 @@ class _HomeDiaperState extends State<HomeDiaper> {
                           taskName: 'diaper',
                           note: _text.text,
                           color: fnl,
+                          dateTime: _nowDate,
                           duration: Duration());
                       Navigator.pop(context);
                     },
@@ -333,11 +337,18 @@ class _HomeDiaperState extends State<HomeDiaper> {
                     height: 400,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime(2018, 1, 1),
+                        initialDateTime: _nowDate,
                         onDateTimeChanged: (val) {
                           setState(() {
-                            _nowDate = val;
+                            _nowDate = DateTime(
+                                val.year,
+                                val.month,
+                                val.day,
+                                _nowDate.hour,
+                                _nowDate.minute,
+                                _nowDate.second);
                           });
+                          print(_nowDate);
                         }),
                   ),
 
@@ -364,8 +375,12 @@ class _HomeDiaperState extends State<HomeDiaper> {
                     height: 400,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.time,
+                        initialDateTime: _nowDate,
                         onDateTimeChanged: (val) {
-                          print(val);
+                          setState(() {
+                            _nowDate = val;
+                          });
+                          print(_nowDate);
                         }),
                   ),
 

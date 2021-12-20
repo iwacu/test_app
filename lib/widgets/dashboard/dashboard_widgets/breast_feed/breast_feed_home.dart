@@ -298,6 +298,7 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                           left: _left,
                           right: _right,
                           amountScale: '',
+                          dateTime: _nowDate,
                           duration: Duration(),
                           taskName: 'breast-feed');
                       Navigator.pop(context);
@@ -331,7 +332,13 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                         initialDateTime: DateTime(2018, 1, 1),
                         onDateTimeChanged: (val) {
                           setState(() {
-                            _nowDate = val;
+                            _nowDate = DateTime(
+                                val.year,
+                                val.month,
+                                val.day,
+                                _nowDate.hour,
+                                _nowDate.minute,
+                                _nowDate.second);
                           });
                         }),
                   ),
@@ -360,7 +367,9 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.time,
                         onDateTimeChanged: (val) {
-                          print(val);
+                          setState(() {
+                            _nowDate = val;
+                          });
                         }),
                   ),
 

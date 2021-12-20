@@ -16,9 +16,12 @@ class AuthCubitCubit extends Cubit<AuthCubitState> {
     } else {
       var baby = await DatabaseHelper.instance.getBaby(user.object!.babyId);
       var babies = await DatabaseHelper.instance.getBabies();
-      babies.forEach((ef) => print('id::${ef.id} <=> name :: ${ef.name}'));
 
-      emit(AuthCubitUser(user.object!, baby.object!, babies));
+      if (baby.object == null) {
+        emit(AuthCubitNoBaby(user.object!));
+      } else {
+        emit(AuthCubitUser(user.object!, baby.object!, babies));
+      }
     }
   }
 

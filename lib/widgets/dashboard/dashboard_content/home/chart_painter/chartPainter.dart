@@ -42,11 +42,17 @@ class TimelinePainter extends CustomPainter {
           var startTime = DateTime.parse(element.startTime);
           var endTime = DateTime.parse(element.endTime);
           if (startTime.hour == endTime.hour) {
-            canvas.drawCircle(
-                new Offset(i * (size.width * 1 / 6),
-                    size.height * (2.4 + (index - 0.3)) / 3),
-                size.width * 1 / 10,
-                paint);
+            canvas.drawLine(
+                Offset((i + (startTime.minute / 10)) * (size.width * 1 / 6),
+                    size.height * c / 2),
+                Offset((i + (endTime.minute / 10)) * (size.width * 1 / 6),
+                    size.height * c / 2),
+                paintLine);
+            // canvas.drawCircle(
+            //     new Offset(i * (size.width * 1 / 6),
+            //         size.height * (2.4 + (index - 0.3)) / 3),
+            //     size.width * 1 / 10,
+            //     paint);
           } else {
             canvas.drawLine(
                 Offset(
@@ -56,7 +62,6 @@ class TimelinePainter extends CustomPainter {
                 paintLine);
           }
           c = c + 0.6;
-          print('c $i :: $c ');
         } else {
           canvas.drawCircle(
               new Offset(i * (size.width * 1 / 6),
@@ -64,7 +69,6 @@ class TimelinePainter extends CustomPainter {
               size.width * 1 / 10,
               paint);
         }
-        print('baby task length ::$i $index  ${element.taskName} => $i ');
       });
 
       i++;

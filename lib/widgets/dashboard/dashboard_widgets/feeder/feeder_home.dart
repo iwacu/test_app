@@ -270,6 +270,7 @@ class _HomeFeederState extends State<HomeFeeder> {
                                 color: fnl,
                                 amount: state.countValue.toString(),
                                 amountScale: 'ml',
+                                dateTime: _nowDate,
                                 duration: Duration(),
                                 taskName: 'feeder');
                             Navigator.pop(context);
@@ -303,7 +304,13 @@ class _HomeFeederState extends State<HomeFeeder> {
                         initialDateTime: DateTime(2018, 1, 1),
                         onDateTimeChanged: (val) {
                           setState(() {
-                            _nowDate = val;
+                            _nowDate = DateTime(
+                                val.year,
+                                val.month,
+                                val.day,
+                                _nowDate.hour,
+                                _nowDate.minute,
+                                _nowDate.second);
                           });
                         }),
                   ),
@@ -332,7 +339,9 @@ class _HomeFeederState extends State<HomeFeeder> {
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.time,
                         onDateTimeChanged: (val) {
-                          print(val);
+                          setState(() {
+                            _nowDate = val;
+                          });
                         }),
                   ),
 

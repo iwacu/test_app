@@ -430,7 +430,9 @@ class _HomeFoodState extends State<HomeFood> {
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.time,
                         onDateTimeChanged: (val) {
-                          print(val);
+                          setState(() {
+                            _nowDate = val;
+                          });
                         }),
                   ),
 

@@ -11,4 +11,10 @@ class AuthCubitUser extends AuthCubitState {
   AuthCubitUser(this.user, this.baby, this.babies);
 }
 
+class AuthCubitNoBaby extends AuthCubitState {
+  final User user;
+
+  AuthCubitNoBaby(this.user);
+}
+
 class AuthCubitNoUser extends AuthCubitState {}

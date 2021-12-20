@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                       itemCount: widget.splashData.length,
                       itemBuilder: (context, index) {
                         return Padding(
-                          padding: const EdgeInsets.only(right: 8),
+                          padding: const EdgeInsets.only(right: 4),
                           child: Column(
                             children: [
                               Container(
@@ -58,18 +58,30 @@ class _HomePageState extends State<HomePage> {
                                 decoration: BoxDecoration(
                                     color: widget.splashData[index]['color'],
                                     shape: BoxShape.circle),
-                                child: Center(
-                                  child: SvgPicture.asset(
-                                    widget.splashData[index]['image']!,
-                                    height: SizeConfig.heightMultiplier * 4,
-                                  ),
-                                ),
+                                child: index == 5
+                                    ? Center(
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8),
+                                          child: SvgPicture.asset(
+                                            widget.splashData[index]['image']!,
+                                            alignment: Alignment.center,
+                                          ),
+                                        ),
+                                      )
+                                    : Center(
+                                        child: SvgPicture.asset(
+                                          widget.splashData[index]['image']!,
+                                          alignment: Alignment.center,
+                                        ),
+                                      ),
                               ),
                               SizedBox(
                                 height: SizeConfig.heightMultiplier * 1.5,
                               ),
                               Text(
                                 widget.splashData[index]['title']!,
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: SizeConfig.textMultiplier * 1.8,
                                     color: Colors.black38,
