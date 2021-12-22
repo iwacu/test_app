@@ -87,7 +87,6 @@ class DatabaseHelper {
   Future<Response<User>> getUser() async {
     Database db = await instance.database;
     var res = await db.query("user", where: "id = ?", whereArgs: [1]);
-    print('chchchchchchchcchhc $res');
     return Response(
         object: res.isNotEmpty ? User.fromMap(res.first) : null,
         message: 'success',
@@ -104,6 +103,13 @@ class DatabaseHelper {
         message: 'success');
   }
 
+  // update baby tbl
+  Future<int> updateBaby(Baby baby) async {
+    Database db = await instance.database;
+    return await db
+        .update('baby', baby.toMap(), where: 'id = ?', whereArgs: [baby.id]);
+  }
+
   // ready babies
   Future<List<Baby>> getBabies() async {
     Database db = await instance.database;
@@ -117,7 +123,6 @@ class DatabaseHelper {
   // update user_table
   Future<int> updateUser(User user) async {
     Database db = await instance.database;
-    print('bbbbbb${user.name}bbb${user.babyId}bbbbbb${user.id}');
 
     var res = await db
         .update('user', user.toMap(), where: "id = ?", whereArgs: [user.id]);
@@ -128,7 +133,6 @@ class DatabaseHelper {
   Future<Response<Timerr>> getTimerr(int id) async {
     Database db = await instance.database;
     var res = await db.query("timer", where: "task = ?", whereArgs: [id]);
-    print('chchchchchchchcchhc ${res.length}');
     return Response(
         object: res.isNotEmpty ? Timerr.fromMap(res.first) : null,
         message: 'success',
@@ -179,11 +183,23 @@ class DatabaseHelper {
     return await db.insert('babyTask', babyTask.toMap());
   }
 
+  // update babyTask tbl
+  Future<int> updateBabytask(BabyTask babyTask) async {
+    Database db = await instance.database;
+    return await db.update('babyTask', babyTask.toMap(),
+        where: 'id = ?', whereArgs: [babyTask.id]);
+  }
+
+  // remove babyTask from tbl
+  Future<int> removeBabytask(int id) async {
+    Database db = await instance.database;
+    return await db.delete('babyTask', where: 'id = ?', whereArgs: [id]);
+  }
+
   // drop table
   drop() async {
     Database db = await instance.database;
     await db.execute("DROP TABLE IF EXISTS user");
     await db.execute("DROP TABLE IF EXISTS baby");
-    print('dropeddddddd');
   }
 }

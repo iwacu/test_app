@@ -199,28 +199,74 @@ class _HomePageState extends State<HomePage> {
                         itemCount: babyTasks.length,
                         itemBuilder: (_, index) {
                           if (babyTasks[index].taskName == 'sleeping') {
-                            return _sleeping(
-                                babyTasks[index], index, babyTasks.length);
+                            return GestureDetector(
+                                onTap: () => Navigator.of(context)
+                                        .pushNamed('/sleep_update', arguments: {
+                                      'baby': state.baby,
+                                      'baby_task': babyTasks[index]
+                                    }),
+                                child: _sleeping(
+                                    babyTasks[index], index, babyTasks.length));
                           } else if (babyTasks[index].taskName == 'food') {
-                            return _food(
-                                babyTasks[index], index, babyTasks.length);
+                            return GestureDetector(
+                                onTap: () => Navigator.of(context)
+                                        .pushNamed('/food_update', arguments: {
+                                      'baby': state.baby,
+                                      'baby_task': babyTasks[index]
+                                    }),
+                                child: _food(
+                                    babyTasks[index], index, babyTasks.length));
                           } else if (babyTasks[index].taskName == 'feeder') {
-                            return _feeder(
-                                babyTasks[index], index, babyTasks.length);
+                            return GestureDetector(
+                                onTap: () => Navigator.of(context).pushNamed(
+                                        '/feeder_update',
+                                        arguments: {
+                                          'baby': state.baby,
+                                          'baby_task': babyTasks[index]
+                                        }),
+                                child: _feeder(
+                                    babyTasks[index], index, babyTasks.length));
                           } else if (babyTasks[index].taskName == 'diaper') {
-                            return _diaper(
-                                babyTasks[index], index, babyTasks.length);
+                            return GestureDetector(
+                                onTap: () => Navigator.of(context).pushNamed(
+                                        '/diaper_update',
+                                        arguments: {
+                                          'baby': state.baby,
+                                          'baby_task': babyTasks[index]
+                                        }),
+                                child: _diaper(
+                                    babyTasks[index], index, babyTasks.length));
                           } else if (babyTasks[index].taskName == 'walking') {
-                            return _walking(
-                                babyTasks[index], index, babyTasks.length);
+                            return GestureDetector(
+                                onTap: () => Navigator.of(context)
+                                        .pushNamed('/walk_update', arguments: {
+                                      'baby': state.baby,
+                                      'baby_task': babyTasks[index]
+                                    }),
+                                child: _walking(
+                                    babyTasks[index], index, babyTasks.length));
                           } else if (babyTasks[index].taskName ==
                               'breast-pumping') {
-                            return _breastPumping(
-                                babyTasks[index], index, babyTasks.length);
+                            return GestureDetector(
+                                onTap: () => Navigator.of(context).pushNamed(
+                                        '/breast_pump_update',
+                                        arguments: {
+                                          'baby': state.baby,
+                                          'baby_task': babyTasks[index]
+                                        }),
+                                child: _breastPumping(
+                                    babyTasks[index], index, babyTasks.length));
                           } else if (babyTasks[index].taskName ==
                               'breast-feed') {
-                            return _breastFeeding(
-                                babyTasks[index], index, babyTasks.length);
+                            return GestureDetector(
+                                onTap: () => Navigator.of(context).pushNamed(
+                                        '/breast_feed_update',
+                                        arguments: {
+                                          'baby': state.baby,
+                                          'baby_task': babyTasks[index]
+                                        }),
+                                child: _breastFeeding(
+                                    babyTasks[index], index, babyTasks.length));
                           }
                           return Container();
                         }),
@@ -523,7 +569,7 @@ class _HomePageState extends State<HomePage> {
                             width: SizeConfig.widthMultiplier * 1.2,
                           ),
                           Text(
-                            '${baby.qtyFood}',
+                            '${baby.qtyFood} ${baby.qtyFeeder}',
                             style: TextStyle(
                                 fontSize: SizeConfig.textMultiplier * 1.3,
                                 fontFamily: 'Montserrat',
@@ -1096,7 +1142,7 @@ class _HomePageState extends State<HomePage> {
                             width: SizeConfig.widthMultiplier * 1.2,
                           ),
                           Text(
-                            '${baby.qtyFood}',
+                            '${baby.qtyFood} ${baby.groupFood}',
                             style: TextStyle(
                                 fontSize: SizeConfig.textMultiplier * 1.3,
                                 fontFamily: 'Montserrat',

@@ -28,7 +28,7 @@ class _HomeFeederState extends State<HomeFeeder> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CounterCubit(),
+      create: (context) => CounterCubit(0),
       child: Scaffold(
         backgroundColor: bluewhite,
         appBar: CustomAppBar(
@@ -301,7 +301,7 @@ class _HomeFeederState extends State<HomeFeeder> {
                     height: 400,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime(2018, 1, 1),
+                        initialDateTime: _nowDate,
                         onDateTimeChanged: (val) {
                           setState(() {
                             _nowDate = DateTime(
@@ -338,6 +338,7 @@ class _HomeFeederState extends State<HomeFeeder> {
                     height: 400,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.time,
+                        initialDateTime: _nowDate,
                         onDateTimeChanged: (val) {
                           setState(() {
                             _nowDate = val;

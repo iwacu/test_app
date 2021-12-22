@@ -56,7 +56,7 @@ class _HomeSleepState extends State<HomeSleep> {
   void reset() async {
     var tm = await DatabaseHelper.instance.getTimerr(1);
     _startTime = tm.object!.startTime;
-    _endTime = _nowDate.toString();
+    _endTime = DateTime.now().toString();
     _dtion = duration;
     setState(() {
       duration = Duration();
@@ -426,7 +426,7 @@ class _HomeSleepState extends State<HomeSleep> {
                                   decoration: BoxDecoration(
                                       border: Border.all(color: greyColor)),
                                   child: Text(
-                                    Jiffy(_nowDate).MMMEd,
+                                    Jiffy(_nowDate).yMMMMd,
                                     style: TextStyle(
                                         fontSize: SizeConfig.textMultiplier * 2,
                                         fontFamily: 'Montserrat',
@@ -494,7 +494,7 @@ class _HomeSleepState extends State<HomeSleep> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: SizeConfig.widthMultiplier * 8),
                             child: DefaultButtonBsz(
-                              text: 'Start sleeping',
+                              text: 'Start Sleeping',
                               press: () {
                                 startTime();
                                 saveTimer();
@@ -529,7 +529,7 @@ class _HomeSleepState extends State<HomeSleep> {
                     height: 400,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime(2018, 1, 1),
+                        initialDateTime: _nowDate,
                         onDateTimeChanged: (val) {
                           setState(() {
                             _nowDate = DateTime(
@@ -566,6 +566,7 @@ class _HomeSleepState extends State<HomeSleep> {
                     height: 400,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.time,
+                        initialDateTime: _nowDate,
                         onDateTimeChanged: (val) {
                           setState(() {
                             _nowDate = val;

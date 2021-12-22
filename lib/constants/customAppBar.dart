@@ -211,6 +211,68 @@ appBarDashboardW(Baby baby, BuildContext context, GestureTapCallback press,
   );
 }
 
+appBarDashboardUD(Baby baby, BuildContext context, GestureTapCallback delete) {
+  return Container(
+    color: Colors.white,
+    child: SafeArea(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            BoxIcon(
+              svgSrc: 'assets/icons/back-icon.svg',
+              numOfitem: 0,
+              press: () => Navigator.pop(context),
+            ),
+            SizedBox(
+              width: SizeConfig.widthMultiplier * 6,
+            ),
+            baby.picture == ''
+                ? Container(
+                    padding: EdgeInsets.all(SizeConfig.heightMultiplier * 1.5),
+                    height: SizeConfig.heightMultiplier * 4,
+                    width: SizeConfig.widthMultiplier * 8,
+                    decoration: BoxDecoration(
+                      // color: kSecondaryColor.withOpacity(0.1),
+                      image: DecorationImage(
+                          image: AssetImage('assets/images/user_icon.png')),
+                      shape: BoxShape.circle,
+                    ),
+                  )
+                : CircleAvatar(
+                    backgroundImage: FileImage(File(baby.picture)),
+                    radius: SizeConfig.widthMultiplier * 5,
+                    backgroundColor: Colors.white,
+                  ),
+            SizedBox(
+              width: SizeConfig.widthMultiplier * 2,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(
+                baby.name,
+                style: TextStyle(
+                    fontFamily: 'Montserrat',
+                    fontWeight: FontWeight.bold,
+                    fontSize: SizeConfig.textMultiplier * 2.8,
+                    color: Colors.black38),
+              ),
+            ),
+            Spacer(),
+            BoxIcon(
+              svgSrc: 'assets/icons/delete-icon.svg',
+              numOfitem: 0,
+              press: delete,
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
 class CustomAppBar extends PreferredSize {
   @override
   final Widget child;

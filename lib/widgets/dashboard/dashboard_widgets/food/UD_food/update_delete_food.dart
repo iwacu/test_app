@@ -11,17 +11,20 @@ import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/models/baby.dart';
+import 'package:momnotebook/models/babyTask.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class HomeFood extends StatefulWidget {
+class HomeUpdateFood extends StatefulWidget {
   final Baby baby;
-  HomeFood({Key? key, required this.baby}) : super(key: key);
+  final BabyTask babyTask;
+  HomeUpdateFood({Key? key, required this.baby, required this.babyTask})
+      : super(key: key);
 
   @override
-  State<HomeFood> createState() => _HomeFoodState();
+  State<HomeUpdateFood> createState() => _HomeUpdateFoodState();
 }
 
-class _HomeFoodState extends State<HomeFood> {
+class _HomeUpdateFoodState extends State<HomeUpdateFood> {
   DateTime _nowDate = DateTime.now();
   String _dropDownText = 'vegetables';
   String _dropDownW = 'mg';
@@ -37,6 +40,16 @@ class _HomeFoodState extends State<HomeFood> {
   ];
   List<String> _foodScale = ['mg', 'g', 'kg'];
   @override
+  void initState() {
+    _nowDate = DateTime.parse(widget.babyTask.timeStamp);
+    _text.text = widget.babyTask.note;
+    _amount.text = widget.babyTask.qtyFood;
+    _dropDownText = widget.babyTask.groupFood;
+    _dropDownW = widget.babyTask.qtyFeeder;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => FormSavingBloc(),
@@ -44,7 +57,11 @@ class _HomeFoodState extends State<HomeFood> {
         backgroundColor: bluewhite,
         appBar: CustomAppBar(
             height: SizeConfig.heightMultiplier * 9,
-            child: appBarDashboardW(widget.baby, context, () {}, () {})),
+            child: appBarDashboardUD(widget.baby, context, () {
+              BlocProvider.of<HomePageCubit>(context)
+                  .removeBabyTask(widget.babyTask.id!);
+              Navigator.pop(context);
+            })),
         body: Container(
           color: Colors.white,
           child: Container(
@@ -348,28 +365,31 @@ class _HomeFoodState extends State<HomeFood> {
                     padding: EdgeInsets.symmetric(
                         horizontal: SizeConfig.widthMultiplier * 8),
                     child: DefaultButtonBsz(
-                      text: 'Save',
+                      text: 'Update',
                       press: () {
-                        var di = buttonBGColor.toString();
-                        print(di);
-                        const start = "Color(";
-                        const end = ")";
-
-                        final startIndex = di.indexOf(start);
-                        final endIndex =
-                            di.indexOf(end, startIndex + start.length);
-                        var fnl =
-                            di.substring(startIndex + start.length, endIndex);
-                        BlocProvider.of<HomePageCubit>(context).saveTasks(
-                            baby: widget.baby,
-                            note: _text.text,
-                            dateTime: _nowDate,
-                            color: fnl,
-                            amount: _amount.text,
-                            foodGroup: _dropDownText,
-                            amountScale: _dropDownW,
-                            duration: Duration(),
-                            taskName: 'food');
+                        BlocProvider.of<HomePageCubit>(context).updateBabyTask(
+                            BabyTask(
+                                id: widget.babyTask.id,
+                                babyId: widget.babyTask.babyId,
+                                taskName: widget.babyTask.taskName,
+                                timeStamp: _nowDate.toString(),
+                                note: _text.text,
+                                startTime: '',
+                                endTime: '',
+                                resumeTime: '',
+                                qtyFood: _amount.text,
+                                qtyLeft: '',
+                                qtyRight: '',
+                                qtyFeeder: _dropDownW,
+                                leftBreast: 1,
+                                rightBreast: 1,
+                                groupFood: _dropDownText,
+                                pee: 1,
+                                poo: 1,
+                                durationH: '',
+                                durationM: '',
+                                durationS: '',
+                                color: widget.babyTask.color));
                         Navigator.pop(context);
                       },
                     ),

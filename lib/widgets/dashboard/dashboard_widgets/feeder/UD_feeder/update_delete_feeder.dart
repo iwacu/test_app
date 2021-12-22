@@ -12,30 +12,42 @@ import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/counter_cubit.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/models/baby.dart';
+import 'package:momnotebook/models/babyTask.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class HomeBreastPumping extends StatefulWidget {
+class HomeUpdateFeeder extends StatefulWidget {
   final Baby baby;
-  HomeBreastPumping({Key? key, required this.baby}) : super(key: key);
+  final BabyTask babyTask;
+  HomeUpdateFeeder({Key? key, required this.baby, required this.babyTask})
+      : super(key: key);
 
   @override
-  State<HomeBreastPumping> createState() => _HomeBreastPumpingState();
+  State<HomeUpdateFeeder> createState() => _HomeUpdateFeederState();
 }
 
-class _HomeBreastPumpingState extends State<HomeBreastPumping> {
+class _HomeUpdateFeederState extends State<HomeUpdateFeeder> {
   DateTime _nowDate = DateTime.now();
   final _text = TextEditingController();
-  bool _left = false;
-  bool _right = false;
+  @override
+  void initState() {
+    _nowDate = DateTime.parse(widget.babyTask.timeStamp);
+    _text.text = widget.babyTask.note;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CounterCubit(0),
+      create: (context) => CounterCubit(int.parse(widget.babyTask.qtyFood)),
       child: Scaffold(
         backgroundColor: bluewhite,
         appBar: CustomAppBar(
             height: SizeConfig.heightMultiplier * 9,
-            child: appBarDashboardW(widget.baby, context, () {}, () {})),
+            child: appBarDashboardUD(widget.baby, context, () {
+              BlocProvider.of<HomePageCubit>(context)
+                  .removeBabyTask(widget.babyTask.id!);
+              Navigator.pop(context);
+            })),
         body: BlocBuilder<CounterCubit, CounterState>(
           builder: (context, state) {
             return Container(
@@ -56,13 +68,12 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Container(
-                            height: SizeConfig.heightMultiplier * 12,
-                            width: SizeConfig.widthMultiplier * 22,
+                            height: SizeConfig.heightMultiplier * 18,
+                            width: SizeConfig.widthMultiplier * 28,
                             decoration: BoxDecoration(
-                                color: orGray, shape: BoxShape.circle),
+                                color: movGray, shape: BoxShape.circle),
                             child: Center(
-                              child: SvgPicture.asset(
-                                  'assets/icons/breast-pumping.svg',
+                              child: SvgPicture.asset('assets/icons/feeder.svg',
                                   height: SizeConfig.heightMultiplier * 6),
                             ),
                           ),
@@ -73,7 +84,7 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                       ),
                       Center(
                         child: Text(
-                          'Breast Pumping',
+                          'Feeder',
                           style: TextStyle(
                               fontSize: SizeConfig.textMultiplier * 3,
                               fontFamily: 'Montserrat',
@@ -92,8 +103,8 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                             );
                           } else if (state is HomePageCompleted) {
                             var lastWalk = state.babyTasks
-                                .where((element) =>
-                                    element.taskName == 'breast-pumping')
+                                .where(
+                                    (element) => element.taskName == 'feeder')
                                 .toList();
                             var lastwlk = lastWalk.isEmpty
                                 ? 'Start'
@@ -112,70 +123,6 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                           }
                           return Container();
                         },
-                      ),
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier * 2,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            GestureDetector(
-                              onTap: () => setState(() {
-                                _left = !_left;
-                              }),
-                              child: Container(
-                                height: SizeConfig.heightMultiplier * 8,
-                                width: SizeConfig.widthMultiplier * 32,
-                                decoration: BoxDecoration(
-                                    color: _left ? orGray : primaryColor,
-                                    border: Border.all(color: orGray),
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Center(
-                                  child: Text(
-                                    'Left',
-                                    style: TextStyle(
-                                        fontSize:
-                                            SizeConfig.textMultiplier * 2.5,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w700,
-                                        color: _left
-                                            ? primaryColor
-                                            : Colors.black38),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () => setState(() {
-                                _right = !_right;
-                              }),
-                              child: Container(
-                                height: SizeConfig.heightMultiplier * 8,
-                                width: SizeConfig.widthMultiplier * 32,
-                                decoration: BoxDecoration(
-                                    color: _right ? orGray : primaryColor,
-                                    border: Border.all(color: orGray),
-                                    borderRadius: BorderRadius.circular(5)),
-                                child: Center(
-                                  child: Text(
-                                    'Right',
-                                    style: TextStyle(
-                                        fontSize:
-                                            SizeConfig.textMultiplier * 2.5,
-                                        fontFamily: 'Montserrat',
-                                        fontWeight: FontWeight.w700,
-                                        color: _right
-                                            ? primaryColor
-                                            : Colors.black38),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
                       ),
                       SizedBox(
                         height: SizeConfig.heightMultiplier * 2,
@@ -259,28 +206,18 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                               borderRadius: BorderRadius.circular(15)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 8),
+                                horizontal: 44, vertical: 12),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 HoldDetector(
-                                    onHold: () => context
-                                        .read<CounterCubit>()
-                                        .decrement(),
-                                    child: Container(
-                                      height: SizeConfig.heightMultiplier * 14,
-                                      width: SizeConfig.widthMultiplier * 14,
-                                      decoration: BoxDecoration(
-                                          color: orGray,
-                                          shape: BoxShape.circle),
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.remove,
-                                          color: primaryColor,
-                                        ),
-                                      ),
-                                    )),
+                                  onHold: () =>
+                                      context.read<CounterCubit>().decrement(),
+                                  child: SvgPicture.asset(
+                                      'assets/icons/minus-circle.svg',
+                                      height: SizeConfig.heightMultiplier * 6),
+                                ),
                                 Text(
                                   '${state.countValue.toString()} ml',
                                   style: TextStyle(
@@ -293,19 +230,10 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                                 HoldDetector(
                                   onHold: () =>
                                       context.read<CounterCubit>().increment(),
-                                  child: Container(
-                                    height: SizeConfig.heightMultiplier * 14,
-                                    width: SizeConfig.widthMultiplier * 14,
-                                    decoration: BoxDecoration(
-                                        color: orGray, shape: BoxShape.circle),
-                                    child: Center(
-                                      child: Icon(
-                                        Icons.add,
-                                        color: primaryColor,
-                                      ),
-                                    ),
-                                  ),
-                                )
+                                  child: SvgPicture.asset(
+                                      'assets/icons/icon-add.svg',
+                                      height: SizeConfig.heightMultiplier * 6),
+                                ),
                               ],
                             ),
                           ),
@@ -331,40 +259,40 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                                         color: almostGrey, width: 0.8)),
                               ))),
                       SizedBox(
-                        height: SizeConfig.heightMultiplier * 3,
+                        height: SizeConfig.heightMultiplier * 10,
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
                             horizontal: SizeConfig.widthMultiplier * 8),
                         child: DefaultButtonBsz(
-                          text: 'Save',
+                          text: 'Update',
                           press: () {
-                            var di = orGray.toString();
-                            print(di);
-                            const start = "Color(";
-                            const end = ")";
-
-                            final startIndex = di.indexOf(start);
-                            final endIndex =
-                                di.indexOf(end, startIndex + start.length);
-                            var fnl = di.substring(
-                                startIndex + start.length, endIndex);
-                            BlocProvider.of<HomePageCubit>(context).saveTasksBP(
-                                baby: widget.baby,
-                                note: _text.text,
-                                foodGroup: '',
-                                color: fnl,
-                                amount: state.countValue.toString(),
-                                amountScale: 'ml',
-                                dateTime: _nowDate,
-                                duration: Duration(),
-                                taskName: 'breast-pumping');
+                            BlocProvider.of<HomePageCubit>(context)
+                                .updateBabyTask(BabyTask(
+                                    id: widget.babyTask.id,
+                                    babyId: widget.babyTask.babyId,
+                                    taskName: widget.babyTask.taskName,
+                                    timeStamp: _nowDate.toString(),
+                                    note: _text.text,
+                                    startTime: '',
+                                    endTime: '',
+                                    resumeTime: '',
+                                    qtyFood: state.countValue.toString(),
+                                    qtyLeft: '',
+                                    qtyRight: '',
+                                    qtyFeeder: '',
+                                    leftBreast: 1,
+                                    rightBreast: 1,
+                                    groupFood: widget.babyTask.groupFood,
+                                    pee: 1,
+                                    poo: 1,
+                                    durationH: '',
+                                    durationM: '',
+                                    durationS: '',
+                                    color: widget.babyTask.color));
                             Navigator.pop(context);
                           },
                         ),
-                      ),
-                      SizedBox(
-                        height: SizeConfig.heightMultiplier * 2,
                       ),
                     ],
                   ),

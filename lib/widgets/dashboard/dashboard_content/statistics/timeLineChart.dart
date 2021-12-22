@@ -23,6 +23,7 @@ class TimeLineChart extends CustomPainter {
     final rect = Rect.fromPoints(a, b);
     canvas.drawRect(rect, paint);
     drawHorizontalLines(canvas, size);
+    drwaFixedShadowRectangle(canvas, size);
     drawShadowRectangle(canvas, size);
   }
 
@@ -123,8 +124,8 @@ class TimeLineChart extends CustomPainter {
           .toList();
 
       canvas.drawLine(
-        Offset((size.width * 1 / 49), size.height * c),
-        Offset(size.width, size.height * c),
+        Offset((size.width * 1 / 29), (size.height * c)),
+        Offset(size.width, (size.height * c)),
         paint,
       );
       drawText(canvas, size, i, c);
@@ -133,6 +134,48 @@ class TimeLineChart extends CustomPainter {
 
       i++;
     }
+  }
+
+  void drwaFixedShadowRectangle(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = greyColor.withOpacity(0.45)
+      ..strokeCap = StrokeCap.round
+      ..strokeWidth = 1;
+    //  hhhhhhhhhhhhh
+    // final a1 = Offset(size.width * 1 / 24, size.height * 0.0);
+    // final b1 = Offset(size.width * 1 / 6, size.height);
+    // final rect1 = Rect.fromPoints(a1, b1);
+    // canvas.drawRect(rect1, paint);
+
+    final a2 = Offset(size.width * 1 / 6, size.height * 0.0);
+    final b2 = Offset(size.width * 7 / 22, size.height);
+    final rect2 = Rect.fromPoints(a2, b2);
+    canvas.drawRect(rect2, paint);
+
+    // final a3 = Offset(size.width * 7 / 22.4, size.height * 0.0);
+    // final b3 = Offset(size.width * 31 / 68, size.height);
+    // final rect3 = Rect.fromPoints(a3, b3);
+    // canvas.drawRect(rect3, paint);
+
+    final a4 = Offset(size.width * 31 / 68, size.height * 0.0);
+    final b4 = Offset(size.width * 1 / 1.7, size.height);
+    final rect4 = Rect.fromPoints(a4, b4);
+    canvas.drawRect(rect4, paint);
+
+    // final a5 = Offset(size.width * 1 / 1.7, size.height * 0.0);
+    // final b5 = Offset(size.width * 1 / 1.38, size.height);
+    // final rect5 = Rect.fromPoints(a5, b5);
+    // canvas.drawRect(rect5, paint);
+
+    final a6 = Offset(size.width * 1 / 1.38, size.height * 0.0);
+    final b6 = Offset(size.width * 1 / 1.14, size.height);
+    final rect6 = Rect.fromPoints(a6, b6);
+    canvas.drawRect(rect6, paint);
+
+    // final a7 = Offset(size.width * 1 / 1.16, size.height * 0.0);
+    // final b7 = Offset(size.width * 1, size.height);
+    // final rect7 = Rect.fromPoints(a7, b7);
+    // canvas.drawRect(rect7, paint);
   }
 
   void getByDates(
@@ -144,6 +187,7 @@ class TimeLineChart extends CustomPainter {
     var fridP = 1.48;
     var satP = 1.24;
     var suP = 1.08;
+    var co = 0.1;
     tasks.asMap().forEach((index, value) {
       final paint = Paint()
         ..color = Color(int.parse(value.color))
@@ -157,43 +201,44 @@ class TimeLineChart extends CustomPainter {
         case 1:
           {
             drawCirleAndLine1(canvas, size, i, c, value, paint, paintLine,
-                index, mondaP, tasks.length);
+                index, mondaP, tasks.length, co);
           }
           break;
         case 2:
           {
             drawCirleAndLine2(canvas, size, i, c, value, paint, paintLine,
-                index, tueP, tasks.length);
+                index, tueP, tasks.length, co);
           }
           break;
         case 3:
           {
             drawCirleAndLine3(canvas, size, i, c, value, paint, paintLine,
-                index, wend, tasks.length);
+                index, wend, tasks.length, co);
+            co = co + 0.1;
           }
           break;
         case 4:
           {
             drawCirleAndLine4(canvas, size, i, c, value, paint, paintLine,
-                index, thuP, tasks.length);
+                index, thuP, tasks.length, co);
           }
           break;
         case 5:
           {
             drawCirleAndLine5(canvas, size, i, c, value, paint, paintLine,
-                index, fridP, tasks.length);
+                index, fridP, tasks.length, co);
           }
           break;
         case 6:
           {
             drawCirleAndLine6(canvas, size, i, c, value, paint, paintLine,
-                index, satP, tasks.length);
+                index, satP, tasks.length, co);
           }
           break;
         case 7:
           {
             drawCirleAndLine7(canvas, size, i, c, value, paint, paintLine,
-                index, suP, tasks.length);
+                index, suP, tasks.length, co);
           }
           break;
         default:
@@ -224,78 +269,18 @@ class TimeLineChart extends CustomPainter {
       Paint paintLine,
       int index,
       double datePosition,
-      int taskLength) {
+      int taskLength,
+      double co) {
     if (value.taskName == 'sleeping' || value.taskName == 'walking') {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
-          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
-      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
-          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
-    } else {
-      switch (taskLength) {
-        case 1:
-          {
-            canvas.drawCircle(
-                new Offset(size.width * 1 / datePosition, size.height * c),
-                size.width * 1 / 50,
-                paint);
-          }
-          break;
-        case 2:
-          {
-            canvas.drawCircle(
-                new Offset(size.width * 1 / (datePosition - (index * 8)),
-                    size.height * c),
-                size.width * 1 / 50,
-                paint);
-          }
-          break;
-        case 3:
-          {
-            canvas.drawCircle(
-                new Offset(size.width * 1 / (datePosition - (index / 30)),
-                    size.height * c),
-                size.width * 1 / 50,
-                paint);
-          }
-          break;
-        case 4:
-          {
-            canvas.drawCircle(
-                new Offset(size.width * 1 / (datePosition - (index * 3)),
-                    size.height * c),
-                size.width * 1 / 50,
-                paint);
-          }
-          break;
-
-        default:
-      }
-    }
-  }
-
-  void drawCirleAndLine(
-      Canvas canvas,
-      Size size,
-      int i,
-      double c,
-      BabyTask value,
-      Paint paint,
-      Paint paintLine,
-      int index,
-      double datePosition,
-      int taskLength) {
-    if (value.taskName == 'sleeping' || value.taskName == 'walking') {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime =
-          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
-      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
+      // var startTime = DateTime.parse(value.startTime);
+      // var endTime = DateTime.parse(value.endTime);
+      // var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+      //     (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      // var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+      //     (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      // drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+      //     finalEndTime, datePosition);
+      drawLineTime(canvas, size, paintLine, datePosition, c, i, value, co);
     } else {
       switch (taskLength) {
         case 1:
@@ -349,16 +334,18 @@ class TimeLineChart extends CustomPainter {
       Paint paintLine,
       int index,
       double datePosition,
-      int taskLength) {
+      int taskLength,
+      double co) {
     if (value.taskName == 'sleeping' || value.taskName == 'walking') {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
-          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
-      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
-          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
+      // var startTime = DateTime.parse(value.startTime);
+      // var endTime = DateTime.parse(value.endTime);
+      // var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+      //     (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      // var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+      //     (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      // drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+      //     finalEndTime, datePosition);
+      drawLineTime(canvas, size, paintLine, datePosition, c, i, value, co);
     } else {
       switch (taskLength) {
         case 1:
@@ -417,23 +404,25 @@ class TimeLineChart extends CustomPainter {
   void drawCirleAndLine3(
       Canvas canvas,
       Size size,
-      int i,
+      int ij,
       double c,
       BabyTask value,
       Paint paint,
       Paint paintLine,
       int index,
       double datePosition,
-      int taskLength) {
+      int taskLength,
+      double co) {
     if (value.taskName == 'sleeping' || value.taskName == 'walking') {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
-          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
-      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
-          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
+      // var startTime = DateTime.parse(value.startTime);
+      // var endTime = DateTime.parse(value.endTime);
+      // var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+      //     (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      // var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+      //     (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      drawLineTime(canvas, size, paintLine, datePosition, c, ij, value, co);
+      // drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+      //     finalEndTime, datePosition);
     } else {
       switch (taskLength) {
         case 1:
@@ -500,16 +489,18 @@ class TimeLineChart extends CustomPainter {
       Paint paintLine,
       int index,
       double datePosition,
-      int taskLength) {
+      int taskLength,
+      double co) {
     if (value.taskName == 'sleeping' || value.taskName == 'walking') {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
-          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
-      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
-          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
+      // var startTime = DateTime.parse(value.startTime);
+      // var endTime = DateTime.parse(value.endTime);
+      // var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+      //     (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      // var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+      //     (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      // drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+      //     finalEndTime, datePosition);
+      drawLineTime(canvas, size, paintLine, datePosition, c, i, value, co);
     } else {
       switch (taskLength) {
         case 1:
@@ -576,16 +567,18 @@ class TimeLineChart extends CustomPainter {
       Paint paintLine,
       int index,
       double datePosition,
-      int taskLength) {
+      int taskLength,
+      double co) {
     if (value.taskName == 'sleeping' || value.taskName == 'walking') {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
-          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
-      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
-          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
+      // var startTime = DateTime.parse(value.startTime);
+      // var endTime = DateTime.parse(value.endTime);
+      // var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+      //     (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      // var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+      //     (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      // drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+      //     finalEndTime, datePosition);
+      drawLineTime(canvas, size, paintLine, datePosition, c, i, value, co);
     } else {
       switch (taskLength) {
         case 1:
@@ -652,16 +645,18 @@ class TimeLineChart extends CustomPainter {
       Paint paintLine,
       int index,
       double datePosition,
-      int taskLength) {
+      int taskLength,
+      double co) {
     if (value.taskName == 'sleeping' || value.taskName == 'walking') {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
-          (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
-      var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
-          (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
+      // var startTime = DateTime.parse(value.startTime);
+      // var endTime = DateTime.parse(value.endTime);
+      // var finalStartTime = (0.02 * (startTime.hour + (startTime.minute / 10))) +
+      //     (0.02 * ((startTime.hour + (startTime.minute / 10)) - 1));
+      // var finalEndTime = (0.02 * (endTime.hour + (endTime.minute / 10))) +
+      //     (0.02 * ((endTime.hour + (endTime.minute / 10)) - 1));
+      // drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+      //     finalEndTime, datePosition);
+      drawLineTime(canvas, size, paintLine, datePosition, c, i, value, co);
     } else {
       switch (taskLength) {
         case 1:
@@ -728,15 +723,17 @@ class TimeLineChart extends CustomPainter {
       Paint paintLine,
       int index,
       double datePosition,
-      int taskLength) {
+      int taskLength,
+      double co) {
     if (value.taskName == 'sleeping' || value.taskName == 'walking') {
-      var startTime = DateTime.parse(value.startTime);
-      var endTime = DateTime.parse(value.endTime);
-      var finalStartTime =
-          (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
-      var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
-      drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
-          finalEndTime, datePosition);
+      // var startTime = DateTime.parse(value.startTime);
+      // var endTime = DateTime.parse(value.endTime);
+      // var finalStartTime =
+      //     (0.02 * startTime.hour) + (0.02 * (startTime.hour - 1));
+      // var finalEndTime = (0.02 * endTime.hour) + (0.02 * (endTime.hour - 1));
+      // drawLineTimeLine(canvas, size, paintLine, index, c, finalStartTime,
+      //     finalEndTime, datePosition);
+      drawLineTime(canvas, size, paintLine, datePosition, c, i, value, co);
     } else {
       switch (taskLength) {
         case 1:
@@ -793,13 +790,31 @@ class TimeLineChart extends CustomPainter {
     }
   }
 
-  void drawLineTimeLine(Canvas canvas, Size size, Paint paintLine, int index,
-      double c, double start, double end, double datePosition) {
-    var p1 = Offset(size.width * 1 / ((datePosition + 0.047) - (index / 100)),
-        start * size.height);
-    var p2 = Offset(size.width * 1 / ((datePosition + 0.047) - (index / 100)),
-        end * size.height);
-    canvas.drawLine(p1, p2, paintLine);
+  // void drawLineTimeLine(Canvas canvas, Size size, Paint paintLine, int index,
+  //     double c, double start, double end, double datePosition) {
+  //   var p1 = Offset(size.width * 1 / ((datePosition + 0.047) - (index / 100)),
+  //       start * size.height);
+  //   var p2 = Offset(size.width * 1 / ((datePosition + 0.047) - (index / 100)),
+  //       end * size.height);
+  //   canvas.drawLine(p1, p2, paintLine);
+  // }
+
+  void drawLineTime(Canvas canvas, Size size, Paint paintLine, double index,
+      double c, int i, BabyTask babyTask, double co) {
+    var startTimeTask = DateTime.parse(babyTask.startTime);
+    var endTimeTask = DateTime.parse(babyTask.endTime);
+    canvas.drawLine(
+        Offset(
+            size.width * 1 / (index + 0.5 - co),
+            size.height *
+                (((startTimeTask.hour * c) / i) +
+                    ((startTimeTask.minute * 0.04) / 60))),
+        Offset(
+            size.width * 1 / (index + 0.5 - co),
+            size.height *
+                (((endTimeTask.hour * c) / i) +
+                    ((endTimeTask.minute * 0.04) / 60))),
+        paintLine);
   }
 
   @override

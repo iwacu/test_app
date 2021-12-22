@@ -12,30 +12,48 @@ import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/counter_cubit.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/models/baby.dart';
+import 'package:momnotebook/models/babyTask.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class HomeBreastPumping extends StatefulWidget {
+class HomeUpdateBreastPumping extends StatefulWidget {
   final Baby baby;
-  HomeBreastPumping({Key? key, required this.baby}) : super(key: key);
+  final BabyTask babyTask;
+  HomeUpdateBreastPumping(
+      {Key? key, required this.baby, required this.babyTask})
+      : super(key: key);
 
   @override
-  State<HomeBreastPumping> createState() => _HomeBreastPumpingState();
+  State<HomeUpdateBreastPumping> createState() =>
+      _HomeUpdateBreastPumpingState();
 }
 
-class _HomeBreastPumpingState extends State<HomeBreastPumping> {
+class _HomeUpdateBreastPumpingState extends State<HomeUpdateBreastPumping> {
   DateTime _nowDate = DateTime.now();
   final _text = TextEditingController();
   bool _left = false;
   bool _right = false;
   @override
+  void initState() {
+    super.initState();
+    _nowDate = DateTime.parse(widget.babyTask.timeStamp);
+    _text.text = widget.babyTask.note;
+    _left = widget.babyTask.leftBreast == 0 ? true : false;
+    _right = widget.babyTask.rightBreast == 0 ? true : false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CounterCubit(0),
+      create: (context) => CounterCubit(int.parse(widget.babyTask.qtyFood)),
       child: Scaffold(
         backgroundColor: bluewhite,
         appBar: CustomAppBar(
             height: SizeConfig.heightMultiplier * 9,
-            child: appBarDashboardW(widget.baby, context, () {}, () {})),
+            child: appBarDashboardUD(widget.baby, context, () {
+              BlocProvider.of<HomePageCubit>(context)
+                  .removeBabyTask(widget.babyTask.id!);
+              Navigator.pop(context);
+            })),
         body: BlocBuilder<CounterCubit, CounterState>(
           builder: (context, state) {
             return Container(
@@ -337,28 +355,32 @@ class _HomeBreastPumpingState extends State<HomeBreastPumping> {
                         padding: EdgeInsets.symmetric(
                             horizontal: SizeConfig.widthMultiplier * 8),
                         child: DefaultButtonBsz(
-                          text: 'Save',
+                          text: 'Update',
                           press: () {
-                            var di = orGray.toString();
-                            print(di);
-                            const start = "Color(";
-                            const end = ")";
+                            BlocProvider.of<HomePageCubit>(context)
+                                .updateBabyTask(BabyTask(
+                                    id: widget.babyTask.id,
+                                    babyId: widget.babyTask.babyId,
+                                    taskName: widget.babyTask.taskName,
+                                    timeStamp: _nowDate.toString(),
+                                    note: _text.text,
+                                    startTime: '',
+                                    endTime: '',
+                                    resumeTime: '',
+                                    qtyFood: state.countValue.toString(),
+                                    qtyLeft: '',
+                                    qtyRight: '',
+                                    qtyFeeder: '',
+                                    leftBreast: 1,
+                                    rightBreast: 1,
+                                    groupFood: widget.babyTask.groupFood,
+                                    pee: 1,
+                                    poo: 1,
+                                    durationH: '',
+                                    durationM: '',
+                                    durationS: '',
+                                    color: widget.babyTask.color));
 
-                            final startIndex = di.indexOf(start);
-                            final endIndex =
-                                di.indexOf(end, startIndex + start.length);
-                            var fnl = di.substring(
-                                startIndex + start.length, endIndex);
-                            BlocProvider.of<HomePageCubit>(context).saveTasksBP(
-                                baby: widget.baby,
-                                note: _text.text,
-                                foodGroup: '',
-                                color: fnl,
-                                amount: state.countValue.toString(),
-                                amountScale: 'ml',
-                                dateTime: _nowDate,
-                                duration: Duration(),
-                                taskName: 'breast-pumping');
                             Navigator.pop(context);
                           },
                         ),

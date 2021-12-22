@@ -6,6 +6,6 @@ class HomePageInitial extends HomePageState {}
 
 class HomePageCompleted extends HomePageState {
   final List<BabyTask> babyTasks;
-
-  HomePageCompleted(this.babyTasks);
+  final Baby baby;
+  HomePageCompleted(this.babyTasks, this.baby);
 }

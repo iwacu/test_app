@@ -14,14 +14,28 @@ class HomePageCubit extends Cubit<HomePageState> {
     if (state is HomePageCompleted == false) {
       emit(HomePageInitial());
     }
+
     var user = await DatabaseHelper.instance.getUser();
     var response =
         await DatabaseHelper.instance.getBabyTasks(user.object!.babyId);
-    print('ggggggggggggggggggggggggg ${response.length}');
+    var baby = await DatabaseHelper.instance.getBaby(user.object!.babyId);
 
-    emit(HomePageCompleted(response));
+    emit(HomePageCompleted(response, baby.object!));
   }
 
+  // delete baby_task
+  void removeBabyTask(int id) async {
+    await DatabaseHelper.instance.removeBabytask(id);
+    getBabyTasks();
+  }
+
+  // update baby task
+  void updateBabyTask(BabyTask babyTask) async {
+    await DatabaseHelper.instance.updateBabytask(babyTask);
+    getBabyTasks();
+  }
+
+  // save baby_tasks
   void saveTasks(
       {Baby? baby,
       String? note,
@@ -40,10 +54,10 @@ class HomePageCubit extends Cubit<HomePageState> {
         startTime: '',
         resumeTime: '',
         endTime: '',
-        qtyFood: '$amount $amountScale',
+        qtyFood: amount!,
         qtyLeft: '',
         qtyRight: '',
-        qtyFeeder: '',
+        qtyFeeder: amountScale!,
         leftBreast: 1,
         rightBreast: 1,
         groupFood: foodGroup!,
@@ -74,13 +88,13 @@ class HomePageCubit extends Cubit<HomePageState> {
         startTime: '',
         resumeTime: '',
         endTime: '',
-        qtyFood: '$amount $amountScale',
+        qtyFood: '$amount',
         qtyLeft: '',
         qtyRight: '',
         qtyFeeder: '',
         leftBreast: 1,
         rightBreast: 1,
-        groupFood: '',
+        groupFood: '$amountScale',
         pee: 1,
         poo: 1,
         durationH: duration!.inHours.toString(),

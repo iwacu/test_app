@@ -10,28 +10,45 @@ import 'package:momnotebook/constants/defaultButton.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/models/baby.dart';
+import 'package:momnotebook/models/babyTask.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class HomeBreastFeed extends StatefulWidget {
+class HomeUpdateBreastFeed extends StatefulWidget {
   final Baby baby;
-  HomeBreastFeed({Key? key, required this.baby}) : super(key: key);
+  final BabyTask babyTask;
+  HomeUpdateBreastFeed({Key? key, required this.baby, required this.babyTask})
+      : super(key: key);
 
   @override
-  State<HomeBreastFeed> createState() => _HomeBreastFeedState();
+  State<HomeUpdateBreastFeed> createState() => _HomeUpdateBreastFeedState();
 }
 
-class _HomeBreastFeedState extends State<HomeBreastFeed> {
+class _HomeUpdateBreastFeedState extends State<HomeUpdateBreastFeed> {
   DateTime _nowDate = DateTime.now();
   final _text = TextEditingController();
   bool _left = false;
   bool _right = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _nowDate = DateTime.parse(widget.babyTask.timeStamp);
+    _text.text = widget.babyTask.note;
+    _left = widget.babyTask.leftBreast == 0 ? true : false;
+    _right = widget.babyTask.rightBreast == 0 ? true : false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bluewhite,
       appBar: CustomAppBar(
           height: SizeConfig.heightMultiplier * 9,
-          child: appBarDashboardW(widget.baby, context, () {}, () {})),
+          child: appBarDashboardUD(widget.baby, context, () {
+            BlocProvider.of<HomePageCubit>(context)
+                .removeBabyTask(widget.babyTask.id!);
+            Navigator.pop(context);
+          })),
       body: Container(
         color: Colors.white,
         child: Container(
@@ -277,30 +294,31 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                   padding: EdgeInsets.symmetric(
                       horizontal: SizeConfig.widthMultiplier * 8),
                   child: DefaultButtonBsz(
-                    text: 'Save',
+                    text: 'Update',
                     press: () {
-                      var di = rsGray.toString();
-                      print(di);
-                      const start = "Color(";
-                      const end = ")";
-
-                      final startIndex = di.indexOf(start);
-                      final endIndex =
-                          di.indexOf(end, startIndex + start.length);
-                      var fnl =
-                          di.substring(startIndex + start.length, endIndex);
-                      BlocProvider.of<HomePageCubit>(context).saveTasksBF(
-                          baby: widget.baby,
-                          note: _text.text,
-                          foodGroup: '',
-                          color: fnl,
-                          amount: '',
-                          left: _left,
-                          right: _right,
-                          amountScale: '',
-                          dateTime: _nowDate,
-                          duration: Duration(),
-                          taskName: 'breast-feed');
+                      BlocProvider.of<HomePageCubit>(context).updateBabyTask(
+                          BabyTask(
+                              id: widget.babyTask.id,
+                              babyId: widget.babyTask.babyId,
+                              taskName: widget.babyTask.taskName,
+                              timeStamp: _nowDate.toString(),
+                              note: _text.text,
+                              startTime: '',
+                              endTime: '',
+                              resumeTime: '',
+                              qtyFood: '',
+                              qtyLeft: '',
+                              qtyRight: '',
+                              qtyFeeder: '',
+                              leftBreast: _left ? 0 : 1,
+                              rightBreast: _right ? 0 : 1,
+                              groupFood: '',
+                              pee: 1,
+                              poo: 1,
+                              durationH: '',
+                              durationM: '',
+                              durationS: '',
+                              color: widget.babyTask.color));
                       Navigator.pop(context);
                     },
                   ),

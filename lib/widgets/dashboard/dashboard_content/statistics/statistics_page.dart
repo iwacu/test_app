@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
 import 'package:momnotebook/widgets/dashboard/dashboard_content/statistics/timeLineChart.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
 
 class StatisticsPage extends StatefulWidget {
@@ -29,8 +31,15 @@ class _StatisticsPageState extends State<StatisticsPage> {
       _sunday = 0;
   int _year = DateTime.now().year;
   DateTime _dateTime = DateTime.now();
+  DateTime focusDay = DateTime.now();
 
   final List<int> _years = [
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
     2021,
     2022,
     2023,
@@ -83,7 +92,11 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           width: SizeConfig.widthMultiplier * 20,
                           child: DropdownButtonFormField<int>(
                             onChanged: (value) {
-                              // to_do change year according to selected time
+                              setState(() {
+                                _dateTime = DateTime(value!);
+                                _getWeekDates(_dateTime.weekday, _dateTime.day,
+                                    _dateTime);
+                              });
                             },
                             hint: Text(
                               '$_year',
@@ -117,10 +130,35 @@ class _StatisticsPageState extends State<StatisticsPage> {
                     ),
                   ),
                   _scrollTasks(),
-                  // _scrollDates(),
-                  _scrollableDates(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: TableCalendar(
+                      onPageChanged: (value) {
+                        print(value);
+                      },
+                      headerStyle: HeaderStyle(
+                          formatButtonVisible: false,
+                          titleTextStyle: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 2,
+                              color: Colors.black38,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w300)),
+                      startingDayOfWeek: StartingDayOfWeek.monday,
+                      calendarFormat: CalendarFormat.week,
+                      focusedDay: _dateTime,
+                      firstDay: DateTime(2015),
+                      lastDay: DateTime(2040),
+                      onDaySelected: (selectedDay, focusedDay) {
+                        setState(() {
+                          _dateTime = selectedDay;
+                          print(focusedDay);
+                        });
+                        _getWeekDates(
+                            selectedDay.weekday, selectedDay.day, selectedDay);
+                      },
+                    ),
+                  ),
                   _timeLineChart(),
-                  Text('.')
                 ],
               ),
             )));
@@ -175,6 +213,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
             selectedDigitColor: primaryColor,
             selectedDay: _dateTime,
             changeDay: (value) {
+              print('$_dateTime ::: ${_dateTime.weekday}');
               setState(() => _dateTime = value);
               _getWeekDates(value.weekday, value.day, value);
             }));

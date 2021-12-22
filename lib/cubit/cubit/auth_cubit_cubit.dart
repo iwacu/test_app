@@ -25,6 +25,11 @@ class AuthCubitCubit extends Cubit<AuthCubitState> {
     }
   }
 
+  updateBaby(Baby baby) async {
+    await DatabaseHelper.instance.updateBaby(baby);
+    getUser();
+  }
+
   updateUser(User user, int id) async {
     var res = await DatabaseHelper.instance
         .updateUser(User(name: user.name, babyId: id, id: user.id));
