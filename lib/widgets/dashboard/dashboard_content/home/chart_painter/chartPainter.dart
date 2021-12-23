@@ -66,8 +66,16 @@ class TimelinePainter extends CustomPainter {
           }
           c = c + 0.6;
         } else {
+          var circleElement = DateTime.parse(element.timeStamp);
+          // canvas.drawCircle(
+          //     new Offset(i * (size.width * 1 / 6),
+          //         size.height * (2.4 + (index - 0.3)) / 3),
+          //     size.width * 1 / 10,
+          //     paint);
           canvas.drawCircle(
-              new Offset(i * (size.width * 1 / 6),
+              new Offset(
+                  (circleElement.hour + (circleElement.minute / 60)) *
+                      (size.width * 1 / 6),
                   size.height * (2.4 + (index - 0.3)) / 3),
               size.width * 1 / 10,
               paint);
