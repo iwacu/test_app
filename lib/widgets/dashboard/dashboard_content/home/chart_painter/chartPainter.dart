@@ -77,7 +77,7 @@ class TimelinePainter extends CustomPainter {
                   (circleElement.hour + (circleElement.minute / 60)) *
                       (size.width * 1 / 6),
                   size.height * (2.4 + (index - 0.3)) / 3),
-              size.width * 1 / 10,
+              size.width * 1 / 15,
               paint);
         }
       });

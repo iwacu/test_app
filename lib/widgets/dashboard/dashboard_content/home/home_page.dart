@@ -282,9 +282,10 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -299,36 +300,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: SizeConfig.widthMultiplier * 3,
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 26,
-                      ),
-                      Text(
-                        DateFormat('hh:mm a')
-                            .format(DateTime.parse(baby.timeStamp)),
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                    ],
+                  Text(
+                    "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
+                    style: TextStyle(
+                        fontSize: SizeConfig.textMultiplier * 2,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black38),
                   ),
                   SizedBox(height: SizeConfig.heightMultiplier * 1.5),
                   Row(
@@ -424,7 +405,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 190,
                     child: Text("${baby.note}",
-                        maxLines: 1,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
                         style: TextStyle(
@@ -434,6 +415,14 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.black38)),
                   ),
                 ],
+              ),
+              Text(
+                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
+                style: TextStyle(
+                    fontSize: SizeConfig.textMultiplier * 2,
+                    fontFamily: 'Montserrat',
+                    // fontWeight: FontWeight.w700,
+                    color: Colors.black38),
               ),
             ],
           ),
@@ -461,9 +450,10 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -478,36 +468,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: SizeConfig.widthMultiplier * 3,
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 34,
-                      ),
-                      Text(
-                        DateFormat('hh:mm a')
-                            .format(DateTime.parse(baby.timeStamp)),
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                    ],
+                  Text(
+                    "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
+                    style: TextStyle(
+                        fontSize: SizeConfig.textMultiplier * 2,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black38),
                   ),
                   SizedBox(height: SizeConfig.heightMultiplier * 1.5),
                   Column(
@@ -598,6 +568,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+              Text(
+                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
+                style: TextStyle(
+                    fontSize: SizeConfig.textMultiplier * 2,
+                    fontFamily: 'Montserrat',
+                    // fontWeight: FontWeight.w700,
+                    color: Colors.black38),
+              ),
             ],
           ),
         ),
@@ -624,9 +602,10 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -641,36 +620,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: SizeConfig.widthMultiplier * 3,
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 30,
-                      ),
-                      Text(
-                        DateFormat('hh:mm a')
-                            .format(DateTime.parse(baby.timeStamp)),
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                    ],
+                  Text(
+                    "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
+                    style: TextStyle(
+                        fontSize: SizeConfig.textMultiplier * 2,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black38),
                   ),
                   SizedBox(height: SizeConfig.heightMultiplier * 1.5),
                   Column(
@@ -716,6 +675,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+              Text(
+                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
+                style: TextStyle(
+                    fontSize: SizeConfig.textMultiplier * 2,
+                    fontFamily: 'Montserrat',
+                    // fontWeight: FontWeight.w700,
+                    color: Colors.black38),
+              ),
             ],
           ),
         ),
@@ -742,9 +709,10 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -759,36 +727,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: SizeConfig.widthMultiplier * 3,
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 30,
-                      ),
-                      Text(
-                        DateFormat('hh:mm a')
-                            .format(DateTime.parse(baby.timeStamp)),
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                    ],
+                  Text(
+                    "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
+                    style: TextStyle(
+                        fontSize: SizeConfig.textMultiplier * 2,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black38),
                   ),
                   SizedBox(height: SizeConfig.heightMultiplier * 1.5),
                   Column(
@@ -874,6 +822,14 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+              Text(
+                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
+                style: TextStyle(
+                    fontSize: SizeConfig.textMultiplier * 2,
+                    fontFamily: 'Montserrat',
+                    // fontWeight: FontWeight.w700,
+                    color: Colors.black38),
+              ),
             ],
           ),
         ),
@@ -900,9 +856,10 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -917,36 +874,16 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: SizeConfig.widthMultiplier * 3,
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 26,
-                      ),
-                      Text(
-                        DateFormat('hh:mm a')
-                            .format(DateTime.parse(baby.timeStamp)),
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                    ],
+                  Text(
+                    "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
+                    style: TextStyle(
+                        fontSize: SizeConfig.textMultiplier * 2,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black38),
                   ),
                   SizedBox(height: SizeConfig.heightMultiplier * 1.5),
                   Row(
@@ -1042,7 +979,7 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(
                     width: 190,
                     child: Text("${baby.note}",
-                        maxLines: 1,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
                         style: TextStyle(
@@ -1052,6 +989,14 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.black38)),
                   ),
                 ],
+              ),
+              Text(
+                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
+                style: TextStyle(
+                    fontSize: SizeConfig.textMultiplier * 2,
+                    fontFamily: 'Montserrat',
+                    // fontWeight: FontWeight.w700,
+                    color: Colors.black38),
               ),
             ],
           ),
@@ -1079,9 +1024,10 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -1096,65 +1042,40 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: SizeConfig.widthMultiplier * 3,
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    "Breast Pumping",
+                    style: TextStyle(
+                        fontSize: SizeConfig.textMultiplier * 2,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black38),
+                  ),
+                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Breast Pumping",
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black38),
+                      SvgPicture.asset(
+                        "assets/icons/ml.svg",
+                        height: SizeConfig.heightMultiplier * 2,
                       ),
                       SizedBox(
-                        width: SizeConfig.widthMultiplier * 15,
+                        width: SizeConfig.widthMultiplier * 1.2,
                       ),
                       Text(
-                        DateFormat('hh:mm a')
-                            .format(DateTime.parse(baby.timeStamp)),
+                        '${baby.qtyFood} ${baby.groupFood}',
                         style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontSize: SizeConfig.textMultiplier * 1.3,
                             fontFamily: 'Montserrat',
                             // fontWeight: FontWeight.w700,
                             color: Colors.black38),
                       ),
                     ],
                   ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/ml.svg",
-                            height: SizeConfig.heightMultiplier * 2,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 1.2,
-                          ),
-                          Text(
-                            '${baby.qtyFood} ${baby.groupFood}',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                // fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 1.4,
-                      ),
-                    ],
+                  SizedBox(
+                    width: SizeConfig.widthMultiplier * 1.4,
                   ),
                   SizedBox(height: SizeConfig.heightMultiplier * 2),
                   SizedBox(
@@ -1170,6 +1091,14 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.black38)),
                   ),
                 ],
+              ),
+              Text(
+                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
+                style: TextStyle(
+                    fontSize: SizeConfig.textMultiplier * 2,
+                    fontFamily: 'Montserrat',
+                    // fontWeight: FontWeight.w700,
+                    color: Colors.black38),
               ),
             ],
           ),
@@ -1197,9 +1126,10 @@ class _HomePageState extends State<HomePage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 height: SizeConfig.heightMultiplier * 8,
@@ -1214,87 +1144,59 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              SizedBox(
-                width: SizeConfig.widthMultiplier * 3,
-              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(
+                    "Breast Feeding",
+                    style: TextStyle(
+                        fontSize: SizeConfig.textMultiplier * 2,
+                        fontFamily: 'Montserrat',
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black38),
+                  ),
+                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Breast Feeding",
+                        'Last Breast To feed on : ',
                         style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 15,
-                      ),
-                      Text(
-                        DateFormat('hh:mm a')
-                            .format(DateTime.parse(baby.timeStamp)),
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 2,
+                            fontSize: SizeConfig.textMultiplier * 1.3,
                             fontFamily: 'Montserrat',
                             // fontWeight: FontWeight.w700,
                             color: Colors.black38),
                       ),
-                    ],
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Last Breast To feed on : ',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                // fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 1.2,
-                          ),
-                          baby.leftBreast == 0
-                              ? Text(
-                                  'Left',
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 1.3,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black38),
-                                )
-                              : Container(),
-                          baby.rightBreast == 0
-                              ? Text(
-                                  'Right',
-                                  style: TextStyle(
-                                      fontSize: SizeConfig.textMultiplier * 1.3,
-                                      fontFamily: 'Montserrat',
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.black38),
-                                )
-                              : Container(),
-                        ],
-                      ),
                       SizedBox(
-                        width: SizeConfig.widthMultiplier * 1.4,
+                        width: SizeConfig.widthMultiplier * 1.2,
                       ),
+                      baby.leftBreast == 0
+                          ? Text(
+                              'Left',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 1.3,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                            )
+                          : Container(),
+                      baby.rightBreast == 0
+                          ? Text(
+                              'Right',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 1.3,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                            )
+                          : Container(),
                     ],
                   ),
                   SizedBox(height: SizeConfig.heightMultiplier * 2),
                   SizedBox(
                     width: 190,
                     child: Text("${baby.note}",
-                        maxLines: 1,
+                        maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                         softWrap: false,
                         style: TextStyle(
@@ -1304,6 +1206,14 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.black38)),
                   ),
                 ],
+              ),
+              Text(
+                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
+                style: TextStyle(
+                    fontSize: SizeConfig.textMultiplier * 2,
+                    fontFamily: 'Montserrat',
+                    // fontWeight: FontWeight.w700,
+                    color: Colors.black38),
               ),
             ],
           ),

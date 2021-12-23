@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/sizeConfig.dart';
 import 'package:momnotebook/cubit/cubit/home_page_cubit.dart';
+import 'package:momnotebook/widgets/dashboard/dashboard_content/statistics/chart_painter_time_line.dart';
 import 'package:momnotebook/widgets/dashboard/dashboard_content/statistics/timeLineChart.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:weekly_date_picker/weekly_date_picker.dart';
@@ -131,7 +132,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                   ),
                   _scrollTasks(),
                   Padding(
-                    padding: const EdgeInsets.only(left: 12),
+                    padding: const EdgeInsets.only(left: 24),
                     child: TableCalendar(
                       onPageChanged: (value) {
                         print(value);
@@ -204,20 +205,20 @@ class _StatisticsPageState extends State<StatisticsPage> {
     );
   }
 
-  _scrollableDates() {
-    return Padding(
-        padding: const EdgeInsets.only(left: 12),
-        child: WeeklyDatePicker(
-            enableWeeknumberText: false,
-            selectedBackgroundColor: buttonBGColor,
-            selectedDigitColor: primaryColor,
-            selectedDay: _dateTime,
-            changeDay: (value) {
-              print('$_dateTime ::: ${_dateTime.weekday}');
-              setState(() => _dateTime = value);
-              _getWeekDates(value.weekday, value.day, value);
-            }));
-  }
+  // _scrollableDates() {
+  //   return Padding(
+  //       padding: const EdgeInsets.only(left: 12),
+  //       child: WeeklyDatePicker(
+  //           enableWeeknumberText: false,
+  //           selectedBackgroundColor: buttonBGColor,
+  //           selectedDigitColor: primaryColor,
+  //           selectedDay: _dateTime,
+  //           changeDay: (value) {
+  //             print('$_dateTime ::: ${_dateTime.weekday}');
+  //             setState(() => _dateTime = value);
+  //             _getWeekDates(value.weekday, value.day, value);
+  //           }));
+  // }
 
   _getWeekDates(int weekDay, int day, DateTime time) {
     switch (weekDay) {
@@ -337,7 +338,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
             height: SizeConfig.heightMultiplier * 90,
             child: CustomPaint(
               child: Container(),
-              painter: TimeLineChart(
+              painter: ChartPainterTimeLine(
                   DateTime(_startTime!.year, _startTime!.month, _startTime!.day,
                       0, 0, 0, 0, 0),
                   DateTime(_endTime!.year, _endTime!.month, _endTime!.day + 1,

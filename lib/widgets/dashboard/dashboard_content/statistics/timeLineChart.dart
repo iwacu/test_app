@@ -22,9 +22,10 @@ class TimeLineChart extends CustomPainter {
     final b = Offset(size.width * 1, size.height);
     final rect = Rect.fromPoints(a, b);
     canvas.drawRect(rect, paint);
-    drawHorizontalLines(canvas, size);
-    drwaFixedShadowRectangle(canvas, size);
+
     drawShadowRectangle(canvas, size);
+    drwaFixedShadowRectangle(canvas, size);
+    drawHorizontalLines(canvas, size);
   }
 
   void drawShadowRectangle(Canvas canvas, Size size) {
