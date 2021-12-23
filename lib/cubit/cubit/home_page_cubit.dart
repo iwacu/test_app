@@ -16,6 +16,7 @@ class HomePageCubit extends Cubit<HomePageState> {
     }
 
     var user = await DatabaseHelper.instance.getUser();
+    print('current user id from baby task side ${user.object!.babyId}');
     var response =
         await DatabaseHelper.instance.getBabyTasks(user.object!.babyId);
     var baby = await DatabaseHelper.instance.getBaby(user.object!.babyId);

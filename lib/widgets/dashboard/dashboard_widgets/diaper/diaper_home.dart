@@ -300,6 +300,8 @@ class _HomeDiaperState extends State<HomeDiaper> {
                           di.indexOf(end, startIndex + start.length);
                       var fnl =
                           di.substring(startIndex + start.length, endIndex);
+                      print(
+                          'current user id from diaper side ${widget.baby.id}');
                       BlocProvider.of<HomePageCubit>(context).saveTasksDiaper(
                           baby: widget.baby,
                           pee: _pee ? 0 : 1,

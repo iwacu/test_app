@@ -39,7 +39,7 @@ class AppRouter {
       case '/home_dashboard':
         return MaterialPageRoute(
             builder: (_) => HomeDashboard(
-                  baby: (arguments as Map)['baby'],
+                // baby: (arguments as Map)['baby'],
                 ));
       case '/feeder':
         return MaterialPageRoute(

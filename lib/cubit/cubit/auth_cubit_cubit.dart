@@ -20,6 +20,7 @@ class AuthCubitCubit extends Cubit<AuthCubitState> {
       if (baby.object == null) {
         emit(AuthCubitNoBaby(user.object!));
       } else {
+        print('current user id from auth side ${user.object!.babyId}');
         emit(AuthCubitUser(user.object!, baby.object!, babies));
       }
     }
