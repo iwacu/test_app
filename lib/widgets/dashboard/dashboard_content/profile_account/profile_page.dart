@@ -28,7 +28,7 @@ class ProfilePage extends StatelessWidget {
   }
 
   List<String> _languages = ['English'];
-  List<String> _notification = ['Daily', 'Weekly', 'monthly'];
+  List<String> _notification = ['Daily', 'Weekly', 'Monthly', 'Off'];
   String? _value;
   @override
   Widget build(BuildContext context) {
