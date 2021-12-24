@@ -361,7 +361,7 @@ class _HomeUpdateSleepState extends State<HomeUpdateSleep> {
                                     id: widget.babyTask.id,
                                     babyId: widget.babyTask.babyId,
                                     taskName: widget.babyTask.taskName,
-                                    timeStamp: _nowDate.toString(),
+                                    timeStamp: widget.babyTask.timeStamp,
                                     note: _text.text,
                                     startTime: widget.babyTask.startTime,
                                     endTime: widget.babyTask.endTime,
