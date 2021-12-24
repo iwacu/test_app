@@ -121,7 +121,6 @@ class ChartPainterTimeLine extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 1;
     while (i <= 7) {
-      print(' i::$i , xstart::$xStart, xxstart::$xxStart');
       final a = Offset(size.width * xStart, size.height * 0.0);
       final b = Offset(size.width * xxStart, size.height);
       final rect = Rect.fromPoints(a, b);
@@ -195,6 +194,7 @@ class ChartPainterTimeLine extends CustomPainter {
     var co = 0.1;
     // loop in tasks
     tasks.asMap().forEach((index, value) {
+      print('${value.taskName}  ${value.timeStamp} ${value.onTaskCompleted}');
       final paint = Paint()
         ..color = Color(int.parse(value.color))
         ..strokeWidth = 4.0
