@@ -35,6 +35,7 @@ class _HomeSleepState extends State<HomeSleep> {
   bool _stopTimer = false;
   String _startTime = '';
   String _endTime = '';
+  final _text = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -48,6 +49,7 @@ class _HomeSleepState extends State<HomeSleep> {
           hours: (_nowDate.hour) - (tm.object!.hour),
           minutes: (_nowDate.minute) - tm.object!.minutes,
           seconds: (_nowDate.second) - tm.object!.seconds);
+      _text.text = tm.object!.notes;
       startTime();
       _stopTimer = true;
     }
@@ -83,7 +85,8 @@ class _HomeSleepState extends State<HomeSleep> {
           dateTime: _nowDate,
           endTime: _endTime,
           color: fnl,
-          duration: _dtion);
+          duration: _dtion,
+          taskCompleted: 0);
       Navigator.pop(context);
     }
   }
@@ -94,6 +97,7 @@ class _HomeSleepState extends State<HomeSleep> {
         hour: _nowDate.hour,
         minutes: _nowDate.minute,
         seconds: _nowDate.second,
+        notes: '',
         taskId: 1));
     print('time saved $io');
   }
@@ -112,7 +116,6 @@ class _HomeSleepState extends State<HomeSleep> {
     timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
   }
 
-  final _text = TextEditingController();
   @override
   Widget build(BuildContext context) {
     String twoDigits(int n) => n.toString().padLeft(2, '0');

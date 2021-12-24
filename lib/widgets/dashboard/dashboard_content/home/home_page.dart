@@ -139,7 +139,8 @@ class _HomePageState extends State<HomePage> {
                                             _todayDate.month &&
                                         DateTime.parse(element.timeStamp)
                                                 .year ==
-                                            _todayDate.year)
+                                            _todayDate.year &&
+                                        element.onTaskCompleted == 0)
                                     .toList()),
                               ),
                             ),
@@ -237,14 +238,18 @@ class _HomePageState extends State<HomePage> {
                                 child: _diaper(
                                     babyTasks[index], index, babyTasks.length));
                           } else if (babyTasks[index].taskName == 'walking') {
-                            return GestureDetector(
-                                onTap: () => Navigator.of(context)
-                                        .pushNamed('/walk_update', arguments: {
-                                      'baby': state.baby,
-                                      'baby_task': babyTasks[index]
-                                    }),
-                                child: _walking(
-                                    babyTasks[index], index, babyTasks.length));
+                            return babyTasks[index].onTaskCompleted == 0
+                                ? GestureDetector(
+                                    onTap: () => Navigator.of(context)
+                                            .pushNamed('/walk_update',
+                                                arguments: {
+                                              'baby': state.baby,
+                                              'baby_task': babyTasks[index]
+                                            }),
+                                    child: _walking(babyTasks[index], index,
+                                        babyTasks.length))
+                                : _walking(
+                                    babyTasks[index], index, babyTasks.length);
                           } else if (babyTasks[index].taskName ==
                               'breast-pumping') {
                             return GestureDetector(
@@ -279,14 +284,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   _sleeping(BabyTask baby, int index, int length) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 8),
+      child: Column(
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // icon_container
+
               Container(
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
@@ -300,161 +306,180 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Start',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 1.2,
-                          ),
-                          Text(
-                            DateFormat('hh:mm a')
-                                .format(DateTime.parse(baby.startTime)),
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                // fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 2,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'End',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 3,
-                          ),
-                          Text(
-                            DateFormat('hh:mm a')
-                                .format(DateTime.parse(baby.endTime)),
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                // fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 1.4,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: SizeConfig.heightMultiplier * 1.3,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Duration',
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.3,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 3,
-                      ),
-                      Text(
-                        '${baby.durationH}H ${baby.durationM}M ${baby.durationS}S',
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.3,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 2),
-                  SizedBox(
-                    width: 190,
-                    child: Text("${baby.note}",
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.8,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black38)),
-                  ),
-                ],
+              SizedBox(
+                width: SizeConfig.widthMultiplier * 3,
               ),
-              Text(
-                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
-                style: TextStyle(
-                    fontSize: SizeConfig.textMultiplier * 2,
-                    fontFamily: 'Montserrat',
-                    // fontWeight: FontWeight.w700,
-                    color: Colors.black38),
+              // task_details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // first_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        Text(
+                          DateFormat('hh:mm a')
+                              .format(DateTime.parse(baby.timeStamp)),
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    // second_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Start',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 1.3,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.widthMultiplier * 1.2,
+                            ),
+                            Text(
+                              DateFormat('hh:mm a')
+                                  .format(DateTime.parse(baby.startTime)),
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 1.3,
+                                  fontFamily: 'Montserrat',
+                                  // fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 2,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'End',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 1.3,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.widthMultiplier * 3,
+                            ),
+                            Text(
+                              DateFormat('hh:mm a')
+                                  .format(DateTime.parse(baby.endTime)),
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 1.3,
+                                  fontFamily: 'Montserrat',
+                                  // fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 1.4,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 1.3,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Duration',
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.3,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 3,
+                        ),
+                        Text(
+                          calculateTimeDifferenceBetween(
+                              startDate: DateTime.parse(baby.startTime),
+                              endDate: DateTime.parse(baby.endTime)),
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.3,
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: SizeConfig.heightMultiplier * 2),
+                    SizedBox(
+                      width: 190,
+                      child: Text("${baby.note}",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.8,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black38)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        index + 1 == length
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.4,
-                  color: primaryColor,
+          index + 1 == length
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.4,
+                    color: primaryColor,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: Colors.black38,
+                  ),
                 ),
-              )
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: Colors.black38,
-                ),
-              ),
-      ],
+        ],
+      ),
     );
   }
 
   _food(BabyTask baby, int index, int length) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // icon_container
+
               Container(
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
@@ -468,145 +493,156 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/group.svg",
-                            height: SizeConfig.heightMultiplier * 2,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 1.2,
-                          ),
-                          Text(
-                            'Food Group',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 1.2,
-                          ),
-                          Text(
-                            '${baby.groupFood}',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                // fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: SizeConfig.widthMultiplier * 2,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/amount.svg",
-                            height: SizeConfig.heightMultiplier * 2,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 1.2,
-                          ),
-                          Text(
-                            'Amount',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 1.2,
-                          ),
-                          Text(
-                            '${baby.qtyFood} ${baby.qtyFeeder}',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                // fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 1.4,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 2),
-                  SizedBox(
-                    width: 190,
-                    child: Text("${baby.note}",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.8,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black38)),
-                  ),
-                ],
+              SizedBox(
+                width: SizeConfig.widthMultiplier * 3,
               ),
-              Text(
-                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
-                style: TextStyle(
-                    fontSize: SizeConfig.textMultiplier * 2,
-                    fontFamily: 'Montserrat',
-                    // fontWeight: FontWeight.w700,
-                    color: Colors.black38),
+              // task_details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // first_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        Text(
+                          DateFormat('hh:mm a')
+                              .format(DateTime.parse(baby.timeStamp)),
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    // second_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/group.svg",
+                          height: SizeConfig.heightMultiplier * 2,
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 1.2,
+                        ),
+                        Text(
+                          'Food Group',
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.3,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 1.2,
+                        ),
+                        Text(
+                          '${baby.groupFood}',
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.3,
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.widthMultiplier * 2,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/amount.svg",
+                          height: SizeConfig.heightMultiplier * 2,
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 1.2,
+                        ),
+                        Text(
+                          'Amount',
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.3,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 1.2,
+                        ),
+                        Text(
+                          '${baby.qtyFood} ${baby.qtyFeeder}',
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.3,
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: SizeConfig.widthMultiplier * 1.4,
+                    ),
+                    SizedBox(height: SizeConfig.heightMultiplier * 2),
+                    SizedBox(
+                      width: 190,
+                      child: Text("${baby.note}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.8,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black38)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        index + 1 == length
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: primaryColor,
+          index + 1 == length
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: primaryColor,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: Colors.black38,
+                  ),
                 ),
-              )
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: Colors.black38,
-                ),
-              ),
-      ],
+        ],
+      ),
     );
   }
 
   _feeder(BabyTask baby, int index, int length) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // icon_container
               Container(
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
@@ -620,100 +656,111 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset(
-                            "assets/icons/ml.svg",
-                            height: SizeConfig.heightMultiplier * 2,
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 1.2,
-                          ),
-                          Text(
-                            '${baby.qtyFood}',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                // fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 1.4,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 2),
-                  SizedBox(
-                    width: 190,
-                    child: Text("${baby.note}",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.8,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w300,
-                            color: Colors.black38)),
-                  ),
-                ],
+              SizedBox(
+                width: SizeConfig.widthMultiplier * 3,
               ),
-              Text(
-                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
-                style: TextStyle(
-                    fontSize: SizeConfig.textMultiplier * 2,
-                    fontFamily: 'Montserrat',
-                    // fontWeight: FontWeight.w700,
-                    color: Colors.black38),
+              // task_details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // first_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        Text(
+                          DateFormat('hh:mm a')
+                              .format(DateTime.parse(baby.timeStamp)),
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    // second_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/ml.svg",
+                          height: SizeConfig.heightMultiplier * 2,
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 1.2,
+                        ),
+                        Text(
+                          '${baby.qtyFood}',
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.3,
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: SizeConfig.widthMultiplier * 1.4,
+                    ),
+                    SizedBox(height: SizeConfig.heightMultiplier * 2),
+                    SizedBox(
+                      width: 190,
+                      child: Text("${baby.note}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.8,
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w300,
+                              color: Colors.black38)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        index + 1 == length
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: primaryColor,
+          index + 1 == length
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: primaryColor,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: Colors.black38,
+                  ),
                 ),
-              )
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: Colors.black38,
-                ),
-              ),
-      ],
+        ],
+      ),
     );
   }
 
   _diaper(BabyTask baby, int index, int length) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // icon_container
               Container(
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
@@ -727,140 +774,145 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          baby.pee == 1
-                              ? Container()
-                              : SvgPicture.asset(
-                                  "assets/icons/pee.svg",
-                                  height: SizeConfig.heightMultiplier * 2,
-                                ),
-                          baby.pee == 1
-                              ? Container()
-                              : SizedBox(
-                                  width: SizeConfig.widthMultiplier * 1.2,
-                                ),
-                          baby.pee == 1
-                              ? Container()
-                              : Padding(
-                                  padding: const EdgeInsets.only(top: 3.0),
-                                  child: Text(
-                                    'Pee',
-                                    style: TextStyle(
-                                        fontSize:
-                                            SizeConfig.textMultiplier * 1.3,
-                                        fontFamily: 'Montserrat',
-                                        // fontWeight: FontWeight.w700,
-                                        color: Colors.black38),
-                                  ),
-                                ),
-                          baby.pee == 1
-                              ? Container()
-                              : SizedBox(
-                                  width: SizeConfig.widthMultiplier * 8,
-                                ),
-                          baby.poo == 1
-                              ? Container()
-                              : SvgPicture.asset(
-                                  "assets/icons/poop.svg",
-                                  height: SizeConfig.heightMultiplier * 2,
-                                ),
-                          baby.poo == 1
-                              ? Container()
-                              : SizedBox(
-                                  width: SizeConfig.widthMultiplier * 1.2,
-                                ),
-                          baby.poo == 1
-                              ? Container()
-                              : Padding(
-                                  padding: const EdgeInsets.only(top: 3.0),
-                                  child: Text(
-                                    'Poop',
-                                    style: TextStyle(
-                                        fontSize:
-                                            SizeConfig.textMultiplier * 1.3,
-                                        fontFamily: 'Montserrat',
-                                        // fontWeight: FontWeight.w700,
-                                        color: Colors.black38),
-                                  ),
-                                ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 1.4,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 2),
-                  SizedBox(
-                    width: 190,
-                    child: Text("${baby.note}",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.8,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black38)),
-                  ),
-                ],
+              SizedBox(
+                width: SizeConfig.widthMultiplier * 3,
               ),
-              Text(
-                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
-                style: TextStyle(
-                    fontSize: SizeConfig.textMultiplier * 2,
-                    fontFamily: 'Montserrat',
-                    // fontWeight: FontWeight.w700,
-                    color: Colors.black38),
+              // task_details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // first_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        Text(
+                          DateFormat('hh:mm a')
+                              .format(DateTime.parse(baby.timeStamp)),
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        baby.pee == 1
+                            ? Container()
+                            : SvgPicture.asset(
+                                "assets/icons/pee.svg",
+                                height: SizeConfig.heightMultiplier * 2,
+                              ),
+                        baby.pee == 1
+                            ? Container()
+                            : SizedBox(
+                                width: SizeConfig.widthMultiplier * 1.2,
+                              ),
+                        baby.pee == 1
+                            ? Container()
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 3.0),
+                                child: Text(
+                                  'Pee',
+                                  style: TextStyle(
+                                      fontSize: SizeConfig.textMultiplier * 1.3,
+                                      fontFamily: 'Montserrat',
+                                      // fontWeight: FontWeight.w700,
+                                      color: Colors.black38),
+                                ),
+                              ),
+                        baby.pee == 1
+                            ? Container()
+                            : SizedBox(
+                                width: SizeConfig.widthMultiplier * 8,
+                              ),
+                        baby.poo == 1
+                            ? Container()
+                            : SvgPicture.asset(
+                                "assets/icons/poop.svg",
+                                height: SizeConfig.heightMultiplier * 2,
+                              ),
+                        baby.poo == 1
+                            ? Container()
+                            : SizedBox(
+                                width: SizeConfig.widthMultiplier * 1.2,
+                              ),
+                        baby.poo == 1
+                            ? Container()
+                            : Padding(
+                                padding: const EdgeInsets.only(top: 3.0),
+                                child: Text(
+                                  'Poop',
+                                  style: TextStyle(
+                                      fontSize: SizeConfig.textMultiplier * 1.3,
+                                      fontFamily: 'Montserrat',
+                                      // fontWeight: FontWeight.w700,
+                                      color: Colors.black38),
+                                ),
+                              ),
+                      ],
+                    ),
+                    SizedBox(height: SizeConfig.heightMultiplier * 2),
+                    SizedBox(
+                      width: 190,
+                      child: Text("${baby.note}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.8,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black38)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        index + 1 == length
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: primaryColor,
+          index + 1 == length
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: primaryColor,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: Colors.black38,
+                  ),
                 ),
-              )
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: Colors.black38,
-                ),
-              ),
-      ],
+        ],
+      ),
     );
   }
 
   _walking(BabyTask baby, int index, int length) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // icon_container
               Container(
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
@@ -874,161 +926,186 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Start',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 1.2,
-                          ),
-                          Text(
-                            DateFormat('hh:mm a')
-                                .format(DateTime.parse(baby.startTime)),
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                // fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 2,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'End',
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                          SizedBox(
-                            width: SizeConfig.widthMultiplier * 3,
-                          ),
-                          Text(
-                            DateFormat('hh:mm a')
-                                .format(DateTime.parse(baby.endTime)),
-                            style: TextStyle(
-                                fontSize: SizeConfig.textMultiplier * 1.3,
-                                fontFamily: 'Montserrat',
-                                // fontWeight: FontWeight.w700,
-                                color: Colors.black38),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 1.4,
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: SizeConfig.heightMultiplier * 1.3,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Duration',
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.3,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 3,
-                      ),
-                      Text(
-                        '${baby.durationH}H ${baby.durationM}M ${baby.durationS}S',
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.3,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 2),
-                  SizedBox(
-                    width: 190,
-                    child: Text("${baby.note}",
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.8,
-                            fontFamily: 'Montserrat',
-                            fontWeight: FontWeight.w300,
-                            color: Colors.black38)),
-                  ),
-                ],
+              SizedBox(
+                width: SizeConfig.widthMultiplier * 3,
               ),
-              Text(
-                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
-                style: TextStyle(
-                    fontSize: SizeConfig.textMultiplier * 2,
-                    fontFamily: 'Montserrat',
-                    // fontWeight: FontWeight.w700,
-                    color: Colors.black38),
+              // task_details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // first_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${baby.taskName[0].toUpperCase()}${baby.taskName.substring(1)}",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        Text(
+                          DateFormat('hh:mm a')
+                              .format(DateTime.parse(baby.timeStamp)),
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    // second_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Start',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 1.3,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.widthMultiplier * 1.2,
+                            ),
+                            Text(
+                              DateFormat('hh:mm a')
+                                  .format(DateTime.parse(baby.startTime)),
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 1.3,
+                                  fontFamily: 'Montserrat',
+                                  // fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 2,
+                        ),
+                        baby.endTime.isEmpty
+                            ? Container()
+                            : Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'End',
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeConfig.textMultiplier * 1.3,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black38),
+                                  ),
+                                  SizedBox(
+                                    width: SizeConfig.widthMultiplier * 3,
+                                  ),
+                                  Text(
+                                    DateFormat('hh:mm a')
+                                        .format(DateTime.parse(baby.endTime)),
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeConfig.textMultiplier * 1.3,
+                                        fontFamily: 'Montserrat',
+                                        // fontWeight: FontWeight.w700,
+                                        color: Colors.black38),
+                                  ),
+                                ],
+                              ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 1.4,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 1.3,
+                    ),
+                    baby.endTime.isEmpty
+                        ? Container()
+                        : Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Duration',
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 1.3,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black38),
+                              ),
+                              SizedBox(
+                                width: SizeConfig.widthMultiplier * 3,
+                              ),
+                              Text(
+                                calculateTimeDifferenceBetween(
+                                    startDate: DateTime.parse(baby.startTime),
+                                    endDate: DateTime.parse(baby.endTime)),
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 1.3,
+                                    fontFamily: 'Montserrat',
+                                    // fontWeight: FontWeight.w700,
+                                    color: Colors.black38),
+                              ),
+                            ],
+                          ),
+                    SizedBox(height: SizeConfig.heightMultiplier * 2),
+                    SizedBox(
+                      width: 190,
+                      child: Text("${baby.note}",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.8,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w300,
+                              color: Colors.black38)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        index + 1 == length
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: primaryColor,
+          // divider
+          index + 1 == length
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: primaryColor,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: Colors.black38,
+                  ),
                 ),
-              )
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: Colors.black38,
-                ),
-              ),
-      ],
+        ],
+      ),
     );
   }
 
   _breastPumping(BabyTask baby, int index, int length) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // icon_container
               Container(
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
@@ -1042,95 +1119,111 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Breast Pumping",
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black38),
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SvgPicture.asset(
-                        "assets/icons/ml.svg",
-                        height: SizeConfig.heightMultiplier * 2,
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 1.2,
-                      ),
-                      Text(
-                        '${baby.qtyFood} ${baby.groupFood}',
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.3,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: SizeConfig.widthMultiplier * 1.4,
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 2),
-                  SizedBox(
-                    width: 190,
-                    child: Text("${baby.note}",
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.8,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w300,
-                            color: Colors.black38)),
-                  ),
-                ],
+              SizedBox(
+                width: SizeConfig.widthMultiplier * 3,
               ),
-              Text(
-                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
-                style: TextStyle(
-                    fontSize: SizeConfig.textMultiplier * 2,
-                    fontFamily: 'Montserrat',
-                    // fontWeight: FontWeight.w700,
-                    color: Colors.black38),
+              // task_details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //  first_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Breast Pumping",
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        Text(
+                          DateFormat('hh:mm a')
+                              .format(DateTime.parse(baby.timeStamp)),
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    // second_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/icons/ml.svg",
+                          height: SizeConfig.heightMultiplier * 2,
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 1.2,
+                        ),
+                        Text(
+                          '${baby.qtyFood} ${baby.groupFood}',
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.3,
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      width: SizeConfig.widthMultiplier * 1.4,
+                    ),
+                    SizedBox(height: SizeConfig.heightMultiplier * 2),
+                    SizedBox(
+                      width: 190,
+                      child: Text("${baby.note}",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.8,
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w300,
+                              color: Colors.black38)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        index + 1 == length
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: primaryColor,
+          index + 1 == length
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: primaryColor,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: Colors.black38,
+                  ),
                 ),
-              )
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: Colors.black38,
-                ),
-              ),
-      ],
+        ],
+      ),
     );
   }
 
   _breastFeeding(BabyTask baby, int index, int length) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          child: Row(
+    return Padding(
+      padding: const EdgeInsets.only(left: 12, right: 12, top: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              // icon_container
               Container(
                 height: SizeConfig.heightMultiplier * 8,
                 width: SizeConfig.widthMultiplier * 18,
@@ -1144,96 +1237,223 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Breast Feeding",
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 1.5),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Last Breast To feed on : ',
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.3,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w700,
-                            color: Colors.black38),
-                      ),
-                      SizedBox(
-                        width: SizeConfig.widthMultiplier * 1.2,
-                      ),
-                      baby.leftBreast == 0
-                          ? Text(
-                              'Left',
-                              style: TextStyle(
-                                  fontSize: SizeConfig.textMultiplier * 1.3,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black38),
-                            )
-                          : Container(),
-                      baby.rightBreast == 0
-                          ? Text(
-                              'Right',
-                              style: TextStyle(
-                                  fontSize: SizeConfig.textMultiplier * 1.3,
-                                  fontFamily: 'Montserrat',
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black38),
-                            )
-                          : Container(),
-                    ],
-                  ),
-                  SizedBox(height: SizeConfig.heightMultiplier * 2),
-                  SizedBox(
-                    width: 190,
-                    child: Text("${baby.note}",
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: false,
-                        style: TextStyle(
-                            fontSize: SizeConfig.textMultiplier * 1.8,
-                            fontFamily: 'Montserrat',
-                            // fontWeight: FontWeight.w300,
-                            color: Colors.black38)),
-                  ),
-                ],
+              SizedBox(
+                width: SizeConfig.widthMultiplier * 3,
               ),
-              Text(
-                DateFormat('hh:mm a').format(DateTime.parse(baby.timeStamp)),
-                style: TextStyle(
-                    fontSize: SizeConfig.textMultiplier * 2,
-                    fontFamily: 'Montserrat',
-                    // fontWeight: FontWeight.w700,
-                    color: Colors.black38),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    //  first_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Breast Feeding",
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 2,
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        Text(
+                          DateFormat('hh:mm a')
+                              .format(DateTime.parse(baby.timeStamp)),
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 2,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Last Breast To feed on : ',
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.3,
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w700,
+                              color: Colors.black38),
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 1.2,
+                        ),
+                        baby.leftBreast == 0
+                            ? Text(
+                                'Left',
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 1.3,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black38),
+                              )
+                            : Container(),
+                        baby.rightBreast == 0
+                            ? Text(
+                                'Right',
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 1.3,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black38),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                    SizedBox(height: SizeConfig.heightMultiplier * 2),
+                    // second_row
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Start',
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 1.3,
+                                  fontFamily: 'Montserrat',
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                            ),
+                            SizedBox(
+                              width: SizeConfig.widthMultiplier * 1.2,
+                            ),
+                            Text(
+                              DateFormat('hh:mm a')
+                                  .format(DateTime.parse(baby.startTime)),
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 1.3,
+                                  fontFamily: 'Montserrat',
+                                  // fontWeight: FontWeight.w700,
+                                  color: Colors.black38),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 2,
+                        ),
+                        baby.endTime.isEmpty
+                            ? Container()
+                            : Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'End',
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeConfig.textMultiplier * 1.3,
+                                        fontFamily: 'Montserrat',
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.black38),
+                                  ),
+                                  SizedBox(
+                                    width: SizeConfig.widthMultiplier * 3,
+                                  ),
+                                  Text(
+                                    DateFormat('hh:mm a')
+                                        .format(DateTime.parse(baby.endTime)),
+                                    style: TextStyle(
+                                        fontSize:
+                                            SizeConfig.textMultiplier * 1.3,
+                                        fontFamily: 'Montserrat',
+                                        // fontWeight: FontWeight.w700,
+                                        color: Colors.black38),
+                                  ),
+                                ],
+                              ),
+                        SizedBox(
+                          width: SizeConfig.widthMultiplier * 1.4,
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: SizeConfig.heightMultiplier * 1.3,
+                    ),
+                    baby.endTime.isEmpty
+                        ? Container()
+                        : Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Duration',
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 1.3,
+                                    fontFamily: 'Montserrat',
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.black38),
+                              ),
+                              SizedBox(
+                                width: SizeConfig.widthMultiplier * 3,
+                              ),
+                              Text(
+                                calculateTimeDifferenceBetween(
+                                    startDate: DateTime.parse(baby.startTime),
+                                    endDate: DateTime.parse(baby.endTime)),
+                                style: TextStyle(
+                                    fontSize: SizeConfig.textMultiplier * 1.3,
+                                    fontFamily: 'Montserrat',
+                                    // fontWeight: FontWeight.w700,
+                                    color: Colors.black38),
+                              ),
+                            ],
+                          ),
+                    SizedBox(height: SizeConfig.heightMultiplier * 2),
+
+                    SizedBox(
+                      width: 190,
+                      child: Text("${baby.note}",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: false,
+                          style: TextStyle(
+                              fontSize: SizeConfig.textMultiplier * 1.8,
+                              fontFamily: 'Montserrat',
+                              // fontWeight: FontWeight.w300,
+                              color: Colors.black38)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-        index + 1 == length
-            ? Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: primaryColor,
+          index + 1 == length
+              ? Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: primaryColor,
+                  ),
+                )
+              : Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 14),
+                  child: Divider(
+                    thickness: 0.2,
+                    color: Colors.black38,
+                  ),
                 ),
-              )
-            : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                child: Divider(
-                  thickness: 0.2,
-                  color: Colors.black38,
-                ),
-              ),
-      ],
+        ],
+      ),
     );
   }
+}
+
+String calculateTimeDifferenceBetween(
+    {required DateTime startDate, required DateTime endDate}) {
+  int seconds = endDate.difference(startDate).inSeconds;
+  if (seconds < 60)
+    return '$seconds second';
+  else if (seconds >= 60 && seconds < 3600)
+    return '${startDate.difference(endDate).inMinutes.abs()} minute';
+  else if (seconds >= 3600 && seconds < 86400)
+    return '${startDate.difference(endDate).inHours} hour';
+  else
+    return '${startDate.difference(endDate).inDays} day';
 }

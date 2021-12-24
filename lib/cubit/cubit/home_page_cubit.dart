@@ -45,7 +45,8 @@ class HomePageCubit extends Cubit<HomePageState> {
       String? amountScale,
       String? taskName,
       String? color,
-      Duration? duration}) async {
+      Duration? duration,
+      int? taskCompleted}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
         babyId: baby!.id!,
         taskName: taskName!,
@@ -66,7 +67,8 @@ class HomePageCubit extends Cubit<HomePageState> {
         durationH: duration!.inHours.toString(),
         durationM: duration.inMinutes.toString(),
         durationS: duration.inSeconds.toString(),
-        color: color!));
+        color: color!,
+        onTaskCompleted: taskCompleted!));
     getBabyTasks();
   }
 
@@ -79,7 +81,8 @@ class HomePageCubit extends Cubit<HomePageState> {
       DateTime? dateTime,
       String? taskName,
       String? color,
-      Duration? duration}) async {
+      Duration? duration,
+      int? taskCompleted}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
         babyId: baby!.id!,
         taskName: taskName!,
@@ -100,7 +103,8 @@ class HomePageCubit extends Cubit<HomePageState> {
         durationH: duration!.inHours.toString(),
         durationM: duration.inMinutes.toString(),
         durationS: duration.inSeconds.toString(),
-        color: color!));
+        color: color!,
+        onTaskCompleted: taskCompleted!));
     getBabyTasks();
   }
 
@@ -109,21 +113,24 @@ class HomePageCubit extends Cubit<HomePageState> {
       String? note,
       String? foodGroup,
       DateTime? dateTime,
+      DateTime? startTime,
+      DateTime? endTime,
       String? amount,
       String? amountScale,
       String? taskName,
       bool? left,
       bool? right,
       String? color,
-      Duration? duration}) async {
+      Duration? duration,
+      int? taskCompleted}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
         babyId: baby!.id!,
         taskName: taskName!,
         timeStamp: dateTime.toString(),
         note: note!,
-        startTime: '',
+        startTime: startTime.toString(),
         resumeTime: '',
-        endTime: '',
+        endTime: endTime.toString(),
         qtyFood: '',
         qtyLeft: '',
         qtyRight: '',
@@ -136,7 +143,8 @@ class HomePageCubit extends Cubit<HomePageState> {
         durationH: duration!.inHours.toString(),
         durationM: duration.inMinutes.toString(),
         durationS: duration.inSeconds.toString(),
-        color: color!));
+        color: color!,
+        onTaskCompleted: taskCompleted!));
     getBabyTasks();
   }
 
@@ -151,7 +159,8 @@ class HomePageCubit extends Cubit<HomePageState> {
       int? pee,
       int? poop,
       String? color,
-      Duration? duration}) async {
+      Duration? duration,
+      int? taskCompleted}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
         babyId: baby!.id!,
         taskName: taskName!,
@@ -172,7 +181,8 @@ class HomePageCubit extends Cubit<HomePageState> {
         durationH: duration!.inHours.toString(),
         durationM: duration.inMinutes.toString(),
         durationS: duration.inSeconds.toString(),
-        color: color!));
+        color: color!,
+        onTaskCompleted: taskCompleted!));
     getBabyTasks();
   }
 
@@ -189,7 +199,8 @@ class HomePageCubit extends Cubit<HomePageState> {
       int? pee,
       int? poop,
       String? color,
-      Duration? duration}) async {
+      Duration? duration,
+      int? taskCompleted}) async {
     await DatabaseHelper.instance.addBabyTask(BabyTask(
         babyId: baby!.id!,
         taskName: taskName!,
@@ -210,7 +221,8 @@ class HomePageCubit extends Cubit<HomePageState> {
         durationH: duration!.inHours.toString(),
         durationM: duration.inMinutes.toString(),
         durationS: duration.inSeconds.toString(),
-        color: color!));
+        color: color!,
+        onTaskCompleted: taskCompleted!));
     getBabyTasks();
   }
 }

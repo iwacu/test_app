@@ -5,6 +5,7 @@ class Timerr {
   final int hour;
   final int minutes;
   final int seconds;
+  final String notes;
 
   Timerr({
     this.id,
@@ -13,6 +14,7 @@ class Timerr {
     required this.startTime,
     required this.seconds,
     required this.taskId,
+    required this.notes,
   });
 
   factory Timerr.fromMap(Map<String, dynamic> json) => new Timerr(
@@ -22,6 +24,7 @@ class Timerr {
         hour: json['h'],
         minutes: json['m'],
         seconds: json['s'],
+        notes: json['notes'],
       );
 
   Map<String, dynamic> toMap() {
@@ -32,6 +35,7 @@ class Timerr {
       'h': hour,
       'm': minutes,
       's': seconds,
+      'notes': notes,
     };
   }
 }

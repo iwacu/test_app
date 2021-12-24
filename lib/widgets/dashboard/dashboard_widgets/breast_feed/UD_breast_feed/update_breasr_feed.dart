@@ -230,37 +230,31 @@ class _HomeUpdateBreastFeedState extends State<HomeUpdateBreastFeed> {
                                 color: Colors.black38),
                           ),
                           Spacer(),
-                          GestureDetector(
-                            onTap: () => _showDatePicker(context),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: greyColor)),
-                              child: Text(
-                                Jiffy(_nowDate).MMMEd,
-                                style: TextStyle(
-                                    fontSize: SizeConfig.textMultiplier * 2,
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.black38,
-                                    fontWeight: FontWeight.w500),
-                              ),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: greyColor)),
+                            child: Text(
+                              Jiffy(_nowDate).MMMEd,
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.black38,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
                           SizedBox(
                             width: SizeConfig.widthMultiplier * 2,
                           ),
-                          GestureDetector(
-                            onTap: () => _showTimePicker(context),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: greyColor)),
-                              child: Text(
-                                DateFormat('hh:mm a').format(_nowDate),
-                                style: TextStyle(
-                                    fontSize: SizeConfig.textMultiplier * 2,
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.black38,
-                                    fontWeight: FontWeight.w500),
-                              ),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: greyColor)),
+                            child: Text(
+                              DateFormat('hh:mm a').format(_nowDate),
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.black38,
+                                  fontWeight: FontWeight.w500),
                             ),
                           )
                         ],
@@ -318,7 +312,9 @@ class _HomeUpdateBreastFeedState extends State<HomeUpdateBreastFeed> {
                               durationH: '',
                               durationM: '',
                               durationS: '',
-                              color: widget.babyTask.color));
+                              color: widget.babyTask.color,
+                              onTaskCompleted:
+                                  widget.babyTask.onTaskCompleted));
                       Navigator.pop(context);
                     },
                   ),
@@ -332,73 +328,5 @@ class _HomeUpdateBreastFeedState extends State<HomeUpdateBreastFeed> {
         ),
       ),
     );
-  }
-
-  void _showDatePicker(ctx) {
-    // showCupertinoModalPopup is a built-in function of the cupertino library
-    showCupertinoModalPopup(
-        context: ctx,
-        builder: (_) => Container(
-              height: 500,
-              color: Color.fromARGB(255, 255, 255, 255),
-              child: Column(
-                children: [
-                  Container(
-                    height: 400,
-                    child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.date,
-                        initialDateTime: _nowDate,
-                        onDateTimeChanged: (val) {
-                          setState(() {
-                            _nowDate = DateTime(
-                                val.year,
-                                val.month,
-                                val.day,
-                                _nowDate.hour,
-                                _nowDate.minute,
-                                _nowDate.second);
-                          });
-                        }),
-                  ),
-
-                  // Close the modal
-                  CupertinoButton(
-                    child: Text('OK'),
-                    onPressed: () => Navigator.of(ctx).pop(),
-                  )
-                ],
-              ),
-            ));
-  }
-
-  void _showTimePicker(ctx) {
-    // showCupertinoModalPopup is a built-in function of the cupertino library
-    showCupertinoModalPopup(
-        context: ctx,
-        builder: (_) => Container(
-              height: 500,
-              color: Color.fromARGB(255, 255, 255, 255),
-              child: Column(
-                children: [
-                  Container(
-                    height: 400,
-                    child: CupertinoDatePicker(
-                        mode: CupertinoDatePickerMode.time,
-                        initialDateTime: _nowDate,
-                        onDateTimeChanged: (val) {
-                          setState(() {
-                            _nowDate = val;
-                          });
-                        }),
-                  ),
-
-                  // Close the modal
-                  CupertinoButton(
-                    child: Text('OK'),
-                    onPressed: () => Navigator.of(ctx).pop(),
-                  )
-                ],
-              ),
-            ));
   }
 }

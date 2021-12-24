@@ -333,6 +333,9 @@ class _StatisticsPageState extends State<StatisticsPage> {
             child: CircularProgressIndicator(),
           );
         } else if (state is HomePageCompleted) {
+          var babyTasks = state.babyTasks
+              .where((element) => element.onTaskCompleted == 0)
+              .toList();
           return Container(
             width: SizeConfig.widthMultiplier * 100,
             height: SizeConfig.heightMultiplier * 90,
@@ -343,7 +346,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                       0, 0, 0, 0, 0),
                   DateTime(_endTime!.year, _endTime!.month, _endTime!.day + 1,
                       0, 0, 0, 0, 0),
-                  state.babyTasks,
+                  babyTasks,
                   _dateTime),
             ),
           );

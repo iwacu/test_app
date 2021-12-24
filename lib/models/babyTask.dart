@@ -20,6 +20,7 @@ class BabyTask {
   final String durationM;
   final String durationS;
   final String color;
+  final int onTaskCompleted;
 
   BabyTask(
       {this.id,
@@ -42,7 +43,8 @@ class BabyTask {
       required this.durationH,
       required this.durationM,
       required this.durationS,
-      required this.color});
+      required this.color,
+      required this.onTaskCompleted});
   factory BabyTask.fromMap(Map<String, dynamic> json) => new BabyTask(
       id: json['id'],
       babyId: json['baby_id'],
@@ -64,7 +66,8 @@ class BabyTask {
       durationH: json['durationH'],
       durationM: json['durationM'],
       durationS: json['durationS'],
-      color: json['color']);
+      color: json['color'],
+      onTaskCompleted: json['on_task_complete']);
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -87,7 +90,8 @@ class BabyTask {
       'durationH': durationH,
       'durationM': durationM,
       'durationS': durationS,
-      'color': color
+      'color': color,
+      'on_task_complete': onTaskCompleted
     };
   }
 }

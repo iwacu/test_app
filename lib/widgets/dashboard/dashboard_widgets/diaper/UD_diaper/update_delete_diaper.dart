@@ -330,7 +330,9 @@ class _HomeUpdateDeleteDiaperState extends State<HomeUpdateDeleteDiaper> {
                               durationH: '',
                               durationM: '',
                               durationS: '',
-                              color: widget.babyTask.color));
+                              color: widget.babyTask.color,
+                              onTaskCompleted:
+                                  widget.babyTask.onTaskCompleted));
                       Navigator.pop(context);
                     },
                   ),

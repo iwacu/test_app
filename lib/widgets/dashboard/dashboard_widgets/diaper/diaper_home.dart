@@ -308,7 +308,8 @@ class _HomeDiaperState extends State<HomeDiaper> {
                           note: _text.text,
                           color: fnl,
                           dateTime: _nowDate,
-                          duration: Duration());
+                          duration: Duration(),
+                          taskCompleted: 0);
                       Navigator.pop(context);
                     },
                   ),

@@ -33,6 +33,7 @@ class _HomeWalkingState extends State<HomeWalking> {
   bool _stopTimer = false;
   String _startTime = '';
   String _endTime = '';
+  final _text = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -46,6 +47,7 @@ class _HomeWalkingState extends State<HomeWalking> {
           hours: (_nowDate.hour) - (tm.object!.hour),
           minutes: (_nowDate.minute) - tm.object!.minutes,
           seconds: (_nowDate.second) - tm.object!.seconds);
+      _text.text = tm.object!.notes;
       startTime();
       _stopTimer = true;
     }
@@ -81,7 +83,8 @@ class _HomeWalkingState extends State<HomeWalking> {
           note: _text.text,
           dateTime: _nowDate,
           color: fnl,
-          duration: _dtion);
+          duration: _dtion,
+          taskCompleted: 0);
       Navigator.pop(context);
     }
   }
@@ -92,6 +95,7 @@ class _HomeWalkingState extends State<HomeWalking> {
         hour: _nowDate.hour,
         minutes: _nowDate.minute,
         seconds: _nowDate.second,
+        notes: _text.text,
         taskId: 2));
   }
 
@@ -108,8 +112,6 @@ class _HomeWalkingState extends State<HomeWalking> {
   void startTime() {
     timer = Timer.periodic(Duration(seconds: 1), (_) => addTime());
   }
-
-  final _text = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -477,6 +479,27 @@ class _HomeWalkingState extends State<HomeWalking> {
                           press: () {
                             startTime();
                             saveTimer();
+                            var di = jnAccGray.toString();
+                            print(di);
+                            const start = "Color(";
+                            const end = ")";
+
+                            final startIndex = di.indexOf(start);
+                            final endIndex =
+                                di.indexOf(end, startIndex + start.length);
+                            var fnl = di.substring(
+                                startIndex + start.length, endIndex);
+                            BlocProvider.of<HomePageCubit>(context)
+                                .saveTasksWalkingSleeping(
+                                    baby: widget.baby,
+                                    taskName: 'walking',
+                                    startTime: _nowDate.toString(),
+                                    endTime: '',
+                                    note: _text.text,
+                                    dateTime: _nowDate,
+                                    color: fnl,
+                                    duration: _dtion,
+                                    taskCompleted: 1);
                             setState(() {
                               _stopTimer = true;
                             });

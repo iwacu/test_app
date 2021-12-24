@@ -272,7 +272,8 @@ class _HomeFeederState extends State<HomeFeeder> {
                                 amountScale: 'ml',
                                 dateTime: _nowDate,
                                 duration: Duration(),
-                                taskName: 'feeder');
+                                taskName: 'feeder',
+                                taskCompleted: 0);
                             Navigator.pop(context);
                           },
                         ),

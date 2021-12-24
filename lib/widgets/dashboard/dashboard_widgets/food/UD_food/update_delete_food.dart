@@ -389,7 +389,9 @@ class _HomeUpdateFoodState extends State<HomeUpdateFood> {
                                 durationH: '',
                                 durationM: '',
                                 durationS: '',
-                                color: widget.babyTask.color));
+                                color: widget.babyTask.color,
+                                onTaskCompleted:
+                                    widget.babyTask.onTaskCompleted));
                         Navigator.pop(context);
                       },
                     ),

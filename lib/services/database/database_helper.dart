@@ -51,7 +51,8 @@ class DatabaseHelper {
         start_time TEXT,
         h INTEGER,
         m INTEGER,
-        s INTEGER
+        s INTEGER,
+        notes TEXT
          
       )
     ''');
@@ -77,7 +78,8 @@ class DatabaseHelper {
         durationH TEXT,
         durationM TEXT,
         durationS TEXT,
-        color TEXT
+        color TEXT,
+        on_task_complete INTEGER
          
       )
     ''');

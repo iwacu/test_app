@@ -22,9 +22,16 @@ class HomeBreastFeed extends StatefulWidget {
 
 class _HomeBreastFeedState extends State<HomeBreastFeed> {
   DateTime _nowDate = DateTime.now();
+  DateTime _startTime = DateTime.now();
   final _text = TextEditingController();
   bool _left = false;
   bool _right = false;
+  @override
+  void initState() {
+    print(_startTime);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,13 +72,18 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                   height: SizeConfig.heightMultiplier * 4,
                 ),
                 Center(
-                  child: Text(
-                    'Breast Feed',
-                    style: TextStyle(
-                        fontSize: SizeConfig.textMultiplier * 2.7,
-                        fontFamily: 'Montserrat',
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black38),
+                  child: GestureDetector(
+                    onTap: () {
+                      print(_nowDate);
+                    },
+                    child: Text(
+                      'Breast Feed',
+                      style: TextStyle(
+                          fontSize: SizeConfig.textMultiplier * 2.7,
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black38),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -294,13 +306,16 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                           note: _text.text,
                           foodGroup: '',
                           color: fnl,
+                          startTime: _startTime,
+                          endTime: DateTime.now(),
                           amount: '',
                           left: _left,
                           right: _right,
                           amountScale: '',
                           dateTime: _nowDate,
                           duration: Duration(),
-                          taskName: 'breast-feed');
+                          taskName: 'breast-feed',
+                          taskCompleted: 0);
                       Navigator.pop(context);
                     },
                   ),

@@ -289,7 +289,9 @@ class _HomeUpdateFeederState extends State<HomeUpdateFeeder> {
                                     durationH: '',
                                     durationM: '',
                                     durationS: '',
-                                    color: widget.babyTask.color));
+                                    color: widget.babyTask.color,
+                                    onTaskCompleted:
+                                        widget.babyTask.onTaskCompleted));
                             Navigator.pop(context);
                           },
                         ),

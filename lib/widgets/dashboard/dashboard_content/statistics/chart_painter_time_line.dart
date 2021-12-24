@@ -220,7 +220,6 @@ class ChartPainterTimeLine extends CustomPainter {
           {
             drawCirleAndLine3(canvas, size, i, c, value, paint, paintLine,
                 index, wend, tasks.length, co);
-            co = co + 0.1;
           }
           break;
         case 4:
@@ -320,7 +319,7 @@ class ChartPainterTimeLine extends CustomPainter {
           babyTask: value,
           co: co,
           upI: 1,
-          downI: 9);
+          downI: 7);
     } else {
       canvas.drawCircle(
           new Offset(
@@ -463,8 +462,8 @@ class ChartPainterTimeLine extends CustomPainter {
           i: i,
           babyTask: value,
           co: co,
-          upI: 1,
-          downI: 1.5);
+          upI: 31,
+          downI: 45);
     } else {
       canvas.drawCircle(
           new Offset(
@@ -499,8 +498,8 @@ class ChartPainterTimeLine extends CustomPainter {
           i: i,
           babyTask: value,
           co: co,
-          upI: 1,
-          downI: 1.26);
+          upI: 31,
+          downI: 37);
     } else {
       canvas.drawCircle(
           new Offset(
@@ -535,8 +534,8 @@ class ChartPainterTimeLine extends CustomPainter {
           i: i,
           babyTask: value,
           co: co,
-          upI: 1,
-          downI: 1.06);
+          upI: 31,
+          downI: 33);
     } else {
       canvas.drawCircle(
           new Offset(
