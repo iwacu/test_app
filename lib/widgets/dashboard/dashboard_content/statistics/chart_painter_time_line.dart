@@ -194,7 +194,6 @@ class ChartPainterTimeLine extends CustomPainter {
     var co = 0.1;
     // loop in tasks
     tasks.asMap().forEach((index, value) {
-      print('${value.taskName}  ${value.timeStamp} ${value.onTaskCompleted}');
       final paint = Paint()
         ..color = Color(int.parse(value.color))
         ..strokeWidth = 4.0
