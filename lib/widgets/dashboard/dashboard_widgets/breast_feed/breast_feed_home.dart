@@ -225,37 +225,31 @@ class _HomeBreastFeedState extends State<HomeBreastFeed> {
                                 color: Colors.black38),
                           ),
                           Spacer(),
-                          GestureDetector(
-                            onTap: () => _showDatePicker(context),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: greyColor)),
-                              child: Text(
-                                Jiffy(_nowDate).MMMEd,
-                                style: TextStyle(
-                                    fontSize: SizeConfig.textMultiplier * 2,
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.black38,
-                                    fontWeight: FontWeight.w500),
-                              ),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: greyColor)),
+                            child: Text(
+                              Jiffy(_nowDate).MMMEd,
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.black38,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
                           SizedBox(
                             width: SizeConfig.widthMultiplier * 2,
                           ),
-                          GestureDetector(
-                            onTap: () => _showTimePicker(context),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: greyColor)),
-                              child: Text(
-                                DateFormat('hh:mm a').format(_nowDate),
-                                style: TextStyle(
-                                    fontSize: SizeConfig.textMultiplier * 2,
-                                    fontFamily: 'Montserrat',
-                                    color: Colors.black38,
-                                    fontWeight: FontWeight.w500),
-                              ),
+                          Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(color: greyColor)),
+                            child: Text(
+                              DateFormat('hh:mm a').format(_nowDate),
+                              style: TextStyle(
+                                  fontSize: SizeConfig.textMultiplier * 2,
+                                  fontFamily: 'Montserrat',
+                                  color: Colors.black38,
+                                  fontWeight: FontWeight.w500),
                             ),
                           )
                         ],
