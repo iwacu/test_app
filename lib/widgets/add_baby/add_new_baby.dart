@@ -503,7 +503,7 @@ class _AddNewBabyFormState extends State<AddNewBabyForm> {
                     height: 400,
                     child: CupertinoDatePicker(
                         mode: CupertinoDatePickerMode.date,
-                        initialDateTime: DateTime(2018, 1, 1),
+                        initialDateTime: _nowDate,
                         onDateTimeChanged: (val) {
                           setState(() {
                             _nowDate = val;
