@@ -481,15 +481,23 @@ class _AddBabyFormState extends State<AddBabyForm> {
   }
 
   void getImage() async {
-    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      _babyImage = File(image!.path);
+    var image = await ImagePicker()
+        .pickImage(source: ImageSource.gallery)
+        .catchError((_) {
+      print('Failed');
     });
-    // getting a directory path for saving
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String path = appDocDir.path;
-    // copy the file to a new path
-    _saveImage = await _babyImage!.copy('$path/babyImage.png');
+
+    if (image != null) {
+      setState(() {
+        _babyImage = File(image.path);
+      });
+      // getting a directory path for saving
+      // Directory appDocDir = await getApplicationDocumentsDirectory();
+      // String path = appDocDir.path;
+      // copy the file to a new path
+      // _saveImage = await _babyImage!.copy('$path/babyImage.png');
+      print('RESULT: ${_babyImage?.path}');
+    }
   }
 
   void _showDatePicker(ctx) {
