@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:momnotebook/bloc/bloc/form_saving_bloc.dart';
 import 'package:momnotebook/constants/colors.dart';
 import 'package:momnotebook/constants/customAppBar.dart';
 import 'package:momnotebook/constants/defaultButton.dart';
@@ -271,14 +270,17 @@ class _HomeFoodState extends State<HomeFood> {
                               Spacer(),
                               Expanded(
                                 child: TextFormField(
-                                    controller: _amount,
-                                    keyboardType: TextInputType.number,
-                                    decoration: InputDecoration(
-                                      hintText: 'input',
-                                      enabledBorder: new UnderlineInputBorder(
-                                          borderSide: new BorderSide(
-                                              color: almostGrey, width: 0.8)),
-                                    )),
+                                  textInputAction: TextInputAction.done,
+                                  controller: _amount,
+                                  keyboardType: TextInputType.numberWithOptions(
+                                      signed: true),
+                                  decoration: InputDecoration(
+                                    hintText: 'input',
+                                    enabledBorder: new UnderlineInputBorder(
+                                        borderSide: new BorderSide(
+                                            color: almostGrey, width: 0.8)),
+                                  ),
+                                ),
                               ),
                               SizedBox(
                                 width: SizeConfig.widthMultiplier * 1.5,
